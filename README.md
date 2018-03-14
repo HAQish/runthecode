@@ -8,9 +8,9 @@ Contact us in slack!
 
 Team
 -----
-Product Owner: Kevin Doddy
-Scrum Master: Kyle McLeod
-Development Team Member: Habib Qureshi
+Product Owner: Kevin Doddy  
+Scrum Master: Kyle McLeod  
+Development Team Member: Habib Qureshi  
 
 Requirements
 -------------
