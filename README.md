@@ -1,6 +1,6 @@
 Crawlr
 =======
-Find/Create bar crawls near you or anywhere!
+Learn to code on your own or with a partner.  Get help from code mentors.  Compete against other advanced coders!
 
 Questions?
 ==========
@@ -8,9 +8,9 @@ Contact us in slack!
 
 Team
 -----
-Product Owner: Sam Donner
-Scrum Master: Ryan Morrow
-Development Team Members: Kevin Doddy, Kevin Maitski
+Product Owner: Kevin Doddy
+Scrum Master: Kyle McLeod
+Development Team Member: Habib Qureshi
 
 Requirements
 -------------
