@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import AceEditor from 'react-ace';
 import brace from 'brace';
 
@@ -39,4 +40,4 @@ class App extends React.Component {
   }
 }
 
-module.exports = App;
+ReactDOM.render(<App />, document.getElementById('app'));
