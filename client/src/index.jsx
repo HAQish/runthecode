@@ -14,21 +14,21 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      code: '',
+      currentUserSolutionCode: '',
     };
     this.onChange = this.onChange.bind(this);
   }
 
   onChange(e) {
-    this.setState({code: e});
+    this.setState({currentUserSolutionCode: e});
   }
 
   onClick(e) {
     $.ajax({
       type: "POST",
-      url: "/code",
+      url: "/challengeSolution",
       data: {
-        code: this.state.code
+        currentUserSolutionCode: this.state.currentUserSolutionCode
       }
     })
   }
@@ -40,7 +40,7 @@ class App extends React.Component {
             mode='javascript'
             theme="kuroir"
             onChange={this.onChange.bind(this)}
-            value={this.state.code}
+            value={this.state.currentUserSolutionCode}
             editorProps={{$blockScrolling: true}}
             width='100%'
             height='95vh'

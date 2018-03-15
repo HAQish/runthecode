@@ -1,5 +1,6 @@
 var Users = require('../database/database-index.js').Users
-module.exports = function(app, passport) {
+var runThis = require('../coderunner/coderunner.js').runThis;
+var passportRoutes = function(app, passport) {
 
   //Sign up routes
   app.post('/signup', passport.authenticate('local-signup', {
@@ -35,3 +36,19 @@ module.exports = function(app, passport) {
     res.end('Logged out successfully');
   });
 }
+
+var challengeRoutes = function(app) {
+  //Challenge solution submission routes
+  app.post("/challengeSolution", function(req, res) {
+    var codeResult = runThis(req.body.currentUserSolutionCode);
+    console.log(codeResult);
+    res.end(JSON.stringify(codeResult));
+    /* 
+    example of vm.run: 
+      console.log(runThis('var testFunc = function(x, y) {var result = x + y; return result}; testFunc(3,4)'));
+    */
+  })
+}
+
+module.exports.passportRoutes = passportRoutes;
+module.exports.challengeRoutes = challengeRoutes;

@@ -28,12 +28,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-app.post("/code", function(req, res) {
-  res.send("Heard post from app.")
-  console.log("The current state of the code is ", req.body.code);
-})
-
-require('./routes.js')(app, passport);
+require('./routes.js').passportRoutes(app, passport);
+require('./routes.js').challengeRoutes(app);
 
 app.listen(PORT, function() {
   console.log(`listening on port ${PORT}`);
