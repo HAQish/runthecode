@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import AceEditor from 'react-ace';
 import brace from 'brace';
-import {VM} from 'vm2';
 import $ from 'jquery';
 
 import 'brace/theme/kuroir';

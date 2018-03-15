@@ -20,10 +20,10 @@ var userSchema = new Schema({
   createdAt: {type: Date, default: Date.now},
   key: value,
   local: {
-    username: String,
+    email: String,
     password: String
   },
-  email: String,
+  username: String,
   level: Number,
   experience: Number,
   score: Number,
