@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import AceEditor from 'react-ace';
 import brace from 'brace';
+import $ from 'jquery';
 
 import 'brace/theme/kuroir';
 import 'brace/mode/javascript';
@@ -22,6 +23,15 @@ class App extends React.Component {
     this.setState({code: e});
   }
 
+  onClick(e) {
+    $.ajax({
+      type: "POST",
+      url: "/code",
+      data: {
+        code: this.state.code
+      }
+    })
+  }
 
   render () {
     return (
@@ -35,6 +45,7 @@ class App extends React.Component {
             width='100%'
             height='95vh'
           />
+          <button onClick={this.onClick.bind(this)}>Send to server</button>
       </div>
     )
   }
