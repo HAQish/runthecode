@@ -27,7 +27,9 @@ class App extends React.Component {
     $.ajax({
       type: "POST",
       url: "/code",
-      data: this.state.code
+      data: {
+        code: this.state.code
+      }
     })
   }
 

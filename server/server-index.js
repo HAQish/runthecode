@@ -19,7 +19,7 @@ app.use(express.static(path.join(__dirname, '../client/dist')));
 
 app.post("/code", function(req, res) {
   res.send("Heard post from app.")
-  console.log("The current state of the code is ", req.body);
+  console.log("The current state of the code is ", req.body.code);
 })
 
 //creates server, function runs once upon creation
