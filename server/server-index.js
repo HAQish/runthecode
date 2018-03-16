@@ -1,33 +1,36 @@
 const express = require('express');
+const session = require('express-session');
 const path = require('path');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const passport = require('passport');
+const flash = require('connect-flash');
 
+const db = require('../database/database-index.js');
+require('../config/passport.js')(passport);
 
-let app = express();
+var app = express();
+var PORT = process.env.PORT || 3030;
 
-let PORT = process.env.PORT || 3030;
-
-// Parses JSON, urls and cookies
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(session({
+  secret: 'willsmith',
+  saveUninitialized: true,
+  resave: true
+}));
 
-// Serves static files to client
 app.use(express.static(path.join(__dirname, '../client/dist')));
 
-app.post("/code", function(req, res) {
-  res.send("Heard post from app.")
-  console.log("The current state of the code is ", req.body.code);
-})
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 
-//creates server, function runs once upon creation
+require('./routes.js').passportRoutes(app, passport);
+require('./routes.js').challengeRoutes(app);
+
 app.listen(PORT, function() {
   console.log(`listening on port ${PORT}`);
 });
-
-
-//jasmine, mocha
-//travisCI
-//test

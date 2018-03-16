@@ -18,7 +18,6 @@ db.once('open', function() {
 
 var userSchema = new Schema({
   createdAt: {type: Date, default: Date.now},
-  key: value,
   local: {
     email: String,
     password: String
@@ -41,7 +40,6 @@ var Users = mongoose.model("Users", userSchema);
 
 var challengeSchema = new Schema({
   createdAt: {type: Date, default: Date.now},
-  key: value,
   challengeName: String,
   createdBy: String,
   categories: Array,
