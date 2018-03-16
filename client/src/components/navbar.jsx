@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Header, Modal, Menu, Segment, Icon } from 'semantic-ui-react';
+import { Header, Modal, Menu, Segment, Icon, Button } from 'semantic-ui-react';
 
 import Login from './login.jsx';
 import Signup from './signup.jsx';
@@ -8,10 +8,13 @@ class Navbar extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      activeItem: 'home' 
+      activeItem: 'home',
+      openModal: false
     }
     this.handleItemClick = this.handleItemClick.bind(this);
     this.handleLogoutClick = this.handleLogoutClick.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.openModal = this.openModal.bind(this);
   }
 
   handleItemClick (e, {name}) {
@@ -20,8 +23,16 @@ class Navbar extends Component {
   }
 
   handleLogoutClick (e) {
-    this.setState({activeItem: 'logout'});
+    this.setState({activeItem: 'home'});
     this.props.change();
+  }
+
+  openModal() {
+    this.setState({openModal: true})
+  }
+
+  closeModal() {
+    this.setState({openModal: false})
   }
 
   render() {
@@ -42,12 +53,13 @@ class Navbar extends Component {
           </Menu.Item>
           {/* <Menu.Item name='home' active={activeItem === 'home'} onClick={this.handleItemClick} /> */}
           <Menu.Item name='messages' active={activeItem === 'messages'} onClick={this.handleItemClick} />
-          <Menu.Item name='friends' active={activeItem === 'friends'} onClick={this.handleItemClick} />
+          <Menu.Item name='friends' active={activeItem === 'friends'} onClick={this.openModal} />
           <Menu.Menu position='right'> 
             {form}
             <Menu.Item name='login' active={activeItem === 'login'} onClick={this.handleItemClick} />
             <Menu.Item name='logout' active={activeItem === 'logout'} onClick={this.handleLogoutClick} />
-            <Modal basic trigger={<Menu.Item name='signup' active={activeItem === 'signup'} onClick={this.handleItemClick} />}>
+            <Menu.Item name='signup' active={activeItem === 'signup'} onClick={this.openModal} />
+            <Modal basic open={this.state.openModal} onClose={this.state.closeModal}>
               <Header icon='signup' content='Signup Page' />
               <Modal.Content>
                 <Modal.Description>
@@ -55,21 +67,15 @@ class Navbar extends Component {
                   <Signup />
                 </Modal.Description>
               </Modal.Content>
+              <Modal.Actions >
+                <Button color='red' onClick={this.closeModal}>
+                  <Icon name='remove' /> Close
+                </Button>
+              </Modal.Actions>
             </Modal>
           </Menu.Menu>
         </Menu>
       </Segment>
-      {/* <Modal trigger={<Button>Show Modal</Button>}>
-        <Modal.Header>Select a Photo</Modal.Header>
-        <Modal.Content image>
-          <Image wrapped size='medium' src='/assets/images/avatar/large/rachel.png' />
-          <Modal.Description>
-            <Header>Default Profile Image</Header>
-            <p>We've found the following gravatar image associated with your e-mail address.</p>
-            <p>Is it okay to use this photo?</p>
-          </Modal.Description>
-        </Modal.Content>
-      </Modal> */}
       </div>
     )
   }
