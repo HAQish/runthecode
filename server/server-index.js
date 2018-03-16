@@ -6,7 +6,6 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const flash = require('connect-flash');
-const db = require('../database/database-index.js');
 require('../config/passport.js')(passport);
 
 var app = express();
