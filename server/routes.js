@@ -1,5 +1,6 @@
-var Users = require('../database/database-index.js').Users
-var runThis = require('../coderunner/coderunner.js').runThis;
+const Users = require('../database/database-index.js').Users
+const runThis = require('../coderunner/coderunner.js').runThis;
+const db = require('../database/database-index.js');
 
 ///////// PASSPORT ROUTES /////////
 
