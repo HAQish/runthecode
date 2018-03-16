@@ -9,12 +9,12 @@ class Navbar extends Component {
     super(props);
     this.state = { 
       activeItem: 'home',
-      openModal: false
+      openSignupModal: false
     }
     this.handleItemClick = this.handleItemClick.bind(this);
     this.handleLogoutClick = this.handleLogoutClick.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-    this.openModal = this.openModal.bind(this);
+    this.closeSignupModal = this.closeSignupModal.bind(this);
+    this.openSignupModal = this.openSignupModal.bind(this);
   }
 
   handleItemClick (e, {name}) {
@@ -27,12 +27,12 @@ class Navbar extends Component {
     this.props.change();
   }
 
-  openModal() {
-    this.setState({openModal: true})
+  openSignupModal() {
+    this.setState({openSignupModal: true})
   }
 
-  closeModal() {
-    this.setState({openModal: false})
+  closeSignupModal() {
+    this.setState({openSignupModal: false})
   }
 
   render() {
@@ -49,17 +49,17 @@ class Navbar extends Component {
       <Segment inverted>
         <Menu inverted pointing secondary>
           <Menu.Item name='home' active={activeItem === 'home'} onClick={this.handleItemClick}>
-            <Icon name='home' size='big' inverted />
+            <Icon name='puzzle' size='big' inverted />
           </Menu.Item>
           {/* <Menu.Item name='home' active={activeItem === 'home'} onClick={this.handleItemClick} /> */}
           <Menu.Item name='messages' active={activeItem === 'messages'} onClick={this.handleItemClick} />
-          <Menu.Item name='friends' active={activeItem === 'friends'} onClick={this.openModal} />
+          <Menu.Item name='friends' active={activeItem === 'friends'} onClick={this.handleItemClick} />
           <Menu.Menu position='right'> 
             {form}
             <Menu.Item name='login' active={activeItem === 'login'} onClick={this.handleItemClick} />
             <Menu.Item name='logout' active={activeItem === 'logout'} onClick={this.handleLogoutClick} />
-            <Menu.Item name='signup' active={activeItem === 'signup'} onClick={this.openModal} />
-            <Modal basic open={this.state.openModal} onClose={this.state.closeModal}>
+            <Menu.Item name='signup' active={activeItem === 'signup'} onClick={this.openSignupModal} />
+            <Modal basic open={this.state.openSignupModal} onClose={this.state.closeSignupModal}>
               <Header icon='signup' content='Signup Page' />
               <Modal.Content>
                 <Modal.Description>
@@ -68,7 +68,7 @@ class Navbar extends Component {
                 </Modal.Description>
               </Modal.Content>
               <Modal.Actions >
-                <Button color='red' onClick={this.closeModal}>
+                <Button color='red' onClick={this.closeSignupModal}>
                   <Icon name='remove' /> Close
                 </Button>
               </Modal.Actions>

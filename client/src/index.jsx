@@ -16,37 +16,6 @@ import 'brace/ext/searchbox';
 import { Grid, Button } from 'semantic-ui-react';
 
 
-// const MyContext = React.createContext();
-
-// class MyProvider extends React.Component {
-//   state: {
-//     email: '',
-//     isLoggedIn: false,
-//     currentLevel: 0,
-//     currentXP: 0,
-//     totalPoints: 0,
-//     currentChallenge: 1,
-//     globalRanking: 0
-//   }
-//   updateSomething() => {do something}
-
-//   render() {
-//     return(
-//       <MyContext.Provider value={{
-//         state: this.state,
-//         updateSomething: () => {
-//         this.setState({
-//           something....
-//         })
-//       }
-//       }}>
-//         {this.props.children}
-//       </MyContext.Provider>
-//     )
-//   }
-// }
-
-
 class App extends React.Component {
   constructor(props) {
     super(props);
