@@ -22,30 +22,6 @@ db.once('open', function() { // success message on mongod connection
   console.log('mongoose connected successfully');
 });
 
-
-// var userSchema = new Schema({
-//   createdAt: {type: Date, default: Date.now},
-//   local: {
-//     username: String,
-//     password: String
-//   },
-//   email: String,
-//   level: Number,
-//   experience: Number,
-//   score: Number,
-//   completedChallenges: [{
-//     challengeName: String,
-//     solution: {
-//       text: String,
-//       rating: Number,
-//       score: Number
-//     }
-//   }]
-// })
-
-
- // VVVVVV Users VVVVVVV
-
 var userSchema = new Schema({
   createdAt: {type: Date, default: Date.now},
   username: { type: String, unique: true },
@@ -64,6 +40,8 @@ var Users = mongoose.model("Users", userSchema);
  // ^^^^^^ Users ^^^^^^^
 
  // VVVVVVV Challenges VVVVVV
+
+ //strings -> numbers --- example: level: {type: Number, default: 0}
 
 var challengeSchema = new Schema({
   createdAt: {type: Date, default: Date.now},

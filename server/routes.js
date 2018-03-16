@@ -1,7 +1,9 @@
 var Users = require('../database/database-index.js').Users
 var runThis = require('../coderunner/coderunner.js').runThis;
-var passportRoutes = function(app, passport) {
 
+///////// PASSPORT ROUTES /////////
+
+var passportRoutes = function(app, passport) {
   //Sign up routes
   app.post('/signup', passport.authenticate('local-signup', {
     successRedirect: '/signupSuccess',
@@ -37,6 +39,8 @@ var passportRoutes = function(app, passport) {
   });
 }
 
+/////// CHALLENGE ROUTES ///////
+
 var challengeRoutes = function(app) {
   //Challenge solution submission routes
   app.post("/challengeSolution", function(req, res) {
@@ -51,5 +55,35 @@ var challengeRoutes = function(app) {
   })
 }
 
+////// HABIB DB ROUTES //////
+
+var dbRoutes = function(app) {
+  app.post("/createUser", function(req, res) {
+    console.log("heard posted user from app, and the posted user is ", req.body);
+    db.addUser(req.body);
+  })
+  
+  app.post("/createChallenge", function(req, res) {
+    console.log("heard posted challenge from app, and the posted challenge is ", req.body);
+    db.addChallenge(req.body);
+  })
+  
+  app.post("/addSolution", function(req, res) {
+    console.log("heard posted solution from app, and the posted solution is ", req.body);
+    db.addSolution(req.body, "testUser1", "testChallenge1");
+  })
+  
+  app.get("/populatedUser", function(req, res) {
+    db.getPopulatedUser("testUser1")
+      .then(function(results) {console.log("in server-index, get route, the results from the populatedUser are ", results)});
+  })
+  
+  app.get("/populatedChallenge", function(req, res) {
+    db.getPopulatedChallenge("testChallenge1")
+      .then(function(results) {console.log("in server-index, get route, the results from the populatedChallenge are ", results)});
+  })
+}
+
 module.exports.passportRoutes = passportRoutes;
 module.exports.challengeRoutes = challengeRoutes;
+module.exports.dbRoutes = dbRoutes;
