@@ -32,7 +32,10 @@ class Navbar extends Component {
   }
 
   closeSignupModal() {
-    this.setState({openSignupModal: false})
+    this.setState({
+      openSignupModal: false,
+      activeItem: 'home'
+    })
   }
 
   render() {
@@ -58,8 +61,14 @@ class Navbar extends Component {
             {form}
             <Menu.Item name='login' active={activeItem === 'login'} onClick={this.handleItemClick} />
             <Menu.Item name='logout' active={activeItem === 'logout'} onClick={this.handleLogoutClick} />
-            <Menu.Item name='signup' active={activeItem === 'signup'} onClick={this.openSignupModal} />
-            <Modal basic open={this.state.openSignupModal} onClose={this.state.closeSignupModal}>
+            <Modal
+            trigger={<Menu.Item name='signup' active={activeItem === 'signup'} onClick={this.openSignupModal} />}
+            basic
+            dimmer
+            closeOnDimmerClick
+            style={{height: "65%"}}
+            open={this.state.openSignupModal}
+            onClose={this.closeSignupModal}>
               <Header icon='signup' content='Signup Page' />
               <Modal.Content>
                 <Modal.Description>
