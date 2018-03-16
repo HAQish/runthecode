@@ -18,6 +18,7 @@ class Signup extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     const { email, password, username } = this.state;
+    const {handleLogin} = this.props;
     let user = {
       local: {
         email: email,
@@ -36,6 +37,7 @@ class Signup extends React.Component {
           email: data.username,
           password: data.password
         });
+        handleLogin(data);
       },
       error: (data) => {
         console.log('😈', data);
