@@ -38,7 +38,10 @@ class Navbar extends Component {
   }
 
   closeSignupModal() {
-    this.setState({openSignupModal: false, activeItem: 'home'});
+    this.setState({
+      openSignupModal: false,
+      activeItem: 'home'
+    })
   }
 
   render() {

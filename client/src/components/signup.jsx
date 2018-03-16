@@ -26,13 +26,13 @@ class Signup extends React.Component {
       },
       username: username
     }
-    console.log('😇😇😇😇😇😇😇😇', user);
+    console.log('', user);
     $.ajax({
       type: 'POST',
       url: '/signup',
       data: user,
       success: (data) => {
-        console.log('😎', data);
+        console.log('', data);
         this.setState({
           email: data.username,
           password: data.password
@@ -40,7 +40,7 @@ class Signup extends React.Component {
         handleLogin(data);
       },
       error: (data) => {
-        console.log('😈', data);
+        console.log('', data);
       }
     })
   }

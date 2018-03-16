@@ -6,7 +6,6 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const flash = require('connect-flash');
-const db = require('../database/database-index.js');
 require('../config/passport.js')(passport);
 
 var app = express();
@@ -27,12 +26,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
+require('./../config/passport.js')(passport);
+
 require('./routes.js').passportRoutes(app, passport);
 require('./routes.js').challengeRoutes(app);
 require('./routes.js').dbRoutes(app);
-
-
-
 
 //creates server, function runs once upon creation
 app.listen(PORT, function() {
