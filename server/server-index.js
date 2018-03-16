@@ -4,9 +4,9 @@ const path = require('path');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-
-var db = require("./../database/database-index.js");
-
+const passport = require('passport');
+const flash = require('connect-flash');
+const db = require('../database/database-index.js');
 require('../config/passport.js')(passport);
 
 var app = express();
