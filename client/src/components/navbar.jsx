@@ -13,22 +13,28 @@ class Navbar extends Component {
     }
     this.handleItemClick = this.handleItemClick.bind(this);
     this.handleLogoutClick = this.handleLogoutClick.bind(this);
+    this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
     this.closeSignupModal = this.closeSignupModal.bind(this);
     this.openSignupModal = this.openSignupModal.bind(this);
   }
 
   handleItemClick (e, {name}) {
-    //let name = e.target.name;
     this.setState({ activeItem: name })
   }
 
   handleLogoutClick (e) {
     this.setState({activeItem: 'home'});
-    this.props.change();
+    this.props.logout();
+  }
+  
+  handleLoginSubmit(user) {
+    console.log('Inside the navbar login', user);
+    this.props.handleLogin(user);
+    this.setState({activeItem: 'home', openSignupModal: false});
   }
 
   openSignupModal() {
-    this.setState({openSignupModal: true})
+    this.setState({openSignupModal: true, activeItem: 'signup'});
   }
 
   closeSignupModal() {
@@ -42,9 +48,41 @@ class Navbar extends Component {
     const { activeItem } = this.state;
     let form;
     if (this.state.activeItem === 'login') {
-      form = <Login change={this.props.change} />;
+      form = <Login handleLogin={this.handleLoginSubmit} />;
     } else {
       form = <span></span>
+    }
+
+    let options;
+    if (!this.props.isLoggedIn) {
+      options = (
+        <Menu.Menu position='right'>
+          {form}
+          <Menu.Item name='login' active={activeItem === 'login'} onClick={this.handleItemClick} />
+          <Modal
+            basic
+            dimmer
+            closeOnDimmerClick
+            open={this.state.openSignupModal}
+            onClose={this.state.closeSignupModal}
+            trigger={<Menu.Item name='signup' active={activeItem === 'signup'} onClick={this.openSignupModal} />}>
+            <Header icon='signup' content='Signup Page' />
+            <Modal.Content>
+              <Modal.Description>
+                <Header inverted>Get Ready for a coding experience like no other</Header>
+                <Signup handleLogin={this.handleLoginSubmit} />
+              </Modal.Description>
+            </Modal.Content>
+            <Modal.Actions >
+              <Button color='red' onClick={this.closeSignupModal}>
+                <Icon name='remove' /> Close
+                </Button>
+            </Modal.Actions>
+          </Modal>
+        </Menu.Menu>
+      );
+    } else {
+      options = <Menu.Item position='right' name='logout' active={activeItem === 'logout'} onClick={this.handleLogoutClick} />;
     }
 
     return (
@@ -57,32 +95,7 @@ class Navbar extends Component {
           {/* <Menu.Item name='home' active={activeItem === 'home'} onClick={this.handleItemClick} /> */}
           <Menu.Item name='messages' active={activeItem === 'messages'} onClick={this.handleItemClick} />
           <Menu.Item name='friends' active={activeItem === 'friends'} onClick={this.handleItemClick} />
-          <Menu.Menu position='right'> 
-            {form}
-            <Menu.Item name='login' active={activeItem === 'login'} onClick={this.handleItemClick} />
-            <Menu.Item name='logout' active={activeItem === 'logout'} onClick={this.handleLogoutClick} />
-            <Modal
-            trigger={<Menu.Item name='signup' active={activeItem === 'signup'} onClick={this.openSignupModal} />}
-            basic
-            dimmer
-            closeOnDimmerClick
-            style={{height: "65%"}}
-            open={this.state.openSignupModal}
-            onClose={this.closeSignupModal}>
-              <Header icon='signup' content='Signup Page' />
-              <Modal.Content>
-                <Modal.Description>
-                  <Header inverted>Get Ready for a coding experience like no other</Header>
-                  <Signup />
-                </Modal.Description>
-              </Modal.Content>
-              <Modal.Actions >
-                <Button color='red' onClick={this.closeSignupModal}>
-                  <Icon name='remove' /> Close
-                </Button>
-              </Modal.Actions>
-            </Modal>
-          </Menu.Menu>
+          {options}
         </Menu>
       </Segment>
       </div>

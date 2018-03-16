@@ -1,17 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import AceEditor from 'react-ace';
-import brace from 'brace';
 import $ from 'jquery';
 import Challenge from './components/challenge.jsx';
 import Navbar from './components/navbar.jsx';
 import Home from './components/home.jsx';
-
-import 'brace/theme/kuroir';
-import 'brace/mode/javascript';
-
-import 'brace/ext/language_tools';
-import 'brace/ext/searchbox';
 
 import { Grid, Button } from 'semantic-ui-react';
 
@@ -20,18 +12,20 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoggedIn: false,
+      user: {},
       // currentUserSolutionCode: '',
-
       // Global state needed:
       // email
-      isLoggedIn: false,
       // level
       // XP
       // Points
       // current challenge
       // global ranking
     };
-    this.change = this.change.bind(this);
+    this.logout = this.logout.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
+    this.clearState = this.clearState.bind(this);
   }
 
   // onChange(e) {
@@ -141,20 +135,36 @@ class App extends React.Component {
       //       <button onClick={this.populateChallenge.bind(this)}> Populate challenge </button> <br />
       //     </div>
 
-  change() {
-    this.setState({isLoggedIn: !this.state.isLoggedIn});
+  logout() {
+    fetch('/logout')
+      .then(data => this.clearState())
+      .catch(error => console.log('error', error));
+  }
+
+  clearState() {
+    this.setState({
+      isLoggedIn: false,
+      user: {}
+    });
+  }
+
+  handleLogin(user) {
+    this.setState({
+      user: user,
+      isLoggedIn: true
+    });
   }
 
   render () {
     const loggedIn = this.state.isLoggedIn ? (
       <Challenge />
     ) : (
-      <Home change={this.change} />
+      <Home />
     )
 
     return (
       <div>
-        <Navbar change={this.change} />
+        <Navbar handleLogin={this.handleLogin} logout={this.logout} isLoggedIn={this.state.isLoggedIn} />
         {loggedIn}
       </div>
     )
