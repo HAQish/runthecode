@@ -5,6 +5,7 @@ const db = require('../database/database-index.js');
 ///////// PASSPORT ROUTES /////////
 
 var passportRoutes = function(app, passport) {
+  require('../config/passport.js')(passport);
   //Sign up routes
   app.post('/signup', passport.authenticate('local-signup', {
     successRedirect: '/signupSuccess',

@@ -18,14 +18,11 @@ class Signup extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     const { email, password, username } = this.state;
-    const {handleLogin} = this.props;
     let user = {
         username: email,
         password: password,
         nickname: username
       }
-
-    console.log('', user);
     $.post('/signup', user, (data) => this.props.handleLogin(data))
   }
   
