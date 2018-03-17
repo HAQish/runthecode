@@ -21,7 +21,6 @@ app.listen(PORT, function() {
   console.log(`listening on port ${PORT}`);
 });
 
-
 app.use(cookieParser());
 app.use(session({
   secret: 'abcdefg',
@@ -29,52 +28,10 @@ app.use(session({
   resave: true
 }));
 
-
-
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-require('../config/passport.js')(passport);
-
-  //Sign up routes
-  app.post('/signup', passport.authenticate('local-signup', {
-    successRedirect: '/signupSuccess',
-    failureRedirect: '/signupFailure',
-    failureFlash: true,
-    successFlash: true
-  }));
-  app.get('/signupSuccess', function(req, res) {
-    console.log('hit signup success');
-    res.send(req.flash('User'));
-  });
-  app.get('/signupFailure', function(req, res) {
-    console.log('hit signup fail');
-    res.send({message: req.flash('signupMessage')});
-  });
-
-  //Login routes
-  app.post('/login', passport.authenticate('local-login', {
-    successRedirect: '/loginSuccess',
-    failureRedirect: '/loginFailure',
-    failureFlash: true,
-    successFlash: true
-  }));
-  app.get('/loginSuccess', function(req, res) {
-    res.send(req.flash('User'));
-  });
-  app.get('/loginFailure', function(req, res) {
-    res.send({message: req.flash('loginMessage')});
-  });
-
-  //Logout route
-  app.get('/logout', function(req, res) {
-    console.log('in logout -- ', req.user);
-    req.logout();
-    res.end('Logged out successfully');
-  });
-
+require('./routes.js').passportRoutes(app, passport);
 require('./routes.js').challengeRoutes(app);
 require('./routes.js').dbRoutes(app);
-
-//creates server, function runs once upon creation
