@@ -18,31 +18,12 @@ class Signup extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     const { email, password, username } = this.state;
-    const {handleLogin} = this.props;
     let user = {
-      local: {
-        email: email,
-        password: password
-      },
-      username: username
-    }
-    console.log('', user);
-    $.ajax({
-      type: 'POST',
-      url: '/signup',
-      data: user,
-      success: (data) => {
-        console.log('', data);
-        this.setState({
-          email: data.username,
-          password: data.password
-        });
-        handleLogin(data);
-      },
-      error: (data) => {
-        console.log('', data);
+        username: email,
+        password: password,
+        nickname: username
       }
-    })
+    $.post('/signup', user, (data) => this.props.handleLogin(data))
   }
   
   handleChange(e, {name, value}) {

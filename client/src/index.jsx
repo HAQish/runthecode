@@ -136,7 +136,7 @@ class App extends React.Component {
       //     </div>
 
   logout() {
-    fetch('/logout')
+    fetch('/logout', {credentials: 'include'})
       .then(data => this.clearState())
       .catch(error => console.log('error', error));
   }

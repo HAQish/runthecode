@@ -20,32 +20,15 @@ class Login extends React.Component {
     this.setState({
       [name]: value
     });
-    console.log('sssssss', this.state);
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    const {handleLogin} = this.props;
     const user = {
-      local: {
-        email: this.state.email,
+        username: this.state.email,
         password: this.state.password
-      }
     };
-    console.log('Inside the login component', user);
-
-    $.ajax({
-      type: 'POST',
-      url: '/login',
-      data: user,
-      success: (data) => {
-        console.log('😎', data);
-        handleLogin(data);
-      },
-      error: (data) => {
-        console.log('😈', data);
-      }
-    });
+    $.post('/signup', user, (data) => this.props.handleLogin(data))
   }
 
   render() {
