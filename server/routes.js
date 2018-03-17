@@ -46,16 +46,29 @@ var passportRoutes = function(app, passport) {
 var challengeRoutes = function(app) {
   //Challenge solution submission routes
   app.post("/challengeSolution", function(req, res) {
-    var codeResult = runThis(req.body.currentUserSolutionCode);
-    console.log(codeResult);
-    res.end(JSON.stringify(codeResult));
-    /* 
-    example of vm.run: 
-      console.log(runThis('var testFunc = function(x, y) {var result = x + y; return result}; testFunc(3,4)'));
-    */
-   ////
+    var masterTestResults;
+    var endMsg;
+    var codeResult = runThis(req.body.masterUserSolutionCode).
+    then((data) => {
+      var resultArray = JSON.parse(data.result);
+      var message = "Success";
+      masterTestResults = resultArray;
+      for (var i = 0; i < resultArray.length; i++) {
+        if (resultArray[i] === false) {
+          message = "Failure";
+          break;
+        }
+      }
+      console.log(masterTestResults, message);
+      endMsg = JSON.stringify({masterTestResults: masterTestResults, message: message});
+      res.end(endMsg);
+    // res.end(codeResult);
+    //if all true -- save submission to db(their answer, score)
+    //if not all true, update db with deduction -- send array of booleans
+      //front end interprets booleans and renders descriptions
   })
-}
+})}
+
 
 ////// HABIB DB ROUTES //////
 

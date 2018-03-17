@@ -1,4 +1,5 @@
 import React from 'react';
+import Editor from './editor.jsx';
 import { Button, Header, Icon } from 'semantic-ui-react';
 
 const Home = (props) => {
@@ -11,6 +12,7 @@ const Home = (props) => {
           LevelUP Code
         </Header.Content>
       </Header>
+      <Editor />
     </div>
   )
 }
