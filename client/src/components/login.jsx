@@ -27,10 +27,8 @@ class Login extends React.Component {
     e.preventDefault();
     const {handleLogin} = this.props;
     const user = {
-      local: {
-        email: this.state.email,
+        username: this.state.email,
         password: this.state.password
-      }
     };
     console.log('Inside the login component', user);
 
