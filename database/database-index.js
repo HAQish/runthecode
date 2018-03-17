@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt'); // handles password hashing in the database
 const saltRounds = 5;
 let Schema = mongoose.Schema;
 let uristring = process.env.MONGODB_URI || 'mongodb://localhost:27017/levelup';
-var db = mongoose.connection;
+
 
 mongoose.connect(uristring, (err) => { // creating connection to mongod
   if (err) { console.log('mongodb not connected', err); }
@@ -13,6 +13,8 @@ mongoose.connect(uristring, (err) => { // creating connection to mongod
     console.log('connected to database');
   }
 });
+
+var db = mongoose.connection;
 
 db.on('error', function(err) { // error message on mongod connection
   console.log('mongoose connection error', err);
@@ -161,6 +163,7 @@ module.exports.addSolution = addSolution;
 module.exports.selectAllChallenges = selectAllChallenges;
 module.exports.getPopulatedUser = getPopulatedUser;
 module.exports.getPopulatedChallenge = getPopulatedChallenge;
+module.exports.Users = Users;
 
 
 

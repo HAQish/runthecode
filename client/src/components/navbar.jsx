@@ -62,6 +62,7 @@ class Navbar extends Component {
           <Modal
             basic
             dimmer
+            style={{height:"80%"}}
             closeOnDimmerClick
             open={this.state.openSignupModal}
             onClose={this.state.closeSignupModal}
