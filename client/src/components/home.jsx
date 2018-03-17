@@ -11,6 +11,7 @@ const Home = (props) => {
           LevelUP Code
         </Header.Content>
       </Header>
+      
     </div>
   )
 }

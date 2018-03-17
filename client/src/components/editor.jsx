@@ -15,23 +15,39 @@ class Editor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      code: '',
+      masterUserSolutionCode: '',
+      challengeName: '',
+      masterTestDescriptions: [],
+      challengeResults: []
     };
     this.onChange = this.onChange.bind(this);
   }
+
+  componentWillMount() {
+    this.setState({
+      masterUserSolutionCode: this.props.starterCode
+    });
+  }
   
   onChange(e) {
-    this.setState({ code: e });
+    this.setState({ masterUserSolutionCode: e });
   }
 
-  onClick(e) {
+  handleSubmit(e) {
+    const {displayTestResults} = this.props;
+    const {masterUserSolutionCode} = this.state;
     $.ajax({
       type: "POST",
-      url: "/code",
+      url: "/challengeSolution",
       data: {
-        code: this.state.code
+        masterUserSolutionCode: masterUserSolutionCode
       }
-    })
+    },
+    success: data => {
+      displayTestResults(data);
+    },
+    error: err => console.log(err);
+    )
   }  
 
   render() {
@@ -40,13 +56,13 @@ class Editor extends React.Component {
         <AceEditor
           mode='javascript'
           theme="kuroir"
-          onChange={this.onChange.bind(this)}
-          value={this.state.code}
+          onChange={this.onChange}
+          value={this.state.masterUserSolutionCode}
           editorProps={{ $blockScrolling: true }}
           width='100%'
-          height='95vh'
+          height='85vh'
         />
-        <Button onClick={this.onClick.bind(this)} content="Send to server" primary />
+        <Button onClick={this.handleSubmit} content="Send to server" primary />
       </div>
     )
   }

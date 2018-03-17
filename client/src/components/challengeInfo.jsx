@@ -8,14 +8,14 @@ const ChallengeInfo = (props) => {
     <Grid>
       <Grid.Row>
         <div style={{margin: 'auto', height: '50%'}}>
-          <Header as='h1' content='Problem Name' />
-          <Header as='h3' content='Problem Description goes here' />
+          <Header as='h1' content={props.challengeName} />
+          <Header as='h3' content={props.challengeDescription} />
         </div>
       </Grid.Row>
       
       <Grid.Row>
         <div style={{ margin: 'auto' }}>
-          Sample tests will go here
+          {props.basicTests[0]}
         </div>
       </Grid.Row>
     </Grid>

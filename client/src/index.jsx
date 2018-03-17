@@ -13,7 +13,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       isLoggedIn: false,
-      user: {},
+      masterUser: {},
       // currentUserSolutionCode: '',
       // Global state needed:
       // email
@@ -157,7 +157,7 @@ class App extends React.Component {
 
   render () {
     const loggedIn = this.state.isLoggedIn ? (
-      <Challenge />
+      <Challenge log={this.state.isLoggedIn} />
     ) : (
       <Home />
     )
