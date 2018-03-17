@@ -16,10 +16,10 @@ class Editor extends React.Component {
     super(props);
     this.state = {
       masterUserSolutionCode: '',
-      masterTestDescriptions: [],
       challengeResults: []
     };
     this.onChange = this.onChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentWillMount() {
@@ -33,6 +33,7 @@ class Editor extends React.Component {
   }
 
   handleSubmit(e) {
+    e.preventDefault();
     const {displayTestResults} = this.props;
     const {masterUserSolutionCode} = this.state;
     $.ajax({
@@ -40,13 +41,13 @@ class Editor extends React.Component {
       url: "/challengeSolution",
       data: {
         masterUserSolutionCode: masterUserSolutionCode
-      }
-    },
-    success: data => {
-      displayTestResults(data);
-    },
-    error: err => console.log(err);
-    )
+      },
+      success: data => {
+        console.log('data', data)
+        displayTestResults(data);
+      },
+      error: err => console.log(err)
+    });
   }  
 
   render() {

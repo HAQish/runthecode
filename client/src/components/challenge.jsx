@@ -14,7 +14,7 @@ class Challenge extends React.Component {
       starterCode: 'function helloWorld() {\n  const hello="";\n  const world="";\n  _____ hello + world;\n}'
     }
 
-    // this.showTestResults = this.showTestResults.bind(this);
+    this.displayTestResults = this.displayTestResults.bind(this);
   }
 
   // componentWillMount() {
@@ -37,15 +37,16 @@ class Challenge extends React.Component {
 
 
   displayTestResults(results) {
-    if (results.message === 'Success') {
-      // success!
-    } else if (results.message === 'Failure') {
-      // failure
-      //results.masterTestResults
-      // compare to state.masterTestDescriptions
-    } else {
-      // display error message
-    }
+    console.log('🤡', results);
+    // if (results.message === 'Success') {
+    //   // success!
+    // } else if (results.message === 'Failure') {
+    //   // failure
+    //   //results.masterTestResults
+    //   // compare to state.masterTestDescriptions
+    // } else {
+    //   // display error message
+    // }
   }
 
   render() {
@@ -57,7 +58,7 @@ class Challenge extends React.Component {
             <ChallengeInfo basicTests={basicTests} challengeDescription={challengeDescription} challengeName={challengeName} />
           </Grid.Column>
           <Grid.Column>
-            <Editor starterCode={starterCode} />
+            <Editor starterCode={starterCode} displayTestResults={this.displayTestResults} />
           </Grid.Column>
         </Grid.Row>
       </Grid>
