@@ -48,26 +48,48 @@ var challengeRoutes = function(app) {
   app.post("/challengeSolution", function(req, res) {
     var masterTestResults;
     var endMsg;
-    var message = "Success";
     var codeResult = runThis(req.body.masterUserSolutionCode, req.body.masterTests).
     then((data) => {
-      if (data[0] === "'") {
-        message = ("Error");
-        masterTestResults = data;
-      } else {
-        var resultArray = JSON.parse(data);
-        masterTestResults = resultArray;
-        for (var i = 0; i < resultArray.length; i++) {
-          if (resultArray[i] === false) {
-            message = "Failure";
-            break;
-          }
+      var resultArray = JSON.parse(data.result);
+      var message = "Success";
+      masterTestResults = resultArray;
+      for (var i = 0; i < resultArray.length; i++) {
+        if (resultArray[i] === false) {
+          message = "Failure";
+          break;
         }
       }
+      console.log(masterTestResults, message);
       endMsg = JSON.stringify({masterTestResults: masterTestResults, message: message});
       res.end(endMsg);
+    // res.end(codeResult);
+    //if all true -- save submission to db(their answer, score)
+    //if not all true, update db with deduction -- send array of booleans
+      //front end interprets booleans and renders descriptions
     })
-})}
+  })
+
+  app.get("/initialChallenges", function(req, res) {
+    console.log("Heard get for initial challenges from app");
+    db.selectAllInitialChallenges().then(results => res.send(results));
+  });
+
+
+  app.get("/challenges/next", function(req, res) { // assuming currentChallenge is in req.body
+    console.log("Heard get for next challenge");
+    console.log(req.body.currentChallenge);
+
+  })
+
+
+  app.get("/challenges/:challengeName", function(req, res) {
+    console.log("Heard get for challenge", req.params.challengeName);
+    db.getChallengeByName(req.params.challengeName).then(results => console.log(results));
+  })
+
+
+}
+
 
 
 ////// HABIB DB ROUTES //////
@@ -77,22 +99,22 @@ var dbRoutes = function(app) {
     console.log("heard posted user from app, and the posted user is ", req.body);
     db.addUser(req.body);
   })
-  
+
   app.post("/createChallenge", function(req, res) {
     console.log("heard posted challenge from app, and the posted challenge is ", req.body);
     db.addChallenge(req.body);
   })
-  
+
   app.post("/addSolution", function(req, res) {
     console.log("heard posted solution from app, and the posted solution is ", req.body);
     db.addSolution(req.body, "testUser1", "testChallenge1");
   })
-  
+
   app.get("/populatedUser", function(req, res) {
     db.getPopulatedUser("testUser1")
       .then(function(results) {console.log("in server-index, get route, the results from the populatedUser are ", results)});
   })
-  
+
   app.get("/populatedChallenge", function(req, res) {
     db.getPopulatedChallenge("testChallenge1")
       .then(function(results) {console.log("in server-index, get route, the results from the populatedChallenge are ", results)});
