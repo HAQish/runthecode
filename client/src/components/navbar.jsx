@@ -60,12 +60,13 @@ class Navbar extends Component {
           {form}
           <Menu.Item name='login' active={activeItem === 'login'} onClick={this.handleItemClick} />
           <Modal
+            style={{height: '65%'}}
             basic
             dimmer
             style={{height:"80%"}}
             closeOnDimmerClick
             open={this.state.openSignupModal}
-            onClose={this.state.closeSignupModal}
+            onClose={this.closeSignupModal}
             trigger={<Menu.Item name='signup' active={activeItem === 'signup'} onClick={this.openSignupModal} />}>
             <Header icon='signup' content='Signup Page' />
             <Modal.Content>
@@ -93,7 +94,6 @@ class Navbar extends Component {
           <Menu.Item name='home' active={activeItem === 'home'} onClick={this.handleItemClick}>
             <Icon name='puzzle' size='big' inverted />
           </Menu.Item>
-          {/* <Menu.Item name='home' active={activeItem === 'home'} onClick={this.handleItemClick} /> */}
           <Menu.Item name='messages' active={activeItem === 'messages'} onClick={this.handleItemClick} />
           <Menu.Item name='friends' active={activeItem === 'friends'} onClick={this.handleItemClick} />
           {options}

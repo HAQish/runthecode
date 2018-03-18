@@ -7,6 +7,7 @@ module.exports = {
     path: path.resolve(__dirname, 'client/dist'),
     filename: 'bundle.js'
   },
+  devtool:'inline-source-map',
   module: {
     loaders: [{
       test: /.jsx?$/,
