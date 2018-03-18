@@ -69,7 +69,7 @@ function oldEnough(age, activity) {
 }
 
 var solutionArray2 = '[typeof oldEnough === "function", oldEnough(10, "play") === "You\'re always old enough to play!", oldEnough(15, "drive") === "Sorry, you\'re not old enough to drive.", oldEnough(16, "drive") === "Yes! You\'re old enough to drive!", oldEnough(20, "drink") === "Sorry, you\'re not old enough to drink.", oldEnough(21, "drink") === "Yes! You\'re old enough to drink!"]';
-var testDescriptionArray2 = '["oldEnough should be a function", "A ten-year-old is old enough to play", "A 15-year-old is not old enough to drive", "A 16-year-old is old enough to drive", "A 20-year-old is not old enough to drink", "A 21-year-old is old enough to drink"]'
+var testDescriptionArray2 = '["oldEnough should be a function", "A ten-year-old is old enough to play", "A 15-year-old is not old enough to drive", "A 16-year-old is old enough to drive", "A 20-year-old is not old enough to drink", "A 21-year-old is old enough to drink"]';
 
 /*****************************************************************************/
 /*
@@ -109,7 +109,7 @@ function compareTriangleAndCircle(base, height, radius) {
 }
 
 var solutionArray3 = '[typeof compareTriangleAndCircle === "function", compareTriangleAndCircle(3,4,3) === "Circle", compareTriangleAndCircle(12,24,6.5) === "Triangle", compareTriangleAndCircle(10,10,5) === "Circle", compareTriangleAndCircle(5,21,4) === "Triangle", compareTriangleAndCircle(254,51,50) === "Circle"]';
-var testDescriptionArray3 = '["compareTriangleAndCircle should be a function", "Between a 3, 4 triangle and a circle of radius 3, the circle is bigger", "Between a 12, 24 triangle and a circle of radius 6.5, the triangle is bigger", "Between a 10, 10 triangle and a circle of radius 5, the circle is bigger", "Between a 5, 21 triangle and a circle of radius 4, the triangle is bigger", "Between a 254, 51 triangle and a circle of radius 50, the circle is bigger"]'
+var testDescriptionArray3 = '["compareTriangleAndCircle should be a function", "Between a 3, 4 triangle and a circle of radius 3, the circle is bigger", "Between a 12, 24 triangle and a circle of radius 6.5, the triangle is bigger", "Between a 10, 10 triangle and a circle of radius 5, the circle is bigger", "Between a 5, 21 triangle and a circle of radius 4, the triangle is bigger", "Between a 254, 51 triangle and a circle of radius 50, the circle is bigger"]';
 
 /*****************************************************************************/
 /*
@@ -176,7 +176,7 @@ function joinObjects(obj1, obj2) {
 }
 
 var solutionArray4 = '[typeof joinObjects === "function", typeof joinObjects({1: 1}, {2: 2}) === "object" && !Array.isArray(joinObjects({1: 1}, {2: 2})), joinObjects({1: 1}, {2: 2})[1] === 1 && joinObjects({1: 1}, {2: 2})[2] === 2, joinObjects({1: 1}, {1: 5, 2: 2})[1] === 1 && joinObjects({1: 1}, {1: 5, 2: 2})[2] === 2]';
-var testDescriptionArray4 = '["joinObjects should be a function", "return value should be an object", "should join separate objects into one", "should not overwrite first object"]'
+var testDescriptionArray4 = '["joinObjects should be a function", "return value should be an object", "should join separate objects into one", "should not overwrite first object"]';
 /*****************************************************************************/
 /*
   CHALLENGE 5 -
@@ -202,7 +202,7 @@ function fibonacci(n) {
 }
 
 var solutionArray5 = '[typeof fibonacci === "function", typeof fibonacci(n) === "number", fibonacci(0) === 0, fibonacci(1) === 1, fibonacci(2) === 1, fibonacci(3) === 2, fibonacci(10) === 55, fibonacci(20) === 6765, fibonacci(40) === 102334155]';
-var testDescriptionArray5 = '["fibonacci should be a function", "fibonacci should return a number", "the 0th fibonacci number is 0", "the 1st fibonacci number is 1", "the 2nd fibonacci number is 1", "the 3rd fibonacci number is 2", "the 10th fibonacci number is 55", "the 20th fibonacci number is 6765", "the 40th fibonacci number is 102334155"]'
+var testDescriptionArray5 = '["fibonacci should be a function", "fibonacci should return a number", "the 0th fibonacci number is 0", "the 1st fibonacci number is 1", "the 2nd fibonacci number is 1", "the 3rd fibonacci number is 2", "the 10th fibonacci number is 55", "the 20th fibonacci number is 6765", "the 40th fibonacci number is 102334155"]';
 
 /*****************************************************************************/
 /*
@@ -224,3 +224,47 @@ var testDescriptionArray5 = '["fibonacci should be a function", "fibonacci shoul
   test5 =
 */
 // solution
+
+{
+  "prompt": "write a recursive function fibonacci that takes an integer n and returns the nth number of the fibonacci sequence \n hint - the fibonacci sequence calculates each number by the sum of the two numbers before it \n ex. 0, 1, 1, 2, 3, 5, 8, 13, 21, 34",
+  "starterCode": "function fibonacci(n) { \n \n }",
+  "masterTests": '[typeof fibonacci === "function", typeof fibonacci(n) === "number", fibonacci(0) === 0, fibonacci(1) === 1, fibonacci(2) === 1, fibonacci(3) === 2, fibonacci(10) === 55, fibonacci(20) === 6765, fibonacci(40) === 102334155]',
+  "masterTestDescriptions": '["fibonacci should be a function", "fibonacci should return a number", "the 0th fibonacci number is 0", "the 1st fibonacci number is 1", "the 2nd fibonacci number is 1", "the 3rd fibonacci number is 2", "the 10th fibonacci number is 55", "the 20th fibonacci number is 6765", "the 40th fibonacci number is 102334155"]',
+  "challengeName": "Fibonacci",
+  "challengeNumber": 5
+}
+
+{
+  "prompt": "Write a function joinObjects that takes in 2 different objects and adds the properties of the 2nd object to the first and then returns the first object with the new properties attached \n If the 1st object already has a given key, ignore it (do not overwrite the property value).  Do not change the second object.",
+  "starterCode": "function joinObjects(obj1, obj2) { \n \n }",
+  "masterTests": '[typeof joinObjects === "function", typeof joinObjects({1: 1}, {2: 2}) === "object" && !Array.isArray(joinObjects({1: 1}, {2: 2})), joinObjects({1: 1}, {2: 2})[1] === 1 && joinObjects({1: 1}, {2: 2})[2] === 2, joinObjects({1: 1}, {1: 5, 2: 2})[1] === 1 && joinObjects({1: 1}, {1: 5, 2: 2})[2] === 2]',
+  "masterTestDescriptions": '["joinObjects should be a function", "return value should be an object", "should join separate objects into one", "should not overwrite first object"]',
+  "challengeName": "Join Objects",
+  "challengeNumber": 4
+}
+
+{
+  "prompt": "write a function called compareTriangleAndCircle that takes 3 arguments, 2 numbers for the base and a height of the triangle and a number corresponding to the radius of a circle, compute the areas of both circle and triangle, and return which area is larger \n hint: the area of a circle is PI r^2",
+  "starterCode": "function compareTriangleAndCircle(base, height, radius) { \n \n }",
+  "masterTests": '[typeof compareTriangleAndCircle === "function", compareTriangleAndCircle(3,4,3) === "Circle", compareTriangleAndCircle(12,24,6.5) === "Triangle", compareTriangleAndCircle(10,10,5) === "Circle", compareTriangleAndCircle(5,21,4) === "Triangle", compareTriangleAndCircle(254,51,50) === "Circle"]',
+  "masterTestDescriptions": '["compareTriangleAndCircle should be a function", "Between a 3, 4 triangle and a circle of radius 3, the circle is bigger", "Between a 12, 24 triangle and a circle of radius 6.5, the triangle is bigger", "Between a 10, 10 triangle and a circle of radius 5, the circle is bigger", "Between a 5, 21 triangle and a circle of radius 4, the triangle is bigger", "Between a 254, 51 triangle and a circle of radius 50, the circle is bigger"]',
+  "challengeName": "Compare triangle and circle",
+  "challengeNumber": 3
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
