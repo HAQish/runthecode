@@ -24,6 +24,17 @@ db.once('open', function() { // success message on mongod connection
   console.log('mongoose connected successfully');
 });
 
+var initialChallengeSchema = new Schema({
+  prompt: String,
+  starterCode: String,
+  masterTests: String,
+  masterTestDescriptions: String,
+  challengeNumber: Number,
+  challengeName: String
+})
+
+var InitialChallenges = mongoose.model("InitialChallenges", initialChallengeSchema);
+
 var userSchema = new Schema({
   createdAt: {type: Date, default: Date.now},
   username: { type: String, unique: true },
@@ -164,6 +175,7 @@ module.exports.selectAllChallenges = selectAllChallenges;
 module.exports.getPopulatedUser = getPopulatedUser;
 module.exports.getPopulatedChallenge = getPopulatedChallenge;
 module.exports.Users = Users;
+module.exports.InitialChallenges = InitialChallenges;
 
 
 
