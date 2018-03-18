@@ -48,7 +48,7 @@ var challengeRoutes = function(app) {
   app.post("/challengeSolution", function(req, res) {
     var masterTestResults;
     var endMsg;
-    var codeResult = runThis(req.body.masterUserSolutionCode).
+    var codeResult = runThis(req.body.masterUserSolutionCode, req.body.masterTests).
     then((data) => {
       var resultArray = JSON.parse(data.result);
       var message = "Success";
