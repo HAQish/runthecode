@@ -43,7 +43,6 @@ class Editor extends React.Component {
         masterUserSolutionCode: masterUserSolutionCode
       },
       success: data => {
-        console.log('data', data)
         displayTestResults(data);
       },
       error: err => console.log(err)

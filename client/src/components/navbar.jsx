@@ -66,7 +66,7 @@ class Navbar extends Component {
             style={{height:"80%"}}
             closeOnDimmerClick
             open={this.state.openSignupModal}
-            onClose={this.state.closeSignupModal}
+            onClose={this.closeSignupModal}
             trigger={<Menu.Item name='signup' active={activeItem === 'signup'} onClick={this.openSignupModal} />}>
             <Header icon='signup' content='Signup Page' />
             <Modal.Content>
