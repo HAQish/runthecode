@@ -6,8 +6,8 @@ var runThis = function(userCode, tests) {
   var masterTests = tests; // need hardcoded tests here for initial test
   return new Promise(resolve => { 
     s.run(`${userCode} ${masterTests};`, function(output) {
-      console.log('output in runthis = ', output);
-      resolve(output);
+      console.log('output in runthis = ', output.result);
+      resolve(output.result);
     })
   });
 }

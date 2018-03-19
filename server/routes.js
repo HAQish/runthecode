@@ -48,25 +48,25 @@ var challengeRoutes = function(app) {
   app.post("/challengeSolution", function(req, res) {
     var masterTestResults;
     var endMsg;
+    var message = "Success";
     var codeResult = runThis(req.body.masterUserSolutionCode, req.body.masterTests).
     then((data) => {
-      var resultArray = JSON.parse(data.result);
-      var message = "Success";
-      masterTestResults = resultArray;
-      for (var i = 0; i < resultArray.length; i++) {
-        if (resultArray[i] === false) {
-          message = "Failure";
-          break;
+      if (data[0] === "'") {
+        message = ("Error");
+        masterTestResults = data;
+      } else {
+        var resultArray = JSON.parse(data);
+        masterTestResults = resultArray;
+        for (var i = 0; i < resultArray.length; i++) {
+          if (resultArray[i] === false) {
+            message = "Failure";
+            break;
+          }
         }
       }
-      console.log(masterTestResults, message);
       endMsg = JSON.stringify({masterTestResults: masterTestResults, message: message});
       res.end(endMsg);
-    // res.end(codeResult);
-    //if all true -- save submission to db(their answer, score)
-    //if not all true, update db with deduction -- send array of booleans
-      //front end interprets booleans and renders descriptions
-  })
+    })
 })}
 
 
