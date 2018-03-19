@@ -1,0 +1,11 @@
+[
+  {
+    "prompt": "JavaScript can define a variable using the 'var' keyword.  Check out the examples and the fill in the blanks.",
+    "starterCode": "// examples: \n var aNumber = 3;  // typeof aNumber === 'number' \n var aString = 'I am learning JavaScript!';  // typeof aString = 'string' \n var aBoolean = true;  // typeof aBoolean === 'boolean' \n // the typeof operator returns a string indicating the data type \n \n // Fill in the blanks/Fix errors in code \n ___ myNumber = 4; \n ___ myBoolean = 'true'; \\ typeof myBoolean should equal 'boolean' \n  \n // Advanced \n // What would the result of this be? \n // typeof(typeof myNumber); \n var myAnswer = '_____'",
+    "masterTests": "[typeof myNumber = 'number', typeof myBoolean === 'boolean', myAnswer === 'string']",
+    "masterTestDescriptions": "['myNumber should be a number', 'myBoolean should be a boolean', 'myAnswer should be 'string'']",
+    "challengeLevel": 1,
+    "challengeNumber": 1,
+    "challengeName": "Variables"
+  }
+]
