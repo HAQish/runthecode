@@ -38,7 +38,7 @@ class Challenge extends React.Component {
   {
     "prompt": "Write a function joinObjects that takes in 2 different objects and adds the properties of the 2nd object to the first and then returns the first object with the new properties attached \n If the 1st object already has a given key, ignore it (do not overwrite the property value).  Do not change the second object.",
     "starterCode": "function joinObjects(obj1, obj2) { \n \n }",
-    "masterTests": "[typeof joinObjects === 'function', typeof joinObjects({1: 1}, {2: 2}) === 'object' && !Array.isArray(joinObjects({1: 1}, {2: 2})), joinObjects({1: 1}, {2: 2})[1] === 1 && joinObjects({1: 1}, {2: 2})[2] === 2, joinObjects({1: 1}, {1: 5, 2: 2})[1] === 1 && joinObjects({1: 1}, {1: 5, 2: 2})[2] === 2]",
+    "masterTests": "[typeof joinObjects === 'function', typeof joinObjects({'1': 1}, {'2': 2}) === 'object' && !Array.isArray(joinObjects({'1': 1}, {'2': 2})), joinObjects({'1': 1}, {'2': 2})[1] === 1 && joinObjects({'1': 1}, {'2': 2})[2] === 2, joinObjects({'1': 1}, {'1': 5, 2: 2})[1] === 1 && joinObjects({'1': 1}, {'1': 5, '2': 2})[2] === 2]",
     "masterTestDescriptions": "['joinObjects should be a function', 'return value should be an object', 'should join separate objects into one', 'should not overwrite first object']",
     "challengeName": "Join Objects",
     "challengeNumber": 4
