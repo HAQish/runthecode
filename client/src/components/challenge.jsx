@@ -63,7 +63,7 @@ currentChallengeID: 0,
   },
       openTestModal: false,
       successMessage: true
-      
+
     }
 
     this.displayTestResults = this.displayTestResults.bind(this);
@@ -103,7 +103,7 @@ currentChallengeID: 0,
       var next = this.state.currentChallengeID + 1
     this.setState({currentChallengeID: next});
     this.setState({currentChallenge: this.state.initialChallenges[next]});
-    } 
+    }
     if (results.message === 'Failure') {
       // failure modal
       console.log('😈')

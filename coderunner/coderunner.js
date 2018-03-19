@@ -3,7 +3,7 @@ var s = new Sandbox();
 
 var runThis = function(userCode, tests) {
   var masterTests = tests;
-  return new Promise(resolve => { 
+  return new Promise(resolve => {
     s.run(`${userCode} ${masterTests};`, function(output) {
       resolve(output.result);
     })
@@ -11,3 +11,8 @@ var runThis = function(userCode, tests) {
 }
 
 module.exports.runThis = runThis;
+
+// describe("string", function() {
+//   var answer = function()
+//   expect.answer.toBe(7);
+// })
