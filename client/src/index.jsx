@@ -58,14 +58,13 @@ class App extends React.Component {
     return (
       <div>
         <Navbar handleLogin={this.handleLogin} logout={this.logout} isLoggedIn={this.state.isLoggedIn} />
-        {loggedIn}
+        <Challenge log={this.state.isLoggedIn} />
       </div>
     )
   }
 }
 
 ReactDOM.render(<App />, document.getElementById('app'));
-
 
 
 
