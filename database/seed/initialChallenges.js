@@ -1,16 +1,4 @@
-import React from 'react';
-import ChallengeInfo from './challengeInfo.jsx';
-import Editor from './editor.jsx';
-import Success from './success.jsx';
-import Failure from './failure.jsx';
-import {Grid, Button, Modal, Header, Icon} from 'semantic-ui-react';
-//import init from '../../../database/seed/initalChallenges.json';
-
-class Challenge extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      initialChallenges: [
+var arr = [
   {
     "prompt": "Write a function called helloWorld that Returns the string 'Hello World' using two variables example: helloWorld() // returns 'Hello World'",
     "starterCode": "function helloWorld() { \n const hello = ''; \n const world = ''; \n ______ hello + ' ' + world; \n }",
@@ -38,7 +26,7 @@ class Challenge extends React.Component {
   {
     "prompt": "Write a function joinObjects that takes in 2 different objects and adds the properties of the 2nd object to the first and then returns the first object with the new properties attached \n If the 1st object already has a given key, ignore it (do not overwrite the property value).  Do not change the second object.",
     "starterCode": "function joinObjects(obj1, obj2) { \n \n }",
-    "masterTests": "[typeof joinObjects === 'function', typeof joinObjects({'1': 1}, {'2': 2}) === 'object' && !Array.isArray(joinObjects({'1': 1}, {'2': 2})), joinObjects({'1': 1}, {'2': 2})[1] === 1 && joinObjects({'1': 1}, {'2': 2})[2] === 2, joinObjects({'1': 1}, {'1': 5, 2: 2})[1] === 1 && joinObjects({'1': 1}, {'1': 5, '2': 2})[2] === 2]",
+    "masterTests": "[typeof joinObjects === 'function', typeof joinObjects({1: 1}, {2: 2}) === 'object' && !Array.isArray(joinObjects({1: 1}, {2: 2})), joinObjects({1: 1}, {2: 2})[1] === 1 && joinObjects({1: 1}, {2: 2})[2] === 2, joinObjects({1: 1}, {1: 5, 2: 2})[1] === 1 && joinObjects({1: 1}, {1: 5, 2: 2})[2] === 2]",
     "masterTestDescriptions": "['joinObjects should be a function', 'return value should be an object', 'should join separate objects into one', 'should not overwrite first object']",
     "challengeName": "Join Objects",
     "challengeNumber": 4
@@ -51,101 +39,6 @@ class Challenge extends React.Component {
     "challengeName": "Fibonacci",
     "challengeNumber": 5
   }
-],
-currentChallengeID: 0,
-      currentChallenge:   {
-    "prompt": "Write a function called helloWorld that Returns the string 'Hello World' using two variables example: helloWorld() // returns 'Hello World'",
-    "starterCode": "function helloWorld() { \n const hello = ''; \n const world = ''; \n ______ hello + ' ' + world; \n }",
-    "masterTests": "[typeof helloWorld === 'function', helloWorld() === 'Hello World']",
-    "masterTestDescriptions": "['helloWorld should be a function', 'return value should be Hello World']",
-    "challengeNumber": 1,
-    "challengeName": "Hello World!"
-  },
-      openTestModal: false,
-      successMessage: true
+]
 
-    }
-
-    this.displayTestResults = this.displayTestResults.bind(this);
-    this.closeTestModal = this.closeTestModal.bind(this);
-    this.nextChallenge = this.nextChallenge.bind(this);
-  }
-
-  // componentWillMount() {
-
-  //   this.setState({initialChallenges: init});
-    // $.ajax({
-    //   type: 'GET',
-    //   url: `/challenges/initialChallenges`,
-    //   success: data => {
-    //     this.setState({
-    //       challengeName: data[0].challengeName,
-    //       challengeDescription: data.challengeDescription,
-    //       basicTests: data.basicTests,
-    //       masterTestDescriptions: data.masterTestDescriptions,
-    //       starterCode: data.starterCode
-    //     });
-    //   },
-    // error: err => console.log(err)
-    // });
-  // }
-
-  nextChallenge(challengeID) {
-    this.setState({openTestModal: false});
-  }
-
-
-  displayTestResults(results) {
-    console.log('🤡', results);
-    results = JSON.parse(results);
-    if (results.message == 'Success') {
-      this.setState({ openTestModal: true, successMessage: true });
-      var next = this.state.currentChallengeID + 1
-    this.setState({currentChallengeID: next});
-    this.setState({currentChallenge: this.state.initialChallenges[next]});
-    }
-    if (results.message === 'Failure') {
-      // failure modal
-      console.log('😈')
-      this.setState({openTestModal: true, successMessage: false})
-      var next = this.state.currentChallengeID + 1
-    this.setState({currentChallengeID: next});
-    this.setState({currentChallenge: this.state.initialChallenges[next]});
-      //results.masterTestResults
-      // compare to state.masterTestDescriptions
-    }
-  }
-
-  closeTestModal() {
-    this.setState({openTestModal: false});
-  }
-
-  render() {
-    const modalMessage = this.state.successMessage ? (<Success nextChallenge={this.nextChallenge} />) : (<Failure closeTestModal={this.closeTestModal} />)
-    return(
-      <Grid>
-        <Grid.Row columns={2}>
-          <Grid.Column>
-            <ChallengeInfo basicTests={this.state.currentChallenge.masterTestDescriptions} challengeDescription={this.state.currentChallenge.prompt} challengeName={this.state.currentChallenge.challengeName} />
-          </Grid.Column>
-          <Grid.Column>
-            <Editor starterCode={this.state.currentChallenge.starterCode} masterTests={this.state.currentChallenge.masterTests} displayTestResults={this.displayTestResults} />
-          </Grid.Column>
-        </Grid.Row>
-
-        <Modal
-          style={{ height: '65%' }}
-          basic
-          dimmer
-          style={{ height: "80%" }}
-          closeOnDimmerClick
-          open={this.state.openTestModal}
-          onClose={this.closeTestModal}>
-          {modalMessage}
-        </Modal>
-      </Grid>
-    );
-  }
-}
-
-export default Challenge;
+module.exports.arr = arr;
