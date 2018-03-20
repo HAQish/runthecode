@@ -15,7 +15,7 @@ const ChallengeInfo = (props) => {
       
       <Grid.Row>
         <div style={{ margin: 'auto' }}>
-          {props.basicTests[0]}
+          {props.basicTests}
         </div>
       </Grid.Row>
     </Grid>

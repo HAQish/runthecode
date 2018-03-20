@@ -33,13 +33,13 @@ var initialChallengeSchema = new Schema({
   challengeName: String
 })
 
-var InitialChallenges = mongoose.model("InitialChallenges", initialChallengeSchema);
+var InitialChallenges = mongoose.model("InitialChallenges", initialChallengeSchema, "initialChallenges");
 
 var userSchema = new Schema({
   createdAt: {type: Date, default: Date.now},
   username: { type: String, unique: true },
   local: {
-    email: String,
+    email: { type: String, unique: true },
     password: String
   },
   level: String, // changed to string from number for now
@@ -58,12 +58,14 @@ var Users = mongoose.model("Users", userSchema);
 
 var challengeSchema = new Schema({
   createdAt: {type: Date, default: Date.now},
+  starterCode: String,
   challengeName: String,
+  challengeNumber: Number,
   createdBy: String,
   categories: Array,
   prompt: String,
-  exampleTests: Array,
-  finalTests: Array,
+  masterTests: String,
+  masterTestDescriptions: String,
   resources: [{
     resourceName: String,
     resourceUrl: String
@@ -110,6 +112,42 @@ var addUser = function(obj) {
   return newUser.save();
 }
 
+// var validateUser = function(email, password) {
+//   console.log("in validateUser in database-index.js, email and password in arguments are", email, password);
+//   return new Promise(function(resolve, reject) {
+//     return Users.findOne({local: {email: email, password: password}}, function(err, user) {
+//       if (err) {return err;}
+
+//       console.log("Found user in validateUser in database-index.js", user);
+//       if (user.local.password === password) {
+//         resolve(user);
+//       }
+//     });
+//   });
+// }
+
+var validateUser = function(email, password, callback) {
+  console.log("in validateUser in database-index.js, email and password in arguments are", email, password);
+  Users.find({}).where("local.email").equals(email).exec(function(err, user) {
+    if (user[0]) {
+      console.log("Found user in validateUser in databaseindex.js", user[0]);
+      if (user[0].local.password === password) {
+        console.log("in validateUser in databaseindex, the two passwords being compared are", user[0].local.password, password);
+        callback(null, user[0]);
+      } else {
+        callback(err, null);
+      }
+    } else {
+      callback(err, null)
+    }
+  })
+}
+
+var findUserById = function(id, callback) {
+  console.log("in findUserById in databaseindex.js, passed-in id is ", id);
+  return Users.findById(id, callback);
+}
+
 var addChallenge = function(obj) {
   var newChallenge = new Challenges(obj);
   console.log("The new challenge being saved to the challenges collection in addChallenge in database-index is ", newChallenge);
@@ -145,6 +183,11 @@ var selectAllChallenges = function() {
   return Challenges.find();
 }
 
+var selectAllInitialChallenges = function() {
+  console.log("in selectAllInitialChallenges in databaseindex");
+  return InitialChallenges.find();
+}
+
 var getPopulatedUser = function(username) { // changes object ids into actual objects from other collection
   return new Promise(function(resolve, reject) {
     return Users.find({username: username}).populate("completedChallenges").exec(function(err, data) {
@@ -167,8 +210,14 @@ var getPopulatedChallenge = function(challengeName) { // changes object ids into
   })
 }
 
+var getChallengeByName = function(challengeName) {
+  return Challenges.findOne({challengeName : challengeName});
+}
+
 // module.exports for each function
 module.exports.addUser = addUser;
+module.exports.validateUser = validateUser;
+module.exports.findUserById = findUserById;
 module.exports.addChallenge = addChallenge;
 module.exports.addSolution = addSolution;
 module.exports.selectAllChallenges = selectAllChallenges;
@@ -176,7 +225,10 @@ module.exports.getPopulatedUser = getPopulatedUser;
 module.exports.getPopulatedChallenge = getPopulatedChallenge;
 module.exports.Users = Users;
 module.exports.InitialChallenges = InitialChallenges;
+module.exports.selectAllInitialChallenges = selectAllInitialChallenges;
+module.exports.getChallengeByName = getChallengeByName;
 
+module.exports.db = db;
 
 
 
