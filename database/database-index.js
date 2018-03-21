@@ -32,7 +32,7 @@ var initialChallengeSchema = new Schema({
   masterTests: String,
   masterTestDescriptions: String,
   challengeNumber: Number,
-  challengeName: String,
+  challengeName: {type: String, unique: true},
   next: String,
   previous: String
 })
@@ -50,7 +50,7 @@ var courseChallengeSchema = new Schema({
   masterTestDescriptions: String,
   challengeLevel: Number,
   challengeNumber: Number,
-  challengeName: String,
+  challengeName: {type: String, unique: true},
   next: String,
   previous: String
 })
@@ -271,33 +271,40 @@ var Solutions = mongoose.model("Solutions", solutionsSchema);
 
  //  VVVVVVVVVVVVV Linked List VVVVVVVVVVV
 
-var linkedListSchema = new Schema({
+var initialChallengesLinkedListSchema = new Schema({
   position: {type: String, unique: true}, // head or tail
   idOfObject: String
 });
 
-var LinkedList = mongoose.model("LinkedList", linkedListSchema, "linkedList");
+var InitialChallengesLinkedList = mongoose.model("InitialChallengesLinkedList", initialChallengesLinkedListSchema, "initialChallengesLinkedList");
 
-var easyLinkedListSchema = new Schema({
+// var easyLinkedListSchema = new Schema({
+//   position: {type: String, unique: true}, // head or tail
+//   idOfObject: String
+// })
+
+// var easyLinkedList = mongoose.model("easyLinkedList", easyLinkedListSchema, "easyLinkedList");
+
+// var mediumLinkedListSchema = new Schema({
+//   position: {type: String, unique: true}, // head or tail
+//   idOfObject: String
+// })
+
+// var mediumLinkedList = mongoose.model("mediumLinkedList", mediumLinkedListSchema, "mediumLinkedList");
+
+// var difficultLinkedListSchema = new Schema({
+//   position: {type: String, unique: true}, // head or tail
+//   idOfObject: String
+// })
+
+// var difficultLinkedList = mongoose.model("difficultLinkedList", difficultLinkedListSchema, "difficultLinkedList");
+
+var courseChallengesLinkedListSchema = new Schema({
   position: {type: String, unique: true}, // head or tail
   idOfObject: String
 })
 
-var easyLinkedList = mongoose.model("easyLinkedList", easyLinkedListSchema, "easyLinkedList");
-
-var mediumLinkedListSchema = new Schema({
-  position: {type: String, unique: true}, // head or tail
-  idOfObject: String
-})
-
-var mediumLinkedList = mongoose.model("mediumLinkedList", mediumLinkedListSchema, "mediumLinkedList");
-
-var difficultLinkedListSchema = new Schema({
-  position: {type: String, unique: true}, // head or tail
-  idOfObject: String
-})
-
-var difficultLinkedList = mongoose.model("difficultLinkedList", difficultLinkedListSchema, "difficultLinkedList");
+var CourseChallengesLinkedList = mongoose.model("CourseChallengesLinkedList", courseChallengesLinkedListSchema, "courseChallengesLinkedList");
 
  // ^^^^^^^^^^^^^^ Linked List ^^^^^^^^^^^^^^
 
@@ -353,7 +360,7 @@ var addNewInitialChallenge = function(obj) {
   var newInitialChallenge = new InitialChallenges(obj);
   console.log("The new initialChallenge being saved to the initialChallenges collection in addNewInitialChallenge in database-index is", newInitialChallenge);
   newInitialChallenge.save(function(err) { // now need to change the tail pointer in linkedList, and .next and .previous of last two documents
-    LinkedList.findOne({position: "tail"}, function(err, tail) { // now accessing the current tail
+    InitialChallengesLinkedList.findOne({position: "tail"}, function(err, tail) { // now accessing the current tail
       var tailId = tail.idOfObject;
       console.log("in addNewInitialChallenge, current tail id is ", tailId);
       InitialChallenges.findById(tailId, function(err, challenge) { // finding the tail in the InitialChallenges collection by id
@@ -364,8 +371,35 @@ var addNewInitialChallenge = function(obj) {
           InitialChallenges.findById(newInitialChallenge._id, function(err, challenge) { // accessing current newest challenge
             challenge.previous = tailId; // setting previous to previous tail
             challenge.save(function(err) { // now need to change tail in linked list
-              LinkedList.findOne({position: "tail"}, function(err, tail) { // accessing current tail in linked list
+              InitialChallengesLinkedList.findOne({position: "tail"}, function(err, tail) { // accessing current tail in linked list
                 tail.idOfObject = newInitialChallenge._id;
+                tail.save();
+              })
+            })
+          })
+        })
+      })
+    })
+  })
+}
+
+var addNewCourseChallenge = function(obj) {
+  var newCourseChallenge = new CourseChallenges(obj);
+  console.log("The new initialChallenge being saved to the CourseChallenges collection in addnewCourseChallenge in database-index is", newCourseChallenge);
+  newCourseChallenge.save(function(err) { // now need to change the tail pointer in linkedList, and .next and .previous of last two documents
+    CourseChallengesLinkedList.findOne({position: "tail"}, function(err, tail) { // now accessing the current tail
+      var tailId = tail.idOfObject;
+      console.log("in addnewCourseChallenge, current tail id is ", tailId);
+      CourseChallenges.findById(tailId, function(err, challenge) { // finding the tail in the CourseChallenges collection by id
+        console.log("The id about to be added to the current tail.next is ", newCourseChallenge._id);
+        var prevChallengeId = challenge._id;
+        challenge.next = newCourseChallenge._id; // setting the .next on the current tail to the new challenge
+        challenge.save(function(err) { // now need to set the previous on the newCourseChallenge
+          CourseChallenges.findById(newCourseChallenge._id, function(err, challenge) { // accessing current newest challenge
+            challenge.previous = tailId; // setting previous to previous tail
+            challenge.save(function(err) { // now need to change tail in linked list
+              CourseChallengesLinkedList.findOne({position: "tail"}, function(err, tail) { // accessing current tail in linked list
+                tail.idOfObject = newCourseChallenge._id;
                 tail.save();
               })
             })
@@ -550,6 +584,11 @@ var getUserChallengeByName = function(name) {
   return UserChallenges.findOne({challengeName: name});
 }
 
+var getAllCourseChallenges = function() {
+  console.log("In getAllCourseChallenges in database-index");
+  return CourseChallenges.find();
+}
+
 // module.exports for each function
 module.exports.addUser = addUser;
 module.exports.validateUser = validateUser;
@@ -568,6 +607,7 @@ module.exports.getHeadOfLinkedList = getHeadOfLinkedList;
 module.exports.getTailOfLinkedList = getTailOfLinkedList;
 module.exports.addUserChallenge = addUserChallenge;
 module.exports.getUserChallengeByName = getUserChallengeByName;
+module.exports.getAllCourseChallenges = getAllCourseChallenges;
 // module.exports.addNewEasyChallenge = addNewEasyChallenge;
 // module.exports.addNewMediumChallenge = addNewMediumChallenge;
 // module.exports.addNewDifficultChallenge = addNewDifficultChallenge;
