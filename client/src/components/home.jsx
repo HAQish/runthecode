@@ -1,5 +1,6 @@
 import React from 'react';
 import Editor from './editor.jsx';
+import SidebarProblems from './sidebar.jsx';
 import { Button, Header, Icon, Card, Image, List } from 'semantic-ui-react';
 import $ from 'jquery';
 
@@ -47,7 +48,12 @@ class Home extends React.Component {
         masterTests: masterTests
       },
       success: data => {
+        data = JSON.parse(data);
         console.log('✋ Success!', data)
+        if (data.message === 'Error') {
+          // tell them they have an error
+          // data.masterTestResults
+        }
       },
       error: err => console.log(err)
     });
@@ -80,35 +86,7 @@ class Home extends React.Component {
           <Button onClick={this.onSubmitToServer} content='Start your journey' />
           </div>
         </div>
-        {/* <Card centered className='homecard'>
-          <Card.Content>
-            <div className='editor'>
-            <AceEditor
-              mode='javascript'
-              theme="kuroir"
-              // onChange={this.onChange}
-              value={starterCode}
-              editorProps={{ $blockScrolling: true }}
-              width='90%'
-              height='50vh'
-            />
-            </div>
-          </Card.Content>
-          <Card.Content>
-            <Card.Header>
-              {challengeName}
-            </Card.Header>
-            <Card.Description>
-              {prompt}
-            </Card.Description>
-          </Card.Content>
-          <Card.Content extra>
-            <List>
-              <List.Item icon='code' content={masterTestDescriptions[0]} />
-              <List.Item icon='code' content={masterTestDescriptions[1]} />
-            </List>
-          </Card.Content>
-        </Card> */}
+        {/* <SidebarProblems /> */}
       </div>
     )
   }

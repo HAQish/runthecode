@@ -24,7 +24,7 @@ class Challenge extends React.Component {
     this.nextChallenge = this.nextChallenge.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
 
     if (this.props.challengeName === 'initialChallenges') {
       $.ajax({
