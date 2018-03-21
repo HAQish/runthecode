@@ -24,16 +24,176 @@ db.once('open', function() { // success message on mongod connection
   console.log('mongoose connected successfully');
 });
 
+// VVVVVVVVVVV Initial Challenges VVVVVVVVVVVVVVV
+
 var initialChallengeSchema = new Schema({
   prompt: String,
   starterCode: String,
   masterTests: String,
   masterTestDescriptions: String,
   challengeNumber: Number,
-  challengeName: String
+  challengeName: String,
+  next: String,
+  previous: String
 })
 
 var InitialChallenges = mongoose.model("InitialChallenges", initialChallengeSchema, "initialChallenges");
+
+// ^^^^^^^^^^^ Initial Challenges ^^^^^^^^^^^^^^
+
+// VVVVVVVVVVVVV Course Challenges VVVVVVVVVVVVVVVVVVV
+
+var courseChallengeSchema = new Schema({
+  prompt: String,
+  starterCode: String,
+  masterTests: String,
+  masterTestDescriptions: String,
+  challengeLevel: Number,
+  challengeNumber: Number,
+  challengeName: String,
+  next: String,
+  previous: String
+})
+
+var CourseChallenges = mongoose.model("CourseChallenges", courseChallengeSchema, "courseChallenges");
+
+// ^^^^^^^^^^^^^ Course Challenges ^^^^^^^^^^^^^^^^^^^
+
+
+// VVVVVVVVVVVVV Easy Challenges VVVVVVVVVVVVVVV
+
+// var easyChallengeSchema = new Schema({
+//   createdAt: {type: Date, default: Date.now},
+//   starterCode: String,
+//   challengeName: String,
+//   challengeNumber: Number,
+//   createdBy: String,
+//   categories: Array,
+//   prompt: String,
+//   masterTests: String,
+//   masterTestDescriptions: String,
+//   resources: [{
+//     resourceName: String,
+//     resourceUrl: String
+//   }],
+//   hints: [{
+//     text: String,
+//     deductionValue: String // changed to string from number for now
+//   }],
+//   masterSolution: String,
+//   submittedSolutions: [{type: Schema.Types.ObjectId, ref: 'Solutions'}],
+//   maxScore: String, // changed to string from number for now
+//   difficulty: String, // changed to string from number for now
+//   next: String,
+//   previous: String
+// })
+
+// var EasyChallenges = mongoose.model("EasyChallenges", easyChallengeSchema, "easyChallenges");
+
+// ^^^^^^^^^^^^^ Easy Challenges ^^^^^^^^^^^^^^
+
+
+
+// VVVVVVVVVVVVV Medium Challenges VVVVVVVVVVVVVVV
+
+// var mediumChallengeSchema = new Schema({
+//   createdAt: {type: Date, default: Date.now},
+//   starterCode: String,
+//   challengeName: String,
+//   challengeNumber: Number,
+//   createdBy: String,
+//   categories: Array,
+//   prompt: String,
+//   masterTests: String,
+//   masterTestDescriptions: String,
+//   resources: [{
+//     resourceName: String,
+//     resourceUrl: String
+//   }],
+//   hints: [{
+//     text: String,
+//     deductionValue: String // changed to string from number for now
+//   }],
+//   masterSolution: String,
+//   submittedSolutions: [{type: Schema.Types.ObjectId, ref: 'Solutions'}],
+//   maxScore: String, // changed to string from number for now
+//   difficulty: String, // changed to string from number for now
+//   next: String,
+//   previous: String
+// })
+
+// var MediumChallenges = mongoose.model("MediumChallenges", mediumChallengeSchema, "mediumChallenges");
+
+// ^^^^^^^^^^^^^ Medium Challenges ^^^^^^^^^^^^^^
+
+
+
+// VVVVVVVVVVVVV Difficult Challenges VVVVVVVVVVVVVVV
+
+// var difficultChallengeSchema = new Schema({
+//   createdAt: {type: Date, default: Date.now},
+//   starterCode: String,
+//   challengeName: String,
+//   challengeNumber: Number,
+//   createdBy: String,
+//   categories: Array,
+//   prompt: String,
+//   masterTests: String,
+//   masterTestDescriptions: String,
+//   resources: [{
+//     resourceName: String,
+//     resourceUrl: String
+//   }],
+//   hints: [{
+//     text: String,
+//     deductionValue: String // changed to string from number for now
+//   }],
+//   masterSolution: String,
+//   submittedSolutions: [{type: Schema.Types.ObjectId, ref: 'Solutions'}],
+//   maxScore: String, // changed to string from number for now
+//   difficulty: String, // changed to string from number for now
+//   next: String,
+//   previous: String
+// })
+
+// var DifficultChallenges = mongoose.model("DifficultChallenges", difficultChallengeSchema, "difficultChallenges");
+
+// ^^^^^^^^^^^^^ Difficult Challenges ^^^^^^^^^^^^^^
+
+// VVVVVVVVVVVV User-submitted Challenges VVVVVVVVVVVVV
+
+var userChallengeSchema = new Schema({
+  createdAt: {type: Date, default: Date.now},
+  starterCode: String,
+  challengeName: String,
+  challengeNumber: Number,
+  createdBy: String,
+  categories: Array,
+  prompt: String,
+  masterTests: String,
+  masterTestDescriptions: String,
+  resources: [{
+    resourceName: String,
+    resourceUrl: String
+  }],
+  hints: [{
+    text: String,
+    deductionValue: String // changed to string from number for now
+  }],
+  masterSolution: String,
+  submittedSolutions: [{type: Schema.Types.ObjectId, ref: 'Solutions'}],
+  maxScore: String, // changed to string from number for now
+  difficulty: String // changed to string from number for now
+  // next: String, // removing linked list capabilities from user-submitted challenges for now
+  // previous: String // removing linked list capabilities from user-submitted challenges for now
+})
+
+var UserChallenges = mongoose.model("UserChallenges", userChallengeSchema);
+
+// ^^^^^^^^^^^^ User-submitted Challenges ^^^^^^^^^^^^^
+
+
+// VVVVVVVV Users VVVVVVVVVVV
 
 var userSchema = new Schema({
   createdAt: {type: Date, default: Date.now},
@@ -56,31 +216,33 @@ var Users = mongoose.model("Users", userSchema);
 
  //strings -> numbers --- example: level: {type: Number, default: 0}
 
-var challengeSchema = new Schema({
-  createdAt: {type: Date, default: Date.now},
-  starterCode: String,
-  challengeName: String,
-  challengeNumber: Number,
-  createdBy: String,
-  categories: Array,
-  prompt: String,
-  masterTests: String,
-  masterTestDescriptions: String,
-  resources: [{
-    resourceName: String,
-    resourceUrl: String
-  }],
-  hints: [{
-    text: String,
-    deductionValue: String // changed to string from number for now
-  }],
-  masterSolution: String,
-  submittedSolutions: [{type: Schema.Types.ObjectId, ref: 'Solutions'}],
-  maxScore: String, // changed to string from number for now
-  difficulty: String // changed to string from number for now
-})
+// var challengeSchema = new Schema({
+//   createdAt: {type: Date, default: Date.now},
+//   starterCode: String,
+//   challengeName: String,
+//   challengeNumber: Number,
+//   createdBy: String,
+//   categories: Array,
+//   prompt: String,
+//   masterTests: String,
+//   masterTestDescriptions: String,
+//   resources: [{
+//     resourceName: String,
+//     resourceUrl: String
+//   }],
+//   hints: [{
+//     text: String,
+//     deductionValue: String // changed to string from number for now
+//   }],
+//   masterSolution: String,
+//   submittedSolutions: [{type: Schema.Types.ObjectId, ref: 'Solutions'}],
+//   maxScore: String, // changed to string from number for now
+//   difficulty: String, // changed to string from number for now
+//   next: String,
+//   previous: String
+// })
 
-var Challenges = mongoose.model("Challenges", challengeSchema);
+// var Challenges = mongoose.model("Challenges", challengeSchema);
 
  // ^^^^^^^ Challenges ^^^^^^^^^
 
@@ -95,7 +257,8 @@ var solutionsSchema = new Schema({
   solvedBy: String,
   score: String, // changed to string from number for now
   rating: String, // changed to string from number for now
-  code: String,
+  masterUserSolutionCode: String,
+  difficulty: String,
   comments: [{
     user: String,
     comment: String
@@ -105,6 +268,38 @@ var solutionsSchema = new Schema({
 var Solutions = mongoose.model("Solutions", solutionsSchema);
 
  // ^^^^^^^^ Solutions ^^^^^^^^^
+
+ //  VVVVVVVVVVVVV Linked List VVVVVVVVVVV
+
+var linkedListSchema = new Schema({
+  position: {type: String, unique: true}, // head or tail
+  idOfObject: String
+});
+
+var LinkedList = mongoose.model("LinkedList", linkedListSchema, "linkedList");
+
+var easyLinkedListSchema = new Schema({
+  position: {type: String, unique: true}, // head or tail
+  idOfObject: String
+})
+
+var easyLinkedList = mongoose.model("easyLinkedList", easyLinkedListSchema, "easyLinkedList");
+
+var mediumLinkedListSchema = new Schema({
+  position: {type: String, unique: true}, // head or tail
+  idOfObject: String
+})
+
+var mediumLinkedList = mongoose.model("mediumLinkedList", mediumLinkedListSchema, "mediumLinkedList");
+
+var difficultLinkedListSchema = new Schema({
+  position: {type: String, unique: true}, // head or tail
+  idOfObject: String
+})
+
+var difficultLinkedList = mongoose.model("difficultLinkedList", difficultLinkedListSchema, "difficultLinkedList");
+
+ // ^^^^^^^^^^^^^^ Linked List ^^^^^^^^^^^^^^
 
 var addUser = function(obj) {
   var newUser = new Users(obj);
@@ -153,6 +348,115 @@ var addChallenge = function(obj) {
   console.log("The new challenge being saved to the challenges collection in addChallenge in database-index is ", newChallenge);
   return newChallenge.save();
 }
+
+var addNewInitialChallenge = function(obj) {
+  var newInitialChallenge = new InitialChallenges(obj);
+  console.log("The new initialChallenge being saved to the initialChallenges collection in addNewInitialChallenge in database-index is", newInitialChallenge);
+  newInitialChallenge.save(function(err) { // now need to change the tail pointer in linkedList, and .next and .previous of last two documents
+    LinkedList.findOne({position: "tail"}, function(err, tail) { // now accessing the current tail
+      var tailId = tail.idOfObject;
+      console.log("in addNewInitialChallenge, current tail id is ", tailId);
+      InitialChallenges.findById(tailId, function(err, challenge) { // finding the tail in the InitialChallenges collection by id
+        console.log("The id about to be added to the current tail.next is ", newInitialChallenge._id);
+        var prevChallengeId = challenge._id;
+        challenge.next = newInitialChallenge._id; // setting the .next on the current tail to the new challenge
+        challenge.save(function(err) { // now need to set the previous on the newInitialChallenge
+          InitialChallenges.findById(newInitialChallenge._id, function(err, challenge) { // accessing current newest challenge
+            challenge.previous = tailId; // setting previous to previous tail
+            challenge.save(function(err) { // now need to change tail in linked list
+              LinkedList.findOne({position: "tail"}, function(err, tail) { // accessing current tail in linked list
+                tail.idOfObject = newInitialChallenge._id;
+                tail.save();
+              })
+            })
+          })
+        })
+      })
+    })
+  })
+}
+
+// var addNewEasyChallenge = function(obj) {
+//   var newEasyChallenge = new EasyChallenges(obj);
+//   console.log("The new easyChallenge being saved to the initialChallenges collection in addNewEasyChallenge in database-index is", newEasyChallenge);
+//   newEasyChallenge.save(function(err) { // now need to change the tail pointer in linkedList, and .next and .previous of last two documents
+//     easyLinkedList.findOne({position: "tail"}, function(err, tail) { // now accessing the current tail
+//       var tailId = tail.idOfObject;
+//       console.log("in addnewEasyChallenge, current tail id is ", tailId);
+//       EasyChallenges.findById(tailId, function(err, challenge) { // finding the tail in the EasyChallenges collection by id
+//         console.log("The id about to be added to the current tail.next is ", newEasyChallenge._id);
+//         var prevChallengeId = challenge._id;
+//         challenge.next = newEasyChallenge._id; // setting the .next on the current tail to the new challenge
+//         challenge.save(function(err) { // now need to set the previous on the newEasyChallenge
+//           EasyChallenges.findById(newEasyChallenge._id, function(err, challenge) { // accessing current newest challenge
+//             challenge.previous = tailId; // setting previous to previous tail
+//             challenge.save(function(err) { // now need to change tail in linked list
+//               easyLinkedList.findOne({position: "tail"}, function(err, tail) { // accessing current tail in linked list
+//                 tail.idOfObject = newEasyChallenge._id;
+//                 tail.save();
+//               })
+//             })
+//           })
+//         })
+//       })
+//     })
+//   })
+// }
+
+// var addNewMediumChallenge = function(obj) {
+//   var newMediumChallenge = new MediumChallenges(obj);
+//   console.log("The new initialChallenge being saved to the MediumChallenges collection in addnewMediumChallenge in database-index is", newMediumChallenge);
+//   newMediumChallenge.save(function(err) { // now need to change the tail pointer in linkedList, and .next and .previous of last two documents
+//     mediumLinkedList.findOne({position: "tail"}, function(err, tail) { // now accessing the current tail
+//       var tailId = tail.idOfObject;
+//       console.log("in addnewMediumChallenge, current tail id is ", tailId);
+//       MediumChallenges.findById(tailId, function(err, challenge) { // finding the tail in the MediumChallenges collection by id
+//         console.log("The id about to be added to the current tail.next is ", newMediumChallenge._id);
+//         var prevChallengeId = challenge._id;
+//         challenge.next = newMediumChallenge._id; // setting the .next on the current tail to the new challenge
+//         challenge.save(function(err) { // now need to set the previous on the newMediumChallenge
+//           MediumChallenges.findById(newMediumChallenge._id, function(err, challenge) { // accessing current newest challenge
+//             challenge.previous = tailId; // setting previous to previous tail
+//             challenge.save(function(err) { // now need to change tail in linked list
+//               mediumLinkedList.findOne({position: "tail"}, function(err, tail) { // accessing current tail in linked list
+//                 tail.idOfObject = newMediumChallenge._id;
+//                 tail.save();
+//               })
+//             })
+//           })
+//         })
+//       })
+//     })
+//   })
+// }
+
+// var addNewDifficultChallenge = function(obj) {
+//   var newDifficultChallenge = new DifficultChallenges(obj);
+//   console.log("The new initialChallenge being saved to the DifficultChallenges collection in addnewDifficultChallenge in database-index is", newDifficultChallenge);
+//   newDifficultChallenge.save(function(err) { // now need to change the tail pointer in linkedList, and .next and .previous of last two documents
+//     difficultLinkedList.findOne({position: "tail"}, function(err, tail) { // now accessing the current tail
+//       var tailId = tail.idOfObject;
+//       console.log("in addnewDifficultChallenge, current tail id is ", tailId);
+//       DifficultChallenges.findById(tailId, function(err, challenge) { // finding the tail in the DifficultChallenges collection by id
+//         console.log("The id about to be added to the current tail.next is ", newDifficultChallenge._id);
+//         var prevChallengeId = challenge._id;
+//         challenge.next = newDifficultChallenge._id; // setting the .next on the current tail to the new challenge
+//         challenge.save(function(err) { // now need to set the previous on the newDifficultChallenge
+//           DifficultChallenges.findById(newDifficultChallenge._id, function(err, challenge) { // accessing current newest challenge
+//             challenge.previous = tailId; // setting previous to previous tail
+//             challenge.save(function(err) { // now need to change tail in linked list
+//               difficultLinkedList.findOne({position: "tail"}, function(err, tail) { // accessing current tail in linked list
+//                 tail.idOfObject = newDifficultChallenge._id;
+//                 tail.save();
+//               })
+//             })
+//           })
+//         })
+//       })
+//     })
+//   })
+// }
+
 
 var addSolution = function(obj, username, challengeName) { // adds to solutions collection and adds id to users and challenges collections
   var newSolution = new Solutions(obj);
@@ -214,6 +518,38 @@ var getChallengeByName = function(challengeName) {
   return Challenges.findOne({challengeName : challengeName});
 }
 
+var getHeadOfLinkedList = function() {
+  return new Promise(function(resolve, reject) {
+    console.log("in getHeadOfLinkedList in database-index");
+    return LinkedList.findOne({position: "head"}, function(err, document) {
+      return InitialChallenges.findById(document.idOfObject, function(err, document) {
+        resolve(document);
+      });
+    });
+  })
+}
+
+var getTailOfLinkedList = function() {
+  return new Promise(function(resolve, reject) {
+    console.log("in getTailOfLinkedList in database-index");
+    return LinkedList.findOne({position: "tail"}, function(err, document) {
+      return InitialChallenges.findById(document.idOfObject, function(err, document) {
+        resolve(document);
+      });
+    });
+  })
+}
+
+var addUserChallenge = function(obj) {
+  console.log("in addUserChallenge in database-index, obj is ", obj);
+  var newUserChallenge = new UserChallenges(obj);
+  return newUserChallenge.save();
+}
+
+var getUserChallengeByName = function(name) {
+  return UserChallenges.findOne({challengeName: name});
+}
+
 // module.exports for each function
 module.exports.addUser = addUser;
 module.exports.validateUser = validateUser;
@@ -227,9 +563,16 @@ module.exports.Users = Users;
 module.exports.InitialChallenges = InitialChallenges;
 module.exports.selectAllInitialChallenges = selectAllInitialChallenges;
 module.exports.getChallengeByName = getChallengeByName;
+module.exports.addNewInitialChallenge = addNewInitialChallenge;
+module.exports.getHeadOfLinkedList = getHeadOfLinkedList;
+module.exports.getTailOfLinkedList = getTailOfLinkedList;
+module.exports.addUserChallenge = addUserChallenge;
+module.exports.getUserChallengeByName = getUserChallengeByName;
+// module.exports.addNewEasyChallenge = addNewEasyChallenge;
+// module.exports.addNewMediumChallenge = addNewMediumChallenge;
+// module.exports.addNewDifficultChallenge = addNewDifficultChallenge;
 
 module.exports.db = db;
-
 
 
 
