@@ -76,7 +76,7 @@ class App extends React.Component {
                 <Icon name='chevron down' />
               </Menu.Item>
               <Menu.Item name='level2'>
-                Level 2 
+                Level 2
                 <Icon name='chevron down' />
               </Menu.Item>
               <Menu.Item name='level3'>
@@ -97,7 +97,6 @@ class App extends React.Component {
 }
 
 ReactDOM.render(<App />, document.getElementById('app'));
-
 
 
 
