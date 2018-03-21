@@ -4,8 +4,7 @@ import $ from 'jquery';
 import Challenge from './components/challenge.jsx';
 import Navbar from './components/navbar.jsx';
 import Home from './components/home.jsx';
-
-import { Grid, Button } from 'semantic-ui-react';
+import { Sidebar, Button, Menu, Image, Icon, Header, Grid, Segment } from 'semantic-ui-react';
 
 
 class App extends React.Component {
@@ -14,6 +13,8 @@ class App extends React.Component {
     this.state = {
       isLoggedIn: false,
       masterUser: {},
+      challengeName: 'initialChallenges',
+      visible: false
       // currentUserSolutionCode: '',
       // Global state needed:
       // email
@@ -26,6 +27,11 @@ class App extends React.Component {
     this.logout = this.logout.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
     this.clearState = this.clearState.bind(this);
+    this.toggleVisibility = this.toggleVisibility.bind(this);
+  }
+
+  toggleVisibility() {
+    this.setState({visible: !this.state.visible});
   }
 
   logout() {
@@ -49,16 +55,38 @@ class App extends React.Component {
   }
 
   render () {
+    const {visible} = this.state;
     const loggedIn = this.state.isLoggedIn ? (
-      <Challenge log={this.state.isLoggedIn} />
+      <Challenge log={this.state.isLoggedIn} challengeName={this.state.challengeName} />
     ) : (
       <Home />
     )
 
     return (
       <div>
-        <Navbar handleLogin={this.handleLogin} logout={this.logout} isLoggedIn={this.state.isLoggedIn} />
-        <Challenge log={this.state.isLoggedIn} />
+        <div>
+          <Sidebar.Pushable as={Segment}>
+            <Sidebar as={Menu} animation='overlay' width='thin' visible={visible} icon='labeled' vertical inverted>
+              <Menu.Item name='level1'>
+                Level 1
+                <Icon name='chevron down' />
+              </Menu.Item>
+              <Menu.Item name='level2'>
+                Level 2 
+                <Icon name='chevron down' />
+              </Menu.Item>
+              <Menu.Item name='level3'>
+                Level 3
+                <Icon name='chevron down' />
+              </Menu.Item>
+            </Sidebar>
+            <Sidebar.Pusher>
+              <Navbar handleLogin={this.handleLogin} logout={this.logout} isLoggedIn={this.state.isLoggedIn} toggleSidebar={this.toggleVisibility} />
+              {loggedIn}
+            </Sidebar.Pusher>
+          </Sidebar.Pushable>
+          <Button onClick={this.toggleVisibility}>Toggle Visibility</Button>
+        </div>
       </div>
     )
   }

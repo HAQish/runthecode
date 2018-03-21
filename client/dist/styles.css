@@ -1,0 +1,30 @@
+.homepage {
+  background-image: url('images/background.jpg');
+  background-color: inherit;
+  background-position: center;
+  background-size: cover;
+  width: 100%;
+  height: 95vh;
+}
+.parent {
+  position: relative;
+  max-width: 50%;
+  margin: auto;
+}
+
+.monitor {
+  margin: auto;
+  width: 100%;
+  height: 70vh;
+}
+
+.editor {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  padding: 20px;
+  margin: auto;
+  height: 55vh;
+  width: 100%;
+  border: 3px solid black;
+}

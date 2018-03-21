@@ -91,10 +91,10 @@ class Navbar extends Component {
       <div>
       <Segment inverted>
         <Menu inverted pointing secondary>
-          <Menu.Item name='home' active={activeItem === 'home'} onClick={this.handleItemClick}>
+            <Menu.Item name='home' active={activeItem === 'home'} onClick={this.props.toggleSidebar}>
             <Icon name='puzzle' size='big' inverted />
           </Menu.Item>
-          <Menu.Item name='messages' active={activeItem === 'messages'} onClick={this.handleItemClick} />
+            <Menu.Item name='messages' active={activeItem === 'messages'} onClick={this.handleItemClick} />
           <Menu.Item name='friends' active={activeItem === 'friends'} onClick={this.handleItemClick} />
           {options}
         </Menu>

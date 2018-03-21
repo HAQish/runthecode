@@ -46,17 +46,24 @@ var passportRoutes = function(app, passport) {
 var challengeRoutes = function(app) {
   //Challenge solution submission routes
   app.post("/challengeSolution", function(req, res) {
+    console.log('😈', req.body);
     var masterTestResults;
     var endMsg;
+    var message = "Success";
     var codeResult = runThis(req.body.masterUserSolutionCode, req.body.masterTests).
     then((data) => {
-      var resultArray = JSON.parse(data.result);
-      var message = "Success";
-      masterTestResults = resultArray;
-      for (var i = 0; i < resultArray.length; i++) {
-        if (resultArray[i] === false) {
-          message = "Failure";
-          break;
+      if (data[0] === "'") {
+        message = 'Error';
+        masterTestResults = data;
+      } else {
+        console.log('DATA RESULTS', data);
+        var resultArray = JSON.parse(data);
+        masterTestResults = resultArray;
+        for (var i = 0; i < resultArray.length; i++) {
+          if (resultArray[i] === false) {
+            message = "Failure";
+            break;
+          }
         }
       }
       console.log(masterTestResults, message);
@@ -67,6 +74,7 @@ var challengeRoutes = function(app) {
     //if not all true, update db with deduction -- send array of booleans
       //front end interprets booleans and renders descriptions
     })
+    .catch(err => console.log('error in challengeSolution', err))
   })
 
   app.get("/initialChallenges", function(req, res) {

@@ -34,18 +34,20 @@ class Editor extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const {masterTests, displayTestResults} = this.props;
+    const {masterTests, displayTestResults, difficulty, challengeName} = this.props;
     const {masterUserSolutionCode} = this.state;
     $.ajax({
       type: "POST",
       url: "/challengeSolution",
       data: {
         masterUserSolutionCode: masterUserSolutionCode,
-        masterTests: masterTests
+        masterTests: masterTests,
+        difficulty: difficulty,
+        challengeName: challengeName
       },
       success: data => {
         displayTestResults(data);
-        this.setState({masterUserSolutionCode: this.props.starterCode})
+        // this.setState({masterUserSolutionCode: this.props.starterCode})
       },
       error: err => console.log(err)
     });
