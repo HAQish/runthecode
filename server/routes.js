@@ -79,12 +79,36 @@ var challengeRoutes = function(app) {
 
   app.get("/initialChallenges", function(req, res) {
     console.log("Heard get for initial challenges from app");
-    db.selectAllInitialChallenges().then(results => res.send(results));
+    db.selectAllInitialChallenges().then(results => {console.log(results); res.send(results)});
   });
+
+  app.post("/initialChallenges", function(req, res) {
+    console.log('hit initialchallenge post, req.body is:', req.body);
+  /*
+  /////////req.body example: ///////////
+  { user: { 
+      local: { 
+        email: 'test@gmail.com',
+        password: 'testpw' 
+      },
+      createdAt: '2018-03-21T19:52:21.098Z',
+     _id: '5ab2b7f5df3aeb3b50113a41',
+     completedInitial: 'false',
+     username: 'kev',
+     __v: '0' 
+    },
+  initialScore: '0' 
+  }
+  */
+    //target user in db and update user.completedInitial to true
+    //set user level to req.body.initialScore
+    //res.send updated user
+    res.send('hey');
+  })
 
   app.get("/courseChallenges", function(req, res) {
     console.log("Heard get for all course challenges from app");
-    db.getAllCourseChallenges().then(results => res.send(results));
+    db.getAllCourseChallenges().then(results => {console.log(results); res.send(results)});
   })
 
   // app.post("/createInitialChallenge", function(req, res) {

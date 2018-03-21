@@ -39,6 +39,19 @@ var initialChallengeSchema = new Schema({
 
 var InitialChallenges = mongoose.model("InitialChallenges", initialChallengeSchema, "initialChallenges");
 
+var userSchema = new Schema({
+  createdAt: {type: Date, default: Date.now},
+  username: { type: String, unique: true },
+  local: {
+    email: { type: String, unique: true },
+    password: String
+  },
+  completedInitial: {type: Boolean, default: false},
+  level: String, // changed to string from number for now
+  experience: String, // changed to string from number for now
+  score: String, // changed to string from number for now
+  completedChallenges: [{type: Schema.Types.ObjectId, ref: 'Solutions'}]
+})
 // ^^^^^^^^^^^ Initial Challenges ^^^^^^^^^^^^^^
 
 // VVVVVVVVVVVVV Course Challenges VVVVVVVVVVVVVVVVVVV
