@@ -42,6 +42,7 @@ var userSchema = new Schema({
     email: { type: String, unique: true },
     password: String
   },
+  completedInitial: {type: Boolean, default: false},
   level: String, // changed to string from number for now
   experience: String, // changed to string from number for now
   score: String, // changed to string from number for now

@@ -79,8 +79,15 @@ var challengeRoutes = function(app) {
 
   app.get("/initialChallenges", function(req, res) {
     console.log("Heard get for initial challenges from app");
-    db.selectAllInitialChallenges().then(results => res.send(results));
+    db.selectAllInitialChallenges().then(results => {console.log(results); res.send(results)});
   });
+
+  app.post('initialChallenges', function(req, res) {
+    console.log('hit initialchallenge post, req.body is:', req.body);
+    //target req.body.user and update initialCompleted to true
+    //set user level to req.body.score
+    //send back updated user
+  })
 
 
   app.get("/challenges/next", function(req, res) { // assuming currentChallenge is in req.body
