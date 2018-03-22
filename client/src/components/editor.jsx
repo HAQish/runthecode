@@ -42,7 +42,7 @@ class Editor extends React.Component {
       data: {
         masterUserSolutionCode: masterUserSolutionCode,
         masterTests: masterTests,
-        difficulty: difficulty,
+        challengeLevel: this.props.challengeLevel,
         challengeName: challengeName
       },
       success: data => {
