@@ -592,10 +592,8 @@ var getAllCourseChallenges = function() {
 
 var updateUserLevel = function(username, newLevel) {
   console.log("In updateUserLevel in database-index, username is ", username, "and newLevel is ", newLevel);
-  return Users.findOne({username: username}, function(err, user) {
-    user.level = newLevel;
-    user.completedInitial = true;
-    return user.save();
+  return Users.findOneAndUpdate({username: username}, {level: newLevel, completedInitial: true}, {returnNewDocument: true}, function(err, user) {
+    return user
   })
 }
 

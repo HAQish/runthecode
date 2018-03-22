@@ -59,24 +59,38 @@ class Challenge extends React.Component {
   nextChallenge() {
     if (this.props.user.completedInitial === false && this.state.currentChallengeID != 4) {
       let next = this.state.currentChallengeID + 1;
+      console.log('in next challenge, != 4 -- currentchallenge id: ', this.state.currentChallengeID)
       this.setState({
         currentChallengeID: next,
         openTestModal:false,
-        currentChallenge: this.state.initialChallenges[next]
+        currentChallenge: this.state.initialChallenges[next],
       })
+      if (next === 4) {
+        this.setState({openCompletedInitialModal: true})
+      }
     } else if (this.props.user.completedInitial === false && this.state.currentChallengeID === 4) {
+      console.log('in next challenge, === 4 -- currentchallenge id: ', this.state.currentChallengeID)
         this.props.initialComplete(this.state.initialScore);
       //process completion of initial challenges
       this.setState({
         openTestModal:false,
-        openCompletedInitialModal: true
+        currentChallengeID:0,
+        openCompletedInitialModal: false
       })
-      $.get('/courseChallenges', (data) => this.setState({courseChallenges: data}))
+      $.get('/courseChallenges', (data) => {
+        this.setState({
+          courseChallenges: data,
+          currentChallenge: data[this.state.initialScore*2]
+        })
+      })
         //get level back
         //recommendation of starting point
         //change completed initial to true
         //redirect them to recomended starting challenge
-    } if (this.props.user.completedInitial === true) {
+    } else if (this.props.user.completedInitial === true) {
+      console.log('hitting completeinitial true if');
+      let next = this.state.currentChallengeID+1;
+      this.setState({currentChallenge: this.state.courseChallenges[next], openTestModal: false, currentChallengeID: next})
       //handle coursechallenge info here
     }
 };
@@ -85,19 +99,19 @@ class Challenge extends React.Component {
     console.log('🤡', results);
     results = JSON.parse(results);
     if (results.message == 'Success') {
-      this.setState({
-        openTestModal: true,
-        successMessage: true,
+      this.setState({ 
+        openTestModal: true, 
+        successMessage: true, 
         currentTestResults: results.masterTestResults,
         initialScore: this.state.initialScore+0.5
       });
-    }
+    } 
     else if (results.message === 'Failure') {
       // failure modal
-      this.setState({
-        openTestModal: true,
-        successMessage: false,
-        currentTestResults: results.masterTestResults
+      this.setState({ 
+        openTestModal: true, 
+        successMessage: false, 
+        currentTestResults: results.masterTestResults 
       });
     }
     else if (results.message === 'Error') {
@@ -110,16 +124,16 @@ class Challenge extends React.Component {
   }
 
   closeTestModal() {
-    this.setState({
-      openTestModal: false,
-      openCompletedInitialModal: false
-    });
+    this.setState({openTestModal: false})
+    if (this.state.openCompletedInitialModal) {
+      this.setState({currentChallenge: this.state.courseChallenges[this.state.initialScore]})
+    }
   }
 
   render() {
     const { currentChallenge } = this.state;
 
-    const modalMessage = this.state.successMessage ? (<Success initialJustCompleted={this.state.openCompletedInitialModal} nextChallenge={this.nextChallenge} />) :
+    const modalMessage = this.state.successMessage ? (<Success initialJustCompleted={this.state.openCompletedInitialModal} nextChallenge={this.nextChallenge} />) : 
     (<Failure nextChallenge={this.nextChallenge} closeTestModal={this.closeTestModal} initialJustCompleted={this.state.openCompletedInitialModal} currentTestResults={this.state.currentTestResults} masterTestDescriptions={this.state.currentChallenge.masterTestDescriptions} />)
 
     return(
@@ -133,17 +147,7 @@ class Challenge extends React.Component {
           </Grid.Column>
         </Grid.Row>
         <Modal
-          level={this.state.initialScore}
-          style={{ height: '65%' }}
-          basic
-          dimmer
-          style={{ height: "80%" }}
-          closeOnDimmerClick
-          open={this.state.openCompletedInitialModal}
-          onClose={this.closeTestModal}>
-          {modalMessage}
-        </Modal>
-        <Modal
+          initialScore={this.state.initialScore}
           style={{ height: '65%' }}
           basic
           dimmer

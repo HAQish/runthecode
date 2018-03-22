@@ -55,7 +55,7 @@ class App extends React.Component {
   }
   
   handleInitialComplete(score) {
-    $.post("/initialChallenges", {user: this.state.masterUser, initialScore: score}, (data) => this.setState({masterUser: data}))
+    $.post("/initialChallenges", {user: this.state.masterUser, initialScore: score}, (data) => {console.log('DATA IN HANDLE INITIAL COMPLETE -> ', data); this.setState({masterUser: data})})
   }
 
   render () {
