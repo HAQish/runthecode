@@ -20,7 +20,7 @@ class Challenge extends React.Component {
       openTestModal: false,
       successMessage: true,
       currentTestResults: [],
-      openCompletedInitialModal: false
+      openCompletedInitialModal: false,
     }
     this.displayTestResults = this.displayTestResults.bind(this);
     this.closeTestModal = this.closeTestModal.bind(this);
@@ -79,6 +79,7 @@ class Challenge extends React.Component {
       })
       $.get('/courseChallenges', (data) => {
         this.setState({
+          userCompletedInitial: true,
           courseChallenges: data,
           currentChallenge: data[this.state.initialScore*2]
         })
@@ -143,7 +144,7 @@ class Challenge extends React.Component {
             <ChallengeInfo basicTests={this.state.currentChallenge.masterTestDescriptions} challengeDescription={currentChallenge.prompt} challengeName={currentChallenge.challengeName} />
           </Grid.Column>
           <Grid.Column>
-            <Editor starterCode={currentChallenge.starterCode} masterTests={currentChallenge.masterTests} displayTestResults={this.displayTestResults} difficulty={currentChallenge.difficulty} challengeName={currentChallenge.challengeName} />
+            <Editor starterCode={currentChallenge.starterCode} masterTests={currentChallenge.masterTests} displayTestResults={this.displayTestResults} challengeLevel={currentChallenge.challengeLevel} challengeName={currentChallenge.challengeName} />
           </Grid.Column>
         </Grid.Row>
         <Modal

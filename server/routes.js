@@ -51,7 +51,7 @@ var challengeRoutes = function(app) {
     var endMsg;
     var message = "Success";
     var codeResult = runThis(req.body.masterUserSolutionCode, req.body.masterTests).
-    then((data) => {
+    then(async (data) => {
       if (data[0] === "'") {
         message = 'Error';
         masterTestResults = data;
@@ -67,7 +67,14 @@ var challengeRoutes = function(app) {
         }
       }
       console.log(masterTestResults, message);
-      endMsg = JSON.stringify({masterTestResults: masterTestResults, message: message});
+      if (req.body.challengeLevel) { // if not undefined, then it's a course challenge, so must save completed problems
+      //assuming req.body.challengeName is the challengeName and req.user is the user
+      console.log('IN CHALLENGE LEVEL UPDATE');
+      console.log('req.user->', req.user);
+      var user = await db.updateCompletedCourseChallenges(req.user, message, req.body.challengeName);
+      console.log('updated user in challengesolution ->', user);
+    }
+      endMsg = JSON.stringify({masterTestResults: masterTestResults, message: message, user: user});
       res.end(endMsg);
     // res.end(codeResult);
     //if all true -- save submission to db(their answer, score)

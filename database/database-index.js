@@ -205,7 +205,7 @@ var userSchema = new Schema({
   level: String, // changed to string from number for now
   experience: String, // changed to string from number for now
   score: String, // changed to string from number for now
-  completedCourseChallenges: Object,
+  completedCourseChallenges: {type: Object, default: {}},
   completedChallenges: [{type: Schema.Types.ObjectId, ref: 'Solutions'}]
 })
 
@@ -592,18 +592,27 @@ var getAllCourseChallenges = function() {
 
 var updateUserLevel = function(username, newLevel) {
   console.log("In updateUserLevel in database-index, username is ", username, "and newLevel is ", newLevel);
-  return Users.findOneAndUpdate({username: username}, {level: newLevel, completedInitial: true}, {returnNewDocument: true}, function(err, user) {
-    return user
-  })
+  return Users.findOneAndUpdate({username: username}, {level: newLevel, completedInitial: true}, {new: true})
 }
 
-var updateCompletedCourseChallenges = function(username, message, challengeName) {
-  return Users.findOne({username: username}, function(err, user) {
-    var newObj = {};
-    newObj[challengeName] = message === "Success" ? true : false;
-    user.completedCourseChallenges = Object.assign(user.completedCourseChallenges, newObj);
-    return user.save();
-  })
+var updateCompletedCourseChallenges = function(currentUser, message, challengeName) {
+
+    let msg = message === "Success" ? true : false;
+    let obj = {};
+    finalObj = currentUser.completedCourseChallenges;
+    finalObj[challengeName] = msg;
+    return Users.findOneAndUpdate({username: currentUser.username}, {completedCourseChallenges: finalObj}, {new: true, upsert: true})//, function(err, user) {
+    // console.log('err in updatecomplete ->', err)
+    // console.log('user in updatecomplete ->', user);
+    // // var newObj = {};
+    // // newObj[challengeName] = message === "Success" ? true : false;
+    // // console.log('newObj in UPDATECOMPLETED ->', newObj);
+    // // console.log('user.completedcoursechallenges->', user.completedCourseChallenges)
+    // // Object.assign(user.completedCourseChallenges, newObj);
+    // // return user.save(function(err, user) {
+    // //   console.log('user at 610', user);
+    //   resolve(user);
+    // })
 }
 
 // module.exports for each function
