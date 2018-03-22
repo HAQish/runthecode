@@ -46,13 +46,13 @@ var passportRoutes = function(app, passport) {
 var challengeRoutes = function(app) {
   //Challenge solution submission routes
   app.post("/challengeSolution", function(req, res) {
-    console.log('😈', req.body);
+    console.log('😈 in post to challengeSolution', req.body);
     var masterTestResults;
     var endMsg;
     var message = "Success";
     var codeResult = runThis(req.body.masterUserSolutionCode, req.body.masterTests).
-    then((data) => {
-      if (data[0] === "'") {
+    then(async function(data) {
+      if (data[0] === "'" || data === "TimeoutError") {
         message = 'Error';
         masterTestResults = data;
       } else {
@@ -67,7 +67,13 @@ var challengeRoutes = function(app) {
         }
       }
       console.log(masterTestResults, message);
-      endMsg = JSON.stringify({masterTestResults: masterTestResults, message: message});
+
+      if (req.body.challengeLevel) { // if not undefined, then it's a course challenge, so must save completed problems
+        //assuming req.body.challengeName is the challengeName and req.user is the user
+        var user = await db.updateCompletedCourseChallenges(req.user, message, req.body.challengeName);
+      }
+
+      endMsg = JSON.stringify({masterTestResults: masterTestResults, message: message, user: user});
       res.end(endMsg);
     // res.end(codeResult);
     //if all true -- save submission to db(their answer, score)
@@ -84,26 +90,29 @@ var challengeRoutes = function(app) {
 
   app.post("/initialChallenges", function(req, res) {
     console.log('hit initialchallenge post, req.body is:', req.body);
+    console.log("to test the session, req.user is ", req.user);
+    db.updateUserLevel(req.body.user.username, req.body.initialScore)
+      .then(results => {console.log("results being sent back from post to initialChallenges", results); res.send(results);});
   /*
   /////////req.body example: ///////////
-  { user: { 
-      local: { 
+  { user: {
+      local: {
         email: 'test@gmail.com',
-        password: 'testpw' 
+        password: 'testpw'
       },
       createdAt: '2018-03-21T19:52:21.098Z',
      _id: '5ab2b7f5df3aeb3b50113a41',
      completedInitial: 'false',
      username: 'kev',
-     __v: '0' 
+     __v: '0'
     },
-  initialScore: '0' 
+  initialScore: '0'
   }
   */
     //target user in db and update user.completedInitial to true
     //set user level to req.body.initialScore
     //res.send updated user
-    res.send('hey');
+    // res.send('hey');
   })
 
   app.get("/courseChallenges", function(req, res) {
