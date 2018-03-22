@@ -19,7 +19,7 @@ module.exports = passport => {
     passReqToCallback: true
   },
   (req, username, password, cb) => {
-    console.log('HIT ME');
+    console.log('HIT ME, in local-signup passport strategy');
     process.nextTick(() => {
       Users.findOne({'local.email': username}, (err, user) => {
         if (err) return cb(err);
@@ -45,6 +45,7 @@ module.exports = passport => {
     passReqToCallback: true
   },
   (req, username, password, cb) => {
+    console.log('HIT YOURSELF, in local-login passport strategy');
     process.nextTick(() => {
       Users.findOne({'local.email': username}, (err, user) => {
         if (err) return cb(err);

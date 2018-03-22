@@ -85,19 +85,19 @@ class Challenge extends React.Component {
     console.log('🤡', results);
     results = JSON.parse(results);
     if (results.message == 'Success') {
-      this.setState({ 
-        openTestModal: true, 
-        successMessage: true, 
+      this.setState({
+        openTestModal: true,
+        successMessage: true,
         currentTestResults: results.masterTestResults,
         initialScore: this.state.initialScore+0.5
       });
-    } 
+    }
     else if (results.message === 'Failure') {
       // failure modal
-      this.setState({ 
-        openTestModal: true, 
-        successMessage: false, 
-        currentTestResults: results.masterTestResults 
+      this.setState({
+        openTestModal: true,
+        successMessage: false,
+        currentTestResults: results.masterTestResults
       });
     }
     else if (results.message === 'Error') {
@@ -119,7 +119,7 @@ class Challenge extends React.Component {
   render() {
     const { currentChallenge } = this.state;
 
-    const modalMessage = this.state.successMessage ? (<Success initialJustCompleted={this.state.openCompletedInitialModal} nextChallenge={this.nextChallenge} />) : 
+    const modalMessage = this.state.successMessage ? (<Success initialJustCompleted={this.state.openCompletedInitialModal} nextChallenge={this.nextChallenge} />) :
     (<Failure nextChallenge={this.nextChallenge} closeTestModal={this.closeTestModal} initialJustCompleted={this.state.openCompletedInitialModal} currentTestResults={this.state.currentTestResults} masterTestDescriptions={this.state.currentChallenge.masterTestDescriptions} />)
 
     return(

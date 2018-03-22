@@ -39,19 +39,6 @@ var initialChallengeSchema = new Schema({
 
 var InitialChallenges = mongoose.model("InitialChallenges", initialChallengeSchema, "initialChallenges");
 
-var userSchema = new Schema({
-  createdAt: {type: Date, default: Date.now},
-  username: { type: String, unique: true },
-  local: {
-    email: { type: String, unique: true },
-    password: String
-  },
-  completedInitial: {type: Boolean, default: false},
-  level: String, // changed to string from number for now
-  experience: String, // changed to string from number for now
-  score: String, // changed to string from number for now
-  completedChallenges: [{type: Schema.Types.ObjectId, ref: 'Solutions'}]
-})
 // ^^^^^^^^^^^ Initial Challenges ^^^^^^^^^^^^^^
 
 // VVVVVVVVVVVVV Course Challenges VVVVVVVVVVVVVVVVVVV
@@ -71,7 +58,6 @@ var courseChallengeSchema = new Schema({
 var CourseChallenges = mongoose.model("CourseChallenges", courseChallengeSchema, "courseChallenges");
 
 // ^^^^^^^^^^^^^ Course Challenges ^^^^^^^^^^^^^^^^^^^
-
 
 // VVVVVVVVVVVVV Easy Challenges VVVVVVVVVVVVVVV
 
@@ -206,7 +192,7 @@ var UserChallenges = mongoose.model("UserChallenges", userChallengeSchema);
 // ^^^^^^^^^^^^ User-submitted Challenges ^^^^^^^^^^^^^
 
 
-// VVVVVVVV Users VVVVVVVVVVV
+// VVVVVVVVVVVVVVV Users VVVVVVVVVVVVVVVVVVVV
 
 var userSchema = new Schema({
   createdAt: {type: Date, default: Date.now},
@@ -215,9 +201,11 @@ var userSchema = new Schema({
     email: { type: String, unique: true },
     password: String
   },
+  completedInitial: {type: Boolean, default: false},
   level: String, // changed to string from number for now
   experience: String, // changed to string from number for now
   score: String, // changed to string from number for now
+  completedCourseChallenges: Object,
   completedChallenges: [{type: Schema.Types.ObjectId, ref: 'Solutions'}]
 })
 
@@ -602,6 +590,24 @@ var getAllCourseChallenges = function() {
   return CourseChallenges.find();
 }
 
+var updateUserLevel = function(username, newLevel) {
+  console.log("In updateUserLevel in database-index, username is ", username, "and newLevel is ", newLevel);
+  return Users.findOne({username: username}, function(err, user) {
+    user.level = newLevel;
+    user.completedInitial = true;
+    return user.save();
+  })
+}
+
+var updateCompletedCourseChallenges = function(username, message, challengeName) {
+  return Users.findOne({username: username}, function(err, user) {
+    var newObj = {};
+    newObj[challengeName] = message === "Success" ? true : false;
+    user.completedCourseChallenges = Object.assign(user.completedCourseChallenges, newObj);
+    return user.save();
+  })
+}
+
 // module.exports for each function
 module.exports.addUser = addUser;
 module.exports.validateUser = validateUser;
@@ -621,6 +627,9 @@ module.exports.getTailOfLinkedList = getTailOfLinkedList;
 module.exports.addUserChallenge = addUserChallenge;
 module.exports.getUserChallengeByName = getUserChallengeByName;
 module.exports.getAllCourseChallenges = getAllCourseChallenges;
+module.exports.updateUserLevel = updateUserLevel;
+module.exports.updateCompletedCourseChallenges = updateCompletedCourseChallenges;
+
 // module.exports.addNewEasyChallenge = addNewEasyChallenge;
 // module.exports.addNewMediumChallenge = addNewMediumChallenge;
 // module.exports.addNewDifficultChallenge = addNewDifficultChallenge;
