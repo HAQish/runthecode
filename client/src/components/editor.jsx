@@ -22,14 +22,14 @@ class Editor extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  componentWillMount() {
-    this.setState({
-      masterUserSolutionCode: this.props.starterCode
-    });
+  componentDidMount() {
+     this.setState({
+       masterUserSolutionCode: this.props.starterCode
+     });
   }
   
   onChange(e) {
-    this.setState({ masterUserSolutionCode: e });
+    this.setState({ masterUserSolutionCode: e || this.props.starterCode });
   }
 
   handleSubmit(e) {
@@ -47,7 +47,7 @@ class Editor extends React.Component {
       },
       success: data => {
         displayTestResults(data);
-        // this.setState({masterUserSolutionCode: this.props.starterCode})
+        this.setState({masterUserSolutionCode: '',})
       },
       error: err => console.log(err)
     });
@@ -60,7 +60,7 @@ class Editor extends React.Component {
           mode='javascript'
           theme="kuroir"
           onChange={this.onChange}
-          value={this.state.masterUserSolutionCode}
+          value={this.state.masterUserSolutionCode || this.props.starterCode}
           editorProps={{ $blockScrolling: true }}
           width='100%'
           height='85vh'
