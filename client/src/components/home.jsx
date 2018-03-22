@@ -87,18 +87,18 @@ class Home extends React.Component {
           </div>
         </div>
       </div>
-        <Grid columns={2} textAlign='center'>
+        <Grid columns={2} centered relaxed textAlign='center' divided='vertically'>
           <Grid.Row>
             <Grid.Column>
             Kevin Doddy - FullStack assassin
             </Grid.Column>
             <Grid.Column>
-              <Card color='red' img='images/code_assassin.jpg' />
+              <Image src='images/code_assassin.jpg' size='medium' bordered />
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
             <Grid.Column>
-              <Card color='green' img='images/ninja-coder.png' />
+              <Image src='images/ninja-coder.png' size='medium' bordered />
             </Grid.Column>
             <Grid.Column>
             Habib Qureshi - Backend Ninja
@@ -109,7 +109,7 @@ class Home extends React.Component {
             Kyle McLeod - Frontend Wizard
             </Grid.Column>
             <Grid.Column>
-              <Card color='blue' img='images/code_wizard.png' />
+              <Image src='images/code_wizard.png' size='medium' bordered />
             </Grid.Column>
           </Grid.Row>
         </Grid>

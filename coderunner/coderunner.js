@@ -5,6 +5,7 @@ var runThis = function(userCode, tests) {
   var masterTests = tests;
   return new Promise(resolve => {
     s.run(`${userCode} ${masterTests};`, function(output) {
+      console.log("Output in runThis in coderunner.js", output);
       resolve(output.result);
     })
   });

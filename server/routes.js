@@ -51,7 +51,7 @@ var challengeRoutes = function(app) {
     var endMsg;
     var message = "Success";
     var codeResult = runThis(req.body.masterUserSolutionCode, req.body.masterTests).
-    then((data) => {
+    then(async (data) => {
       if (data[0] === "'") {
         message = 'Error';
         masterTestResults = data;
@@ -68,7 +68,14 @@ var challengeRoutes = function(app) {
         }
       }
       console.log(masterTestResults, message);
-      endMsg = JSON.stringify({masterTestResults: masterTestResults, message: message});
+      if (req.body.challengeLevel) { // if not undefined, then it's a course challenge, so must save completed problems
+      //assuming req.body.challengeName is the challengeName and req.user is the user
+      console.log('IN CHALLENGE LEVEL UPDATE');
+      console.log('req.user->', req.user);
+      var user = await db.updateCompletedCourseChallenges(req.user, message, req.body.challengeName);
+      console.log('updated user in challengesolution ->', user);
+    }
+      endMsg = JSON.stringify({masterTestResults: masterTestResults, message: message, user: user});
       res.end(endMsg);
     // res.end(codeResult);
     //if all true -- save submission to db(their answer, score)
@@ -80,23 +87,69 @@ var challengeRoutes = function(app) {
 
   app.get("/initialChallenges", function(req, res) {
     console.log("Heard get for initial challenges from app");
-    db.selectAllInitialChallenges().then(results => res.send(results));
+    db.selectAllInitialChallenges().then(results => {console.log(results); res.send(results)});
   });
 
-
-  app.get("/challenges/next", function(req, res) { // assuming currentChallenge is in req.body
-    console.log("Heard get for next challenge");
-    console.log(req.body.currentChallenge);
-
+  app.post("/initialChallenges", function(req, res) {
+    db.updateUserLevel(req.body.user.username, req.body.initialScore)
+      .then(results => {console.log("results being sent back from post to initialChallenges", results); res.send(results);});
   })
 
-
-  app.get("/challenges/:challengeName", function(req, res) {
-    console.log("Heard get for challenge", req.params.challengeName);
-    db.getChallengeByName(req.params.challengeName).then(results => console.log(results));
+  app.get("/courseChallenges", function(req, res) {
+    console.log("Heard get for all course challenges from app");
+    db.getAllCourseChallenges().then(results => {console.log(results); res.send(results)});
   })
 
+  // app.post("/createInitialChallenge", function(req, res) {
+  //   console.log("Heard post for new initial challenge, new challenge is ", req.body);
+  //   db.addNewInitialChallenge(req.body);
+  // })
 
+  // app.get("/challenges/next", function(req, res) { // assuming currentChallenge is in req.body
+  //   console.log("Heard get for next challenge");
+  //   console.log(req.body.currentChallenge);
+
+  // })
+
+  // app.get("/challenges/:challengeName", function(req, res) { // would only be for user-submitted challenges
+  //   console.log("Heard get for challenge", req.params.challengeName);
+  //   db.getChallengeByName(req.params.challengeName).then(results => console.log(results));
+  // })
+
+  // app.get("/getTail", function(req, res) {
+  //   console.log("Heard get for tail of initial challenges linked list in db");
+  //   db.getTailOfLinkedList().then(results => console.log(results));
+  // })
+
+  // app.get("/getHead", function(req, res) {
+  //   console.log("Heard get for head of initial challenges linked list in db");
+  //   db.getHeadOfLinkedList().then(results => console.log(results));
+  // })
+
+  app.post("/userSubmittedChallenge", function(req, res) {
+    console.log("Heard post for user submitted challenge, req.body is ", req.body);
+    db.addUserChallenge(req.body);
+  })
+
+  app.get("/userSubmittedChallenge/:challengeName", function(req, res) {
+    console.log("Heard get for user submitted challenge, challenge name is ", req.params.challengeName);
+    db.getUserChallengeByName(req.params.challengeName).then(results => console.log(results));
+  })
+
+  // app.post("/easyChallenge", function(req, res) { // courseChallenges
+  //   console.log("Heard post for easy challenge, req.body is ", req.body);
+  //   db.addNewEasyChallenge(req.body);
+  // })
+
+  // app.post("/mediumChallenge", function(req, res) { // courseChallenges
+  //   console.log("Heard post for medium challenge, req.body is ", req.body);
+  //   db.addNewMediumChallenge(req.body);
+  // })
+
+  // app.post("/difficultChallenge", function(req, res) { // courseChallenges
+  //   console.log("Heard post for difficult challenge, req.body is ", req.body);
+  //   db.addNewDifficultChallenge(req.body);
+  // })
 }
 
 
@@ -109,10 +162,10 @@ var dbRoutes = function(app) {
     db.addUser(req.body);
   })
 
-  app.post("/createChallenge", function(req, res) {
-    console.log("heard posted challenge from app, and the posted challenge is ", req.body);
-    db.addChallenge(req.body);
-  })
+  // app.post("/createChallenge", function(req, res) {
+  //   console.log("heard posted challenge from app, and the posted challenge is ", req.body);
+  //   db.addChallenge(req.body);
+  // })
 
   app.post("/addSolution", function(req, res) {
     console.log("heard posted solution from app, and the posted solution is ", req.body);

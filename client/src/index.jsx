@@ -13,7 +13,6 @@ class App extends React.Component {
     this.state = {
       isLoggedIn: false,
       masterUser: {},
-      challengeName: 'initialChallenges',
       visible: false
       // currentUserSolutionCode: '',
       // Global state needed:
@@ -28,6 +27,7 @@ class App extends React.Component {
     this.handleLogin = this.handleLogin.bind(this);
     this.clearState = this.clearState.bind(this);
     this.toggleVisibility = this.toggleVisibility.bind(this);
+    this.handleInitialComplete = this.handleInitialComplete.bind(this);
   }
 
   toggleVisibility() {
@@ -43,15 +43,19 @@ class App extends React.Component {
   clearState() {
     this.setState({
       isLoggedIn: false,
-      user: {}
+      masterUser: {}
     });
   }
 
   handleLogin() {
     this.setState({
-      // user: user,
+      masterUser: user[0],
       isLoggedIn: true
     });
+  }
+  
+  handleInitialComplete(score) {
+    $.post("/initialChallenges", {user: this.state.masterUser, initialScore: score}, (data) => {console.log('DATA IN HANDLE INITIAL COMPLETE -> ', data); this.setState({masterUser: data})})
   }
 
   render () {
@@ -74,7 +78,7 @@ class App extends React.Component {
     ];
     const {visible} = this.state;
     const loggedIn = this.state.isLoggedIn ? (
-      <Challenge log={this.state.isLoggedIn} challengeName={this.state.challengeName} />
+      <Challenge initialComplete={this.handleInitialComplete} user={this.state.masterUser}/>
     ) : (
       <Home />
     )
@@ -100,7 +104,6 @@ class App extends React.Component {
 }
 
 ReactDOM.render(<App />, document.getElementById('app'));
-
 
 
 

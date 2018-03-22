@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "postinstall": "node database/seed/dbSeed.js",
     "heroku-postbuild": "webpack -p --config ./webpack.config.js --progress",
     "start": "node server/server-index.js",
     "react-dev": "webpack -d --watch",

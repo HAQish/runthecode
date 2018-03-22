@@ -3,6 +3,7 @@ import ChallengeInfo from './challengeInfo.jsx';
 import Editor from './editor.jsx';
 import Success from './success.jsx';
 import Failure from './failure.jsx';
+import completedInitialModal from './completedInitialModal.jsx';
 import {Grid, Button, Modal, Header, Icon} from 'semantic-ui-react';
 import $ from 'jquery';
 //import init from '../../../database/seed/initalChallenges.json';
@@ -12,32 +13,31 @@ class Challenge extends React.Component {
     super(props);
     this.state = {
       initialChallenges: [],
+      initialScore: 0,
+      courseChallenges: [],
       currentChallengeID: 0,
-      currentChallenge:   {},
+      currentChallenge: {},
       openTestModal: false,
       successMessage: true,
-      currentTestResults: []
+      currentTestResults: [],
+      openCompletedInitialModal: false,
     }
-
     this.displayTestResults = this.displayTestResults.bind(this);
     this.closeTestModal = this.closeTestModal.bind(this);
     this.nextChallenge = this.nextChallenge.bind(this);
   }
 
-  componentDidMount() {
-    console.log('PROPS IN CHALLENGE', this.props);
-
-    if (this.props.challengeName === 'initialChallenges') {
-      console.log('INSIDE AJAX')
+  componentWillMount() {
+    if (this.props.user.completedInitial === false) {
       $.ajax({
         type: 'GET',
         url: `/initialChallenges`,
         success: data => {
-          console.log('DAAAAATTTTAAAA', data);
+          console.log('compwillmount data:', data)
           this.setState({
             initialChallenges: data,
             currentChallengeID: 0,
-            currentChallenge: this.state.initialChallenges[currentChallengeID]
+            currentChallenge: data[0]
           });
         },
         error: err => console.log('error getting challenges', err)
@@ -45,11 +45,10 @@ class Challenge extends React.Component {
     } else {
       $.ajax({
         type: 'GET',
-        url: `/challenges/${this.props.challengeName}`,
+        url: `/courseChallenges`,
         success: data => {
           this.setState({
-            currentChallengeID: data.challengeNumber,
-            currentChallenge: data,
+            courseChallenges: data,
           });
         },
         error: err => console.log('error getting challenge', err)
@@ -57,21 +56,48 @@ class Challenge extends React.Component {
     }
   }
 
-  nextChallenge(challengeID) {
-    $.ajax({
-      type: 'GET',
-      url: '/challenges/next',
-      body: JSON.stringify(this.state.currentChallenge.challengeName),
-      success: data => {
-        this.setState({ 
-          openTestModal: false,
-          currentChallengeID: data.challengeNumber,
-          currentChallenge: data 
-        });
-      },
-      error: err => console.log('error getting next challenge', err)
-    });
-  }
+  nextChallenge() {
+    if (this.props.user.completedInitial === false && this.state.currentChallengeID != 4) {
+      let next = this.state.currentChallengeID + 1;
+      console.log('in next challenge, != 4 -- currentchallenge id: ', this.state.currentChallengeID)
+      this.setState({
+        currentChallengeID: next,
+        openTestModal:false,
+        currentChallenge: this.state.initialChallenges[next],
+      })
+      if (next === 4) {
+        this.setState({openCompletedInitialModal: true})
+      }
+    } else if (this.props.user.completedInitial === false && this.state.currentChallengeID === 4) {
+      console.log('in next challenge, === 4 -- currentchallenge id: ', this.state.currentChallengeID)
+        this.props.initialComplete(this.state.initialScore);
+      //process completion of initial challenges
+      this.setState({
+        openTestModal:false,
+        currentChallengeID:0,
+        openCompletedInitialModal: false
+      })
+      $.get('/courseChallenges', (data) => {
+        this.setState({
+          userCompletedInitial: true,
+          courseChallenges: data,
+          currentChallenge: data[this.state.initialScore*2]
+        })
+      })
+        //get level back
+        //recommendation of starting point
+        //change completed initial to true
+        //redirect them to recomended starting challenge
+    } else if (this.props.user.completedInitial === true) {
+      console.log('hitting completeinitial true if');
+      let next = this.state.currentChallengeID+1;
+      this.setState({currentChallenge: this.state.courseChallenges[next], openTestModal: false, currentChallengeID: next})
+      //handle coursechallenge info here
+      if (this.state.courseChallenges[next] === 'undefined') {
+        // Go to user page or some type of modal that says congradulations
+      }
+    }
+};
 
   displayTestResults(results) {
     console.log('🤡', results);
@@ -80,10 +106,11 @@ class Challenge extends React.Component {
       this.setState({ 
         openTestModal: true, 
         successMessage: true, 
-        currentTestResults: results.masterTestResults 
+        currentTestResults: results.masterTestResults,
+        initialScore: this.state.initialScore+0.5
       });
     } 
-    if (results.message === 'Failure') {
+    else if (results.message === 'Failure') {
       // failure modal
       this.setState({ 
         openTestModal: true, 
@@ -91,31 +118,40 @@ class Challenge extends React.Component {
         currentTestResults: results.masterTestResults 
       });
     }
+    else if (results.message === 'Error') {
+      this.setState({
+        openTestModal: true,
+        successMessage: false,
+        currentTestResults: results.masterTestResults
+      })
+    }
   }
 
   closeTestModal() {
-    this.setState({openTestModal: false});
+    this.setState({openTestModal: false})
+    if (this.state.openCompletedInitialModal) {
+      this.setState({currentChallenge: this.state.courseChallenges[this.state.initialScore]})
+    }
   }
 
   render() {
-    const { masterTestDescriptions } = this.state.currentChallenge;
-    const { currentTestResults, currentChallenge } = this.state;
+    const { currentChallenge } = this.state;
 
-    const modalMessage = this.state.successMessage ? (<Success nextChallenge={this.nextChallenge} />) : 
-    (<Failure closeTestModal={this.closeTestModal} currentTestResults={currentTestResults} masterTestDescriptions={masterTestDescriptions} />)
+    const modalMessage = this.state.successMessage ? (<Success initialJustCompleted={this.state.openCompletedInitialModal} nextChallenge={this.nextChallenge} />) : 
+    (<Failure nextChallenge={this.nextChallenge} closeTestModal={this.closeTestModal} initialJustCompleted={this.state.openCompletedInitialModal} currentTestResults={this.state.currentTestResults} masterTestDescriptions={this.state.currentChallenge.masterTestDescriptions} />)
 
     return(
       <Grid>
         <Grid.Row columns={2}>
           <Grid.Column>
-            <ChallengeInfo basicTests={currentChallenge.masterTestDescriptions} challengeDescription={currentChallenge.prompt} challengeName={currentChallenge.challengeName} />
+            <ChallengeInfo basicTests={this.state.currentChallenge.masterTestDescriptions} challengeDescription={currentChallenge.prompt} challengeName={currentChallenge.challengeName} />
           </Grid.Column>
           <Grid.Column>
-            <Editor starterCode={currentChallenge.starterCode} masterTests={currentChallenge.masterTests} displayTestResults={this.displayTestResults} difficulty={currentChallenge.difficulty} challengeName={currentChallenge.challengeName} />
+            <Editor starterCode={currentChallenge.starterCode} masterTests={currentChallenge.masterTests} displayTestResults={this.displayTestResults} challengeLevel={currentChallenge.challengeLevel} challengeName={currentChallenge.challengeName} />
           </Grid.Column>
         </Grid.Row>
-
         <Modal
+          initialScore={this.state.initialScore}
           style={{ height: '65%' }}
           basic
           dimmer
