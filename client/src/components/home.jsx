@@ -1,7 +1,6 @@
 import React from 'react';
 import Editor from './editor.jsx';
-import SidebarProblems from './sidebar.jsx';
-import { Button, Header, Icon, Card, Image, List } from 'semantic-ui-react';
+import { Button, Header, Icon, Card, Image, List, Grid } from 'semantic-ui-react';
 import $ from 'jquery';
 
 import AceEditor from 'react-ace';
@@ -63,9 +62,10 @@ class Home extends React.Component {
     const { prompt, challengeName, masterTestDescriptions } = this.state.starterChallenge;
     const { masterSolutionCode } = this.state;
     return(
+      <div>
       <div className='homepage banner'>
-        <Header as='h1' icon inverted textAlign='center' style={{paddingTop: '20px'}}>
-          <Icon name='code' size='small' circular inverted />
+        <Header icon inverted textAlign='center' size='huge' style={{paddingTop: '20px'}}>
+          <Icon name='code' size='big' inverted circular />
           <Header.Content>
             LevelUP Code
           </Header.Content>
@@ -86,7 +86,33 @@ class Home extends React.Component {
           <Button onClick={this.onSubmitToServer} content='Start your journey' />
           </div>
         </div>
-        {/* <SidebarProblems /> */}
+      </div>
+        <Grid columns={2} textAlign='center'>
+          <Grid.Row>
+            <Grid.Column>
+            Kevin Doddy - FullStack assassin
+            </Grid.Column>
+            <Grid.Column>
+              <Card color='red' img='images/code_assassin.jpg' />
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column>
+              <Card color='green' img='images/ninja-coder.png' />
+            </Grid.Column>
+            <Grid.Column>
+            Habib Qureshi - Backend Ninja
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column>
+            Kyle McLeod - Frontend Wizard
+            </Grid.Column>
+            <Grid.Column>
+              <Card color='blue' img='images/code_wizard.png' />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
       </div>
     )
   }

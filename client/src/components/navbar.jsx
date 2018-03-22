@@ -27,10 +27,10 @@ class Navbar extends Component {
     this.props.logout();
   }
   
-  handleLoginSubmit(user) {
-    console.log('Inside the navbar login', user);
-    this.props.handleLogin(user);
-    this.setState({activeItem: 'home', openSignupModal: false});
+  handleLoginSubmit() {
+    // console.log('Inside the navbar login', user);
+    this.props.handleLogin();
+    // this.setState({activeItem: 'home', openSignupModal: false});
   }
 
   openSignupModal() {

@@ -25,12 +25,15 @@ class Challenge extends React.Component {
   }
 
   componentDidMount() {
+    console.log('PROPS IN CHALLENGE', this.props);
 
     if (this.props.challengeName === 'initialChallenges') {
+      console.log('INSIDE AJAX')
       $.ajax({
         type: 'GET',
         url: `/initialChallenges`,
         success: data => {
+          console.log('DAAAAATTTTAAAA', data);
           this.setState({
             initialChallenges: data,
             currentChallengeID: 0,
