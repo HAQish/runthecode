@@ -59,7 +59,6 @@ class Challenge extends React.Component {
   nextChallenge() {
     if (this.props.user.completedInitial === false && this.state.currentChallengeID != 4) {
       let next = this.state.currentChallengeID + 1;
-      console.log('in next challenge, != 4 -- currentchallenge id: ', this.state.currentChallengeID)
       this.setState({
         currentChallengeID: next,
         openTestModal:false,
@@ -69,7 +68,6 @@ class Challenge extends React.Component {
         this.setState({openCompletedInitialModal: true})
       }
     } else if (this.props.user.completedInitial === false && this.state.currentChallengeID === 4) {
-      console.log('in next challenge, === 4 -- currentchallenge id: ', this.state.currentChallengeID)
         this.props.initialComplete(this.state.initialScore);
       //process completion of initial challenges
       this.setState({
@@ -89,7 +87,6 @@ class Challenge extends React.Component {
         //change completed initial to true
         //redirect them to recomended starting challenge
     } else if (this.props.user.completedInitial === true) {
-      console.log('hitting completeinitial true if');
       let next = this.state.currentChallengeID+1;
       this.setState({currentChallenge: this.state.courseChallenges[next], openTestModal: false, currentChallengeID: next})
       //handle coursechallenge info here

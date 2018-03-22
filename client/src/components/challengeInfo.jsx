@@ -7,7 +7,7 @@ const ChallengeInfo = (props) => {
   return(
     <Grid>
       <Grid.Row>
-        <div style={{margin: 'auto', height: '50%'}}>
+        <div style={{padding: '200px', margin: 'auto', height: '50%'}}>
           <Header as='h1' content={props.challengeName} />
           <Header as='h3' content={props.challengeDescription} />
         </div>
