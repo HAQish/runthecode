@@ -52,7 +52,7 @@ var challengeRoutes = function(app) {
     var message = "Success";
     var codeResult = runThis(req.body.masterUserSolutionCode, req.body.masterTests).
     then(async (data) => {
-      if (data[0] === "'") {
+      if (data[0] === "'" || data === "TimeoutError") {
         message = 'Error';
         masterTestResults = data;
       } else {
