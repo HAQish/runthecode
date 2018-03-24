@@ -23,9 +23,9 @@ class Editor extends React.Component {
   }
 
   componentDidMount() {
-     this.setState({
-       masterUserSolutionCode: this.props.starterCode
-     });
+    this.setState({
+      masterUserSolutionCode: this.props.starterCode
+    });
   }
   
   onChange(e) {
