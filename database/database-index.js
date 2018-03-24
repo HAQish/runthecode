@@ -260,16 +260,15 @@ var getPopulatedChallenge = function(challengeName) { // changes object ids into
   return new Promise(function(resolve, reject) {
     return Challenges.find({challengeName: challengeName}).populate("submittedSolutions").exec(function(err, data) {
       if (err) {return err}
-        console.log("data.submittedSolutions in getPopulatedChallenge in database-index is ", data[0].submittedSolutions);
-        resolve(data[0].submittedSolutions);
-    })
-
-  })
+      console.log("data.submittedSolutions in getPopulatedChallenge in database-index is ", data[0].submittedSolutions);
+      resolve(data[0].submittedSolutions);
+    });
+  });
 }
 
 //needs refactor for proper linked list collection
 var getHeadOfLinkedList = function() {
-  return new Promise(function(resolve, reject) {
+return new Promise(function(resolve, reject) {
     console.log("in getHeadOfLinkedList in database-index");
     return LinkedList.findOne({position: "head"}, function(err, document) {
       return InitialChallenges.findById(document.idOfObject, function(err, document) {
@@ -319,6 +318,7 @@ var updateCompletedCourseChallenges = function(currentUser, message, challengeNa
     return Users.findOneAndUpdate({username: currentUser.username}, {completedCourseChallenges: finalObj}, {new: true, upsert: true});
 }
 
+
 // module.exports for each function
 module.exports.findUserById = findUserById;
 module.exports.addSolution = addSolution;
@@ -336,20 +336,6 @@ module.exports.getAllCourseChallenges = getAllCourseChallenges;
 module.exports.updateUserLevel = updateUserLevel;
 module.exports.updateCompletedCourseChallenges = updateCompletedCourseChallenges;
 module.exports.db = db;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
