@@ -318,7 +318,6 @@ var updateCompletedCourseChallenges = function(currentUser, message, challengeNa
     return Users.findOneAndUpdate({username: currentUser.username}, {completedCourseChallenges: finalObj}, {new: true, upsert: true});
 }
 
-
 // module.exports for each function
 module.exports.findUserById = findUserById;
 module.exports.addSolution = addSolution;
@@ -336,6 +335,20 @@ module.exports.getAllCourseChallenges = getAllCourseChallenges;
 module.exports.updateUserLevel = updateUserLevel;
 module.exports.updateCompletedCourseChallenges = updateCompletedCourseChallenges;
 module.exports.db = db;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
