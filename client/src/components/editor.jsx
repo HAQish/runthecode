@@ -46,8 +46,8 @@ class Editor extends React.Component {
         challengeName: challengeName
       },
       success: data => {
-        displayTestResults(data);
-        this.setState({masterUserSolutionCode: '',})
+        displayTestResults(data, masterUserSolutionCode);
+        this.setState({masterUserSolutionCode: ''})
       },
       error: err => console.log(err)
     });
