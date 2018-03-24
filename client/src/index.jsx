@@ -6,22 +6,13 @@ import Navbar from './components/navbar.jsx';
 import Home from './components/home.jsx';
 import { Sidebar, Button, Menu, Image, Icon, Header, Grid, Segment } from 'semantic-ui-react';
 
-
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoggedIn: false,
-      masterUser: {},
+      isLoggedIn: false, //false?render <Home>...true?render logout button and <Challenge>...set to true on login/signup
+      masterUser: {}, //{"local":{"email":"fakeemail@yahoo.com","password":"fakepw"},"completedInitial":false,"completedChallenges":[],"_id":"5ab5358921b7e547a81fcc3e","createdAt":"2018-03-23T17:12:41.095Z","username":"fakeusername","__v":0}
       visible: false
-      // currentUserSolutionCode: '',
-      // Global state needed:
-      // email
-      // level
-      // XP
-      // Points
-      // current challenge
-      // global ranking
     };
     this.logout = this.logout.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
