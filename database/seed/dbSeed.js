@@ -9,13 +9,13 @@ db.collection('initialChallenges').drop();
 db.collection('courseChallenges').drop();
 
 //creates new collection of initialTests with data loated in data.json
-var docs = fs.readFile('initialChallenges.json', 'utf8', function (err, data) {
+var docs = fs.readFile('./database/seed/initialChallenges.json', 'utf8', function (err, data) {
   console.log(data);
   var items = db.collection('initialChallenges');
   items.insert(JSON.parse(data), function (err, docs) {
     items.count(function (err, count) {
       console.log(count + " challenges inserted into initialChallenges collection.");
-      var courseDocs = fs.readFile("levelOneChallenges.json", "utf8", function(err, data) {
+      var courseDocs = fs.readFile("./database/seed/levelOneChallenges.json", "utf8", function(err, data) {
         var collection = db.collection("courseChallenges");
         collection.insert(JSON.parse(data), function(err, docs) {
           collection.count(function(err, count) {
