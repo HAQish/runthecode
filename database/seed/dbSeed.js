@@ -1,6 +1,6 @@
 var fs = require('fs');
 var mongoose = require('mongoose');
-mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/levelup');
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/levelup');
 
 var db = mongoose.connection;
 
