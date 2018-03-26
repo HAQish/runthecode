@@ -4,7 +4,6 @@ import Editor from './editor.jsx';
 import ChallengeResultsModal from './challengeResultsModal.jsx'
 import {Grid, Button, Modal, Header, Icon} from 'semantic-ui-react';
 import $ from 'jquery';
-//import init from '../../../database/seed/initalChallenges.json';
 
 class Challenge extends React.Component {
   constructor(props) {
@@ -104,7 +103,8 @@ class Challenge extends React.Component {
   retry() {
     this.setState({
       openChallengeResultsModal: false,
-      currentChallengeResultMessage: ''
+      currentChallengeResultMessage: '',
+      // currentUserCode: userCode
     })
     if (this.state.justCompletedInitial) {
       this.setState({currentChallenge: this.state.courseChallenges[this.state.initialScore]})

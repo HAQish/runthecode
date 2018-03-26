@@ -15,7 +15,7 @@ class Editor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      masterUserSolutionCode: '',
+      masterUserSolutionCode: this.props.starterCode,
       challengeResults: []
     };
     this.onChange = this.onChange.bind(this);
@@ -29,7 +29,7 @@ class Editor extends React.Component {
   }
   
   onChange(e) {
-    this.setState({ masterUserSolutionCode: e || this.props.starterCode });
+    this.setState({ masterUserSolutionCode: e });//|| this.props.starterCode });
   }
 
   handleSubmit(e) {
