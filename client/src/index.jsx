@@ -47,7 +47,7 @@ class App extends React.Component {
     });
   }
 
-  handleLogin() {
+  handleLogin(user) {
     this.setState({
       masterUser: user[0],
       isLoggedIn: true
@@ -80,7 +80,7 @@ class App extends React.Component {
     const loggedIn = this.state.isLoggedIn ? (
       <Challenge initialComplete={this.handleInitialComplete} user={this.state.masterUser}/>
     ) : (
-      <Home />
+        <Home handleLogin={this.handleLogin} />
     )
 
     return (
