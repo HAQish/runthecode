@@ -28,7 +28,6 @@ class Navbar extends Component {
   }
   
   handleLoginSubmit(user) {
-    // console.log('Inside the navbar login', user);
     this.props.handleLogin(user);
     // this.setState({activeItem: 'home', openSignupModal: false});
   }

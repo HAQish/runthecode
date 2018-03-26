@@ -16,7 +16,6 @@ class Login extends React.Component {
   handleInputChange(e) {
     const name = e.target.name;
     const value = e.target.value;
-    //console.log('eeeeeeee', name, value);
     this.setState({
       [name]: value
     });
