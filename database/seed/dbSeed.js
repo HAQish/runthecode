@@ -12,12 +12,12 @@ db.collection('courseChallenges').drop();
 var docs = fs.readFile('initialChallenges.json', 'utf8', function (err, data) {
   console.log(data);
   var items = db.collection('initialChallenges');
-  items.insert(data, function (err, docs) {
+  items.insert(JSON.parse(data), function (err, docs) {
     items.count(function (err, count) {
       console.log(count + " challenges inserted into initialChallenges collection.");
       var courseDocs = fs.readFile("levelOneChallenges.json", "utf8", function(err, data) {
         var collection = db.collection("courseChallenges");
-        collection.insert(data, function(err, docs) {
+        collection.insert(JSON.parse(data), function(err, docs) {
           collection.count(function(err, count) {
             console.log(count + " items inserted into courseChallenges collection.");
             db.close();
