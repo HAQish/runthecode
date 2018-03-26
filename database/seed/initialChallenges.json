@@ -4,6 +4,14 @@
     "starterCode": "function oldEnough(age, activity) { \n \n };",
     "masterTests": "[typeof oldEnough === 'function', oldEnough(10, 'play') === 'Youre always old enough to play!', oldEnough(15, 'drive') === 'Sorry, youre not old enough to drive.', oldEnough(16, 'drive') === 'Yes! Youre old enough to drive!', oldEnough(20, 'drink') === 'Sorry, youre not old enough to drink.', oldEnough(21, 'drink') === 'Yes! Youre old enough to drink!']",
     "masterTestDescriptions": "['oldEnough should be a function', 'A ten-year-old is old enough to play', 'A 15-year-old is not old enough to drive', 'A 16-year-old is old enough to drive', 'A 20-year-old is not old enough to drink', 'A 21-year-old is old enough to drink']",
+    "challengeNumber": 1,
+    "challengeName": "Old 1st question?"
+  },
+  {
+    "prompt": "Write a function called oldEnough that takes a number(age) and a string('drink' or 'drive') \n and returns a custom message with whether the person is old enough to do the activity passed in \n testDrive1 = oldEnough(14, 'drive') // 'Sorry, you're not old enough to drive.' \n testDrive2 = oldEnough(20, 'drive') // 'Yes! You're old enough to drive!' \n testDrink1 = oldEnough(18, 'drink') // 'Sorry, you're not old enough to drink.' \n testDrink2 = oldEnough(30, 'drink') // 'Yes! You're old enough to drink!' \n testEdge = oldEnough(32, 'dance') // 'You're always old enough to dance!'",
+    "starterCode": "function oldEnough(age, activity) { \n \n };",
+    "masterTests": "[typeof oldEnough === 'function', oldEnough(10, 'play') === 'Youre always old enough to play!', oldEnough(15, 'drive') === 'Sorry, youre not old enough to drive.', oldEnough(16, 'drive') === 'Yes! Youre old enough to drive!', oldEnough(20, 'drink') === 'Sorry, youre not old enough to drink.', oldEnough(21, 'drink') === 'Yes! Youre old enough to drink!']",
+    "masterTestDescriptions": "['oldEnough should be a function', 'A ten-year-old is old enough to play', 'A 15-year-old is not old enough to drive', 'A 16-year-old is old enough to drive', 'A 20-year-old is not old enough to drink', 'A 21-year-old is old enough to drink']",
     "challengeNumber": 2,
     "challengeName": "Old Enough?"
   },
