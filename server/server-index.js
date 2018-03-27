@@ -10,6 +10,8 @@ const db = require('../database/database-index.js');
 const passport = require('passport');
 
 var app = express();
+var http = require("http").Server(app);
+var io = require("socket.io")(http);
 var PORT = process.env.PORT || 3030;
 
 app.use(bodyParser.json());
@@ -17,7 +19,30 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, '../client/dist')));
 
-app.listen(PORT, function() {
+//socket.io stuff
+io.on("connection", function(socket) {
+  console.log("Connection made via socket.io on ", socket.id);
+
+  var code;
+
+  socket.on("codeChange", function(newCode) {
+    console.log("the new code being sent to the server's socket is ", newCode);
+    var code = newCode;
+    socket.broadcast.emit("codeChangeFromServer", newCode);
+  })
+
+  // setInterval(function() {socket.broadcast.emit("codeChangeFromServer", code)}, 1000);
+
+  socket.on("disconnect", function() {
+    console.log("Disconnected from socket.");
+  });
+
+})
+
+
+
+
+http.listen(PORT, function() {
   console.log(`listening on port ${PORT}`);
 });
 

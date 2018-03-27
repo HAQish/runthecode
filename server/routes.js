@@ -45,6 +45,7 @@ var passportRoutes = function(app, passport) {
 
 var challengeRoutes = function(app) {
   //Challenge solution submission routes
+
   app.post("/challengeSolution", function(req, res) { // sending code from editor in app to be run in sandbox
     console.log('😈 in post to challengeSolution', req.body);
     var masterTestResults;
@@ -66,9 +67,13 @@ var challengeRoutes = function(app) {
           }
         }
       }
-      console.log(masterTestResults, message);
+      console.log("further down in post to challengeSolution, after returned from coderunner", masterTestResults, message);
       if (req.body.challengeLevel) { // if not undefined, then it's a course challenge, so must save completed problems
+        //assuming req.body.challengeName is the challengeName and req.user is the user
+        console.log('IN CHALLENGE LEVEL UPDATE');
+        console.log('req.user->', req.user);
         var user = await db.updateCompletedCourseChallenges(req.user, message, req.body.challengeName);
+        console.log('updated user in challengesolution ->', user);
       }
 
       endMsg = JSON.stringify({masterTestResults: masterTestResults, message: message, user: user});
@@ -81,6 +86,7 @@ var challengeRoutes = function(app) {
     console.log("Heard get for initial challenges from app");
     db.selectAllInitialChallenges().then(results => {console.log("results being sent from get to initialChallenges", results); res.send(results)});
   });
+
 
   app.post("/initialChallenges", function(req, res) { // sets flag on user document to show initial challenges are complete and sets score
     console.log('hit initialchallenge post, req.body is:', req.body);
@@ -131,7 +137,7 @@ var challengeRoutes = function(app) {
 
 
 
-////// HABIB DB ROUTES //////
+////// OTHER DB ROUTES //////
 
 var dbRoutes = function(app) {
   // app.post("/createUser", function(req, res) { // deprecated, passport has its own method it calls on login and signup
