@@ -8,10 +8,10 @@
   },
   "scripts": {
     "heroku-postbuild": "webpack -p --config ./webpack.config.js --progress | node database/seed/dbSeed.js",
-    "start": "node server/server-index.js",
+    "start": "SET NODE_ENV=dev && node server/server-index.js",
     "react-dev": "webpack -d --watch",
     "server-dev": "nodemon --inspect server/server-index.js",
-    "test": "node_modules/.bin/mocha"
+    "test": "SET TESTMONGO_URI='mongodb://localhost:27017/TESTlevelup' && node database/seed/dbSeed.js --timeout 1000 && mocha --timeout 10000"
   },
   "repository": {
     "type": "git",
@@ -32,10 +32,13 @@
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "brace": "^0.11.1",
+    "chai": "^4.1.2",
+    "chai-http": "^4.0.0",
     "connect-flash": "^0.1.1",
     "connect-mongo": "^2.0.1",
     "cookie-parser": "^1.4.3",
     "css-loader": "^0.28.10",
+    "expect.js": "^0.3.1",
     "enzyme": "^3.3.0",
     "express": "^4.16.2",
     "express-session": "^1.15.6",
@@ -60,6 +63,7 @@
     "react-test-renderer": "^16.2.0",
     "sandbox": "^0.8.6",
     "semantic-ui-react": "^0.78.3",
+    "supertest": "^3.0.0",
     "styled-components": "^3.2.3",
     "validator": "^9.4.1",
     "vm2": "^3.5.2",

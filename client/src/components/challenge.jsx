@@ -46,6 +46,7 @@ class Challenge extends React.Component {
       $.get("/courseChallenges", (data) => {
           this.setState({
             courseChallenges: data,
+            currentChallenge: data[0]
           })
         }
       )

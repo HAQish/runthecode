@@ -90,8 +90,7 @@ require('./routes.js').passportRoutes(app, passport);
 require('./routes.js').challengeRoutes(app);
 require('./routes.js').dbRoutes(app);
 
-
-
+module.exports = app;
 
 
 
