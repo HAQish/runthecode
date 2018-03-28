@@ -21,10 +21,13 @@ class PairingEditor extends React.Component {
       challengeResults: [],
       pairing: false,
       driver: true,
-      navigator: false
+      navigator: false,
+      chatMessages: []
     };
     this.onChange = this.onChange.bind(this);
     this.switchRole = this.switchRole.bind(this);
+    this.chatOnChange = this.chatOnChange.bind(this);
+    this.sendChat = this.sendChat.bind(this);    
     // this.handleSubmit = this.handleSubmit.bind(this);
     // this.socketEmit = this.socketEmit.bind(this);
   }
@@ -42,6 +45,13 @@ class PairingEditor extends React.Component {
 
   componentWillMount() {
     // this.props.socketInitialize();
+    setInterval(this.getPairingId.bind(this), 5000);
+    this.props.socket.on("socketIdFromPartner", (partnerId) => {
+      this.setState({partnerId : partnerId});
+    });
+    this.props.socket.on("sendChatFromServer", (chatMsg) => {
+      this.setState({chatMessages: this.state.chatMessages.concat(chatMsg)});
+    })
   }
 
   // socketInitialize() {
@@ -62,11 +72,9 @@ class PairingEditor extends React.Component {
     
   }
   
-  // socketEmit() {
-  //   if (this.state.driver) {
-  //     this.state.socket.emit("codeChange", this.state.masterUserSolutionCode);
-  //   }
-  // }
+  getPairingId() {
+    this.props.socket.emit("componentWillMountPairing", this.props.socket.id);
+  }
 
 
   // handleSubmit(e) {
@@ -98,12 +106,23 @@ class PairingEditor extends React.Component {
     this.setState({driver: !this.state.driver, navigator: !this.state.navigator});
   }
 
+  chatOnChange(e) {
+    this.setState({chat: e.target.value})
+  }
+
+  sendChat() {
+    //socket stuff
+    this.props.socket.emit("sendChatFromApp", {message: this.state.chat, id: this.props.socket.id, role: this.state.driver ? "Driver" : "Navigator"});
+  }
+
   render() {
-   
+    const driverImg = "https://cdn.iconscout.com/public/images/icon/premium/png-128/steering-wheel-component-accessories-car-33c7476fa85b2199-128x128.png";
+    const navigatorImg ="http://icons.iconarchive.com/icons/icons8/android/256/Maps-Compass-icon.png"; 
     return (
       <div>
         You are currently {this.state.driver ? "Driver" : "Navigator"}. <br /> <br />
-        The current socket id is {this.props.socketId || this.props.socket.id}.
+        The current socket id is {this.props.socketId || this.props.socket.id}. <br />
+        Your partner's socket id is {this.state.partnerId}.
         <AceEditor
           mode='javascript'
           theme="kuroir"
@@ -116,7 +135,11 @@ class PairingEditor extends React.Component {
         {/*<Button onClick={this.handleSubmit} content="Send to server" primary />*/} <br />
         <br />
         <Button onClick={this.props.switch} content="Exit to pair programming" />
-        <Button onClick={this.switchRole} content="Switch roles" />
+        <Button onClick={this.switchRole} content="Switch roles" /> <br /> <br />
+
+        <input placeholder="chat here" onChange={this.chatOnChange}/> 
+          <Button onClick={this.sendChat} content="Send" />
+        {this.state.chatMessages.map((el, i) => <div key={i}><img src={el.role === "Driver" ? driverImg : navigatorImg} width="13px" height="13px" />{el.id}: {el.message}</div>)}
       </div>
     )
   }

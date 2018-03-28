@@ -31,7 +31,13 @@ io.on("connection", function(socket) {
     socket.broadcast.emit("codeChangeFromServer", newCode);
   })
 
-  // setInterval(function() {socket.broadcast.emit("codeChangeFromServer", code)}, 1000);
+  socket.on("componentWillMountPairing", function(socketID) {
+    socket.broadcast.emit("socketIdFromPartner", socketID);
+  })
+
+  socket.on("sendChatFromApp", function(chatMsg) {
+    io.sockets.emit("sendChatFromServer", chatMsg);
+  })
 
   socket.on("disconnect", function() {
     console.log("Disconnected from socket.");
