@@ -23,7 +23,7 @@ class Challenge extends React.Component {
       currentTestDescriptions: [],
       currentTestResults: [],
       justCompletedInitial: false,
-      currentUserCode: undefined
+      currentUserCode: undefined,
     }
     this.displayTestResults = this.displayTestResults.bind(this);
     this.retry = this.retry.bind(this);

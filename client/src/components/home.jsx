@@ -77,7 +77,7 @@ class Home extends React.Component {
     const { prompt, challengeName, masterTestDescriptions } = this.state.starterChallenge;
     const { masterSolutionCode } = this.state;
     return(
-      <div>
+      <div style={{marginTop: '0px'}} >
       <div className='homepage banner'>
         <Header icon inverted textAlign='center' size='huge' style={{paddingTop: '20px'}}>
           <Icon name='code' size='big' inverted circular />
@@ -98,7 +98,7 @@ class Home extends React.Component {
             width='100%'
             height='100%'
           />
-          <Button onClick={this.onSubmitToServer} primary content='Start your journey' style={{float: 'right', paddingBottom: '10px'}}/>
+          <Button onClick={this.onSubmitToServer} primary content='Start your journey' style={{float: 'left', marginBottom: '10px'}}/>
           </div>
         </div>
         <Modal
@@ -119,7 +119,7 @@ class Home extends React.Component {
           <Modal.Actions >
             <Button color='red' onClick={this.closeSignupModal}>
               <Icon name='remove' /> Close
-              </Button>
+            </Button>
           </Modal.Actions>
         </Modal>
       </div>

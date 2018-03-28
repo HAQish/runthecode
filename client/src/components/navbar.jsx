@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { Header, Modal, Menu, Segment, Icon, Button } from 'semantic-ui-react';
 
 import Login from './login.jsx';
@@ -16,10 +17,11 @@ class Navbar extends Component {
     this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
     this.closeSignupModal = this.closeSignupModal.bind(this);
     this.openSignupModal = this.openSignupModal.bind(this);
+    this.openSidebar = this.openSidebar.bind(this);
   }
 
   handleItemClick (e, {name}) {
-    this.setState({ activeItem: name })
+    this.setState({ activeItem: name });
   }
 
   handleLogoutClick (e) {
@@ -43,6 +45,10 @@ class Navbar extends Component {
     })
   }
 
+  openSidebar() {
+    this.props.isLoggedIn ? this.props.toggleSidebar() : this.openSignupModal();
+  }
+
   render() {
     const { activeItem } = this.state;
     let form;
@@ -51,9 +57,8 @@ class Navbar extends Component {
     } else {
       form = <span></span>
     }
-
     let options;
-    if (!this.props.isLoggedIn) {
+    if (this.props.isLoggedIn === undefined || this.props.isLoggedIn === '') {
       options = (
         <Menu.Menu position='right'>
           {form}
@@ -83,23 +88,28 @@ class Navbar extends Component {
         </Menu.Menu>
       );
     } else {
-      options = <Menu.Item position='right' name='logout' active={activeItem === 'logout'} onClick={this.handleLogoutClick} />;
+      options = <Menu.Menu position='right'>
+          <Menu.Item as={Link} to="/" position="right" name="Dashboard" icon="dashboard" active={activeItem === "Dashboard"} onClick={this.handleItemClick} />
+          <Menu.Item as={Link} to="/course" position="right" name="Challenges" active={activeItem === "Challenges"} onClick={this.handleItemClick} />
+          <Menu.Item position="right" name="logout" active={activeItem === "logout"} onClick={this.handleLogoutClick} />
+        </Menu.Menu>;
     }
 
-    return (
-      <div>
-      <Segment inverted>
-        <Menu inverted pointing secondary>
-            <Menu.Item name='home' active={activeItem === 'home'} onClick={this.props.toggleSidebar}>
-            <Icon name='puzzle' size='big' inverted />
-          </Menu.Item>
-            <Menu.Item name='messages' active={activeItem === 'messages'} onClick={this.handleItemClick} />
-          <Menu.Item name='friends' active={activeItem === 'friends'} onClick={this.handleItemClick} />
-          {options}
-        </Menu>
-      </Segment>
-      </div>
-    )
+    return <div style={{ marginBottom: "0px" }}>
+        <Segment inverted>
+          <Menu inverted pointing secondary>
+            <Menu.Item name="home" active={activeItem === "home"} onClick={this.openSidebar}>
+              <Icon name="puzzle" size="big" inverted />
+            </Menu.Item>
+            <Menu.Item position="center">
+              <Header style={{ textAlign: "center", color: "white" }}>
+                LevelUP Code
+              </Header>
+            </Menu.Item>
+            {options}
+          </Menu>
+        </Segment>
+      </div>;
   }
 }
 

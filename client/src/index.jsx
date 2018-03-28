@@ -1,17 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
+import { BrowserRouter, Route } from 'react-router-dom';
 import Challenge from './components/challenge.jsx';
 import Navbar from './components/navbar.jsx';
 import Home from './components/home.jsx';
+import Dashboard from './components/dashboard.jsx';
+import Side from './components/side.jsx';
+import AllChallenges from './components/allChallenges.jsx';
 import { Sidebar, Button, Menu, Image, Icon, Header, Grid, Segment, Dropdown } from 'semantic-ui-react';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoggedIn: false, //false?render <Home>...true?render logout button and <Challenge>...set to true on login/signup
-      masterUser: {}, //{"local":{"email":"fakeemail@yahoo.com","password":"fakepw"},"completedInitial":false,"completedChallenges":[],"_id":"5ab5358921b7e547a81fcc3e","createdAt":"2018-03-23T17:12:41.095Z","username":"fakeusername","__v":0}
+      // isLoggedIn: false, //false?render <Home>...true?render logout button and <Challenge>...set to true on login/signup
+      masterUser: undefined, //{"local":{"email":"fakeemail@yahoo.com","password":"fakepw"},"completedInitial":false,"completedChallenges":[],"_id":"5ab5358921b7e547a81fcc3e","createdAt":"2018-03-23T17:12:41.095Z","username":"fakeusername","__v":0}
       visible: false
     };
     this.logout = this.logout.bind(this);
@@ -19,6 +23,23 @@ class App extends React.Component {
     this.clearState = this.clearState.bind(this);
     this.toggleVisibility = this.toggleVisibility.bind(this);
     this.handleInitialComplete = this.handleInitialComplete.bind(this);
+  }
+
+  componentDidMount() {
+    // check if user is logged in
+    // if so, set user on state
+    $.get('/isLoggedIn', data => {
+      console.log('🌴', data);
+      if (data !== undefined) {
+        this.setState({
+          masterUser: data
+        });
+      } else {
+        this.setState({
+          masterUser: undefined
+        });
+      }
+    });
   }
 
   toggleVisibility() {
@@ -33,16 +54,16 @@ class App extends React.Component {
 
   clearState() {
     this.setState({
-      isLoggedIn: false,
-      masterUser: {}
+      masterUser: undefined
     });
   }
 
   handleLogin(user) {
+    console.log('😇', user);
     this.setState({
       masterUser: user[0],
-      isLoggedIn: true
     });
+    console.log(this.state.masterUser);
   }
   
   handleInitialComplete(score) {
@@ -50,47 +71,26 @@ class App extends React.Component {
   }
 
   render () {
-    const level1Options = [
-      {
-        key: 1,
-        text: 'Problem 1',
-        value: 1
-      },
-      {
-        key: 2,
-        text: 'Problem 2',
-        value: 2
-      },
-      {
-        key: 3,
-        text: 'Problem 3',
-        value: 3
-      }
-    ];
     const {visible} = this.state;
-    const loggedIn = this.state.isLoggedIn ? (
-      <Challenge initialComplete={this.handleInitialComplete} user={this.state.masterUser}/>
-    ) : (
-        <Home handleLogin={this.handleLogin} />
-    )
+    const loggedIn = this.state.masterUser ? 
+    (<Route exact path="/" component={() => <Dashboard user={this.state.masterUser} />} />) 
+    : 
+    (<Route exact path="/" component={() => <Home handleLogin={this.handleLogin} />} />);
 
-    return (
-      <div>
+    return(
+      <BrowserRouter>
         <div>
-          <Sidebar.Pushable as={Segment}>
-            <Sidebar as={Menu} animation='push' width='thin' visible={visible} icon='labeled' vertical inverted>
-              <Dropdown icon='chevron down' fluid text='Level 1' direction='right' labeled item simple className='icon' options={level1Options} />
-              <Dropdown icon='chevron down' fluid text='Level 2' direction='right' labeled item simple className='icon' options={level1Options} />
-              <Dropdown icon='chevron down' fluid text='Level 3' direction='right' labeled item simple className='icon' options={level1Options} />
-            </Sidebar>
-            <Sidebar.Pusher>
-              <Navbar handleLogin={this.handleLogin} logout={this.logout} isLoggedIn={this.state.isLoggedIn} toggleSidebar={this.toggleVisibility} />
-              {loggedIn} 
-            </Sidebar.Pusher>
-          </Sidebar.Pushable>
+          <div>
+            <Side visible={this.state.visible}>
+              <Navbar handleLogin={this.handleLogin} logout={this.logout} isLoggedIn={this.state.masterUser} toggleSidebar={this.toggleVisibility} />
+              {loggedIn}
+              <Route path="/course" component={() => <Challenge initialComplete={this.handleInitialComplete} user={this.state.masterUser} />} />
+              <Route path="/allchallenges/:challengeName" component={AllChallenges} />
+            </Side>
+          </div>
         </div>
-      </div>
-    )
+      </BrowserRouter>
+    );
   }
 }
 
