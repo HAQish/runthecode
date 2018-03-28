@@ -103,7 +103,8 @@ class Challenge extends React.Component {
   retry() {
     this.setState({
       openChallengeResultsModal: false,
-      currentChallengeResultMessage: ''
+      currentChallengeResultMessage: '',
+      // currentUserCode: userCode
     })
     if (this.state.justCompletedInitial) {
       this.setState({currentChallenge: this.state.courseChallenges[this.state.initialScore]})
