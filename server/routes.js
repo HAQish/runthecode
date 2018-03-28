@@ -1,6 +1,7 @@
 const Users = require('../database/database-index.js').Users
 const runThis = require('../coderunner/coderunner.js').runThis;
 const db = require('../database/database-index.js');
+const path = require("path");
 
 ///////// PASSPORT ROUTES /////////
 
@@ -132,7 +133,8 @@ var challengeRoutes = function(app) {
 
   app.get("/userSubmittedChallenge/:challengeName", function(req, res) {
     console.log("Heard get for user submitted challenge, challenge name is ", req.params.challengeName);
-    db.getUserChallengeByName(req.params.challengeName).then(results => console.log(results));
+    // db.getUserChallengeByName(req.params.challengeName).then(results => console.log(results));
+    res.send('Getting all challenges');
   })
 
   // app.post("/easyChallenge", function(req, res) { // courseChallenges
@@ -179,6 +181,14 @@ var dbRoutes = function(app) {
   app.get("/populatedChallenge", function(req, res) {
     db.getPopulatedChallenge("testChallenge1")
       .then(function(results) {console.log("in server-index, get route, the results from the populatedChallenge are ", results)});
+  })
+
+  app.get("/isLoggedIn", function(req, res) {
+    req.user ? res.send(req.user) : res.send(undefined);
+  });
+
+  app.get('/*', function(req, res) {
+    res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
   })
 }
 

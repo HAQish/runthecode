@@ -7,9 +7,15 @@ module.exports = {
     path: path.resolve(__dirname, 'client/dist'),
     filename: 'bundle.js'
   },
-  devtool:'inline-source-map',
+  devtool:'cheap-eval-source-map',
+  stats: {
+    colors: true,
+    reasons: true,
+    chunks: true
+  },
   module: {
-    loaders: [{
+    loaders: [
+    {
       test: /.jsx?$/,
       loader: 'babel-loader',
       exclude: /node_modules/,

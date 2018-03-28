@@ -23,7 +23,10 @@ class Signup extends React.Component {
         password: password,
         nickname: username
       }
-    $.post('/signup', user, (data) => this.props.handleLogin(data))
+    $.post('/signup', user, (data) => {
+      console.log(data); 
+      this.props.handleLogin(data)
+    });
   }
   
   handleChange(e, {name, value}) {
