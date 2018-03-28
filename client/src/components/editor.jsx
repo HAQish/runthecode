@@ -17,8 +17,7 @@ class Editor extends React.Component {
     super(props);
     this.state = {
       masterUserSolutionCode: '',
-      challengeResults: [],
-      pairing: false
+      challengeResults: []
     };
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -55,14 +54,14 @@ class Editor extends React.Component {
     });
   }  
 
-  switch(e) {
-    this.setState({pairing: !this.state.pairing});
-  }
+  // switch(e) {
+  //   this.setState({pairing: !this.state.pairing});
+  // }
 
   render() {
     return(
-      this.state.pairing ? <PairingEditor />
-      :
+      // this.state.pairing ? <PairingEditor />
+      // :
       <div>
         <AceEditor
           mode='javascript'
@@ -75,7 +74,7 @@ class Editor extends React.Component {
         />
         <Button onClick={this.handleSubmit} content="Send to server" primary /> <br />
         <br />
-        <Button onClick={this.switch.bind(this)} content="Switch to pair programming" />
+        <Button onClick={this.props.switch} content="Switch to pair programming" />
       </div>
     )
   }

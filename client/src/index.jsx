@@ -26,9 +26,15 @@ class App extends React.Component {
   }
 
   logout() {
-    fetch('/logout', {credentials: 'include'})
-      .then(data => this.clearState())
-      .catch(error => console.log('error', error));
+    $.ajax({
+      type: "GET",
+      url: "/logout",
+      success: (data) => {this.clearState()},
+      failure: (err => console.log("error in logout in app", err))
+    })
+    // fetch('/logout', {credentials: 'include'})
+    //   .then(data => this.clearState())
+    //   .catch(error => console.log('error', error));
   }
 
   clearState() {
@@ -47,6 +53,13 @@ class App extends React.Component {
   
   handleInitialComplete(score) {
     $.post("/initialChallenges", {user: this.state.masterUser, initialScore: score}, (data) => {console.log('DATA IN HANDLE INITIAL COMPLETE -> ', data); this.setState({masterUser: data})})
+  }
+
+  isLoggedIn(e) {
+    $.ajax({
+      type: "GET",
+      url: "/isLoggedIn"
+    })
   }
 
   render () {
@@ -82,6 +95,7 @@ class App extends React.Component {
           </Sidebar.Pushable>
           <Button onClick={this.toggleVisibility}>Toggle Visibility</Button>
         </div>
+        <Button onClick={this.isLoggedIn.bind(this)}>Am I logged In?</Button>
       </div>
     )
   }

@@ -46,14 +46,15 @@ http.listen(PORT, function() {
   console.log(`listening on port ${PORT}`);
 });
 
+const MongoStore = require('connect-mongo')(session); 
 app.use(cookieParser());
 app.use(session({
   secret: 'abcdefg',
   saveUninitialized: true,
-  // store: new MongoStore({
-  //   mongooseConnection: db.db,
-  //   ttl: 2 * 24 * 60 * 60
-  // })
+  store: new MongoStore({
+    mongooseConnection: db.db,
+    ttl: 2 * 24 * 60 * 60
+  })
 }));
 
 app.use(passport.initialize());

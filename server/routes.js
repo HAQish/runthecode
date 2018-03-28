@@ -36,9 +36,15 @@ var passportRoutes = function(app, passport) {
 
   //Logout route
   app.get('/logout', function(req, res) {
+    console.log("Logging out, current user before logout is ", req.user);
     req.logout();
     res.end('Logged out successfully');
   });
+
+  app.get("/isLoggedIn", function(req, res) {
+    req.user ? console.log("Yes, you are logged in.") : console.log("No, you are not logged in.");
+    res.send(req.user);
+  })
 }
 
 /////// CHALLENGE ROUTES ///////

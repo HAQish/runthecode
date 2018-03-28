@@ -20,42 +20,44 @@ class PairingEditor extends React.Component {
       masterUserSolutionCode: '',
       challengeResults: [],
       pairing: false,
-      endpoint: "localhost:3030",
       driver: true,
       navigator: false
     };
     this.onChange = this.onChange.bind(this);
+    this.switchRole = this.switchRole.bind(this);
     // this.handleSubmit = this.handleSubmit.bind(this);
     // this.socketEmit = this.socketEmit.bind(this);
   }
 
   componentDidMount() {
     // setInterval(this.socketEmit, 1000);
-    this.state.socket.on("codeChangeFromServer", (code) => {
+    this.props.socket.on("codeChangeFromServer", (code) => {
       if (this.state.navigator) {
         console.log("App heard the codeChange from the server");
         this.setState({ masterUserSolutionCode: code });
       }
     });
+    console.log(this.props.socket);
   }
 
   componentWillMount() {
-    this.socketInitialize();
+    // this.props.socketInitialize();
   }
 
-  socketInitialize() {
-    const socket = socketIOClient(this.state.endpoint);
-    socket.on("connect", function() {
-      console.log("Connected to socket from app.");
-    });
-    this.setState({socket: socket});
-  }
+  // socketInitialize() {
+  //   const socket = socketIOClient(this.state.endpoint);
+  //   socket.on("connect", () => {
+  //     console.log("Connected to socket from app, and socket id is", socket.id);
+  //     this.setState({socketId: socket.id});
+  //   });
+  //   this.setState({socket: socket});
+  // }
 
   onChange(e) {
     this.setState({ masterUserSolutionCode: e || this.props.starterCode });
     if (this.state.driver) {
       // var socket = socketIOClient(this.state.endpoint);
-      this.state.socket.emit("codeChange", this.state.masterUserSolutionCode);
+      this.props.socket.emit("codeChange", this.state.masterUserSolutionCode);
     }
     
   }
@@ -88,9 +90,9 @@ class PairingEditor extends React.Component {
   //   });
   // }
 
-  switch(e) {
-    this.setState({ pairing: !this.state.pairing });
-  }
+  // switch(e) {
+  //   this.setState({ pairing: !this.state.pairing });
+  // }
 
   switchRole(e) {
     this.setState({driver: !this.state.driver, navigator: !this.state.navigator});
@@ -100,7 +102,8 @@ class PairingEditor extends React.Component {
    
     return (
       <div>
-        You are currently {this.state.driver ? "Driver" : "Navigator"}.
+        You are currently {this.state.driver ? "Driver" : "Navigator"}. <br /> <br />
+        The current socket id is {this.props.socketId || this.props.socket.id}.
         <AceEditor
           mode='javascript'
           theme="kuroir"
@@ -112,8 +115,8 @@ class PairingEditor extends React.Component {
         />
         {/*<Button onClick={this.handleSubmit} content="Send to server" primary />*/} <br />
         <br />
-        <Button onClick={this.switch.bind(this)} content="Exit to pair programming" />
-        <Button onClick={this.switchRole.bind(this)} content="Switch roles" />
+        <Button onClick={this.props.switch} content="Exit to pair programming" />
+        <Button onClick={this.switchRole} content="Switch roles" />
       </div>
     )
   }
