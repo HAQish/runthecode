@@ -18,6 +18,7 @@ const TopWrapper = styled.div`
   display: flex;  
   flex-direction: row;
   justify-content: space-evenly;
+  flex-wrap: wrap;
   width: 100%;
   border-bottom: 5px solid black;
   padding: 10px;
