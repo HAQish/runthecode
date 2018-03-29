@@ -112,7 +112,7 @@ class PairingEditor extends React.Component {
 
   sendChat() {
     //socket stuff
-    this.props.socket.emit("sendChatFromApp", {message: this.state.chat, id: this.props.socket.id, role: this.state.driver ? "Driver" : "Navigator"});
+    this.props.socket.emit("sendChatFromApp", {message: this.state.chat, id: this.props.socket.id, user:this.props.user.username, role: this.state.driver ? "Driver" : "Navigator"});
   }
 
   render() {
@@ -139,7 +139,7 @@ class PairingEditor extends React.Component {
 
         <input placeholder="chat here" onChange={this.chatOnChange}/> 
           <Button onClick={this.sendChat} content="Send" />
-        {this.state.chatMessages.map((el, i) => <div key={i}><img src={el.role === "Driver" ? driverImg : navigatorImg} width="13px" height="13px" />{this.props.user.username}: {el.message}</div>)}
+        {this.state.chatMessages.map((el, i) => <div key={i}><img src={el.role === "Driver" ? driverImg : navigatorImg} width="13px" height="13px" />{el.user}: {el.message}</div>)}
       </div>
     )
   }
