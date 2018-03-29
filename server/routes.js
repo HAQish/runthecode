@@ -59,8 +59,8 @@ var challengeRoutes = function(app) {
         masterTestResults = data;
       } else {
         console.log('DATA RESULTS', data);
-        var resultArray = data;
-        masterTestResults = JSON.parse(resultArray);
+        var resultArray = JSON.parse(data);
+        masterTestResults = resultArray;
         for (var i = 0; i < resultArray.length; i++) {
           if (resultArray[i] === false) {
             message = "Failure";
