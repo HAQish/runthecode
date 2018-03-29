@@ -112,7 +112,7 @@ class PairingEditor extends React.Component {
 
   sendChat() {
     //socket stuff
-    this.props.socket.emit("sendChatFromApp", {message: this.state.chat, id: this.props.socket.id, role: this.state.driver ? "Driver" : "Navigator"});
+    this.props.socket.emit("sendChatFromApp", {message: this.state.chat, id: this.props.socket.id, user:this.props.user.username, role: this.state.driver ? "Driver" : "Navigator"});
   }
 
   render() {
