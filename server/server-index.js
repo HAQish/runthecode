@@ -1,51 +1,3 @@
-// const express = require('express');
-// const path = require('path');
-// const mongoose = require('mongoose');
-// const cookieParser = require('cookie-parser');
-// const bodyParser = require('body-parser');
-// const db = require('./../database/database-index');
-
-// let app = express();
-
-// let PORT = process.env.PORT || 3030;
-
-// // Authentication Packages
-// const session = require('express-session');
-// const MongoStore = require('connect-mongo')(session);
-// const passport = require('passport');
-// const LocalStrategy = require('passport-local').Strategy;
-
-// // Parses JSON, urls and cookies
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(cookieParser());
-
-// // Serves static files to client
-// app.use(express.static(path.join(__dirname, '../client/dist')));
-
-// // Express Session
-// app.use(session({
-//   secret: 'This is our secret',
-//   resave: true,
-//   saveUninitialized: true,
-//   store: new MongoStore({
-//     mongooseConnection: db.connection,
-//     ttl: 2 * 24 * 60 * 60
-//   })
-// }));
-
-// // Passport init
-// app.use(passport.initialize());
-// app.use(passport.session());
-
-
-
-
-
-
-
-
-
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
@@ -58,6 +10,8 @@ const db = require('../database/database-index.js');
 const passport = require('passport');
 
 var app = express();
+var http = require("http").Server(app);
+var io = require("socket.io")(http);
 var PORT = process.env.PORT || 3030;
 
 app.use(bodyParser.json());
@@ -65,18 +19,48 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, '../client/dist')));
 
-app.listen(PORT, function() {
+//socket.io stuff
+io.on("connection", function(socket) {
+  console.log("Connection made via socket.io on ", socket.id);
+
+  var code;
+
+  socket.on("codeChange", function(newCode) {
+    console.log("the new code being sent to the server's socket is ", newCode);
+    var code = newCode;
+    socket.broadcast.emit("codeChangeFromServer", newCode);
+  })
+
+  socket.on("componentWillMountPairing", function(socketID) {
+    socket.broadcast.emit("socketIdFromPartner", socketID);
+  })
+
+  socket.on("sendChatFromApp", function(chatMsg) {
+    io.sockets.emit("sendChatFromServer", chatMsg);
+  })
+
+  socket.on("disconnect", function() {
+    console.log("Disconnected from socket.");
+  });
+
+})
+
+
+
+
+http.listen(PORT, function() {
   console.log(`listening on port ${PORT}`);
 });
 
+const MongoStore = require('connect-mongo')(session); 
 app.use(cookieParser());
 app.use(session({
   secret: 'abcdefg',
   saveUninitialized: true,
-  // store: new MongoStore({
-  //   mongooseConnection: db.db,
-  //   ttl: 2 * 24 * 60 * 60
-  // })
+  store: new MongoStore({
+    mongooseConnection: db.db,
+    ttl: 2 * 24 * 60 * 60
+  })
 }));
 
 app.use(passport.initialize());

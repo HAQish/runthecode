@@ -2,6 +2,7 @@ import React from 'react';
 import AceEditor from 'react-ace';
 import brace from 'brace';
 import $ from 'jquery';
+import PairingEditor from "./pairingEditor.jsx";
 
 import 'brace/theme/kuroir';
 import 'brace/mode/javascript';
@@ -53,8 +54,14 @@ class Editor extends React.Component {
     });
   }  
 
+  // switch(e) {
+  //   this.setState({pairing: !this.state.pairing});
+  // }
+
   render() {
     return(
+      // this.state.pairing ? <PairingEditor />
+      // :
       <div>
         <AceEditor
           mode='javascript'
@@ -65,7 +72,9 @@ class Editor extends React.Component {
           width='100%'
           height='85vh'
         />
-        <Button onClick={this.handleSubmit} content="Send to server" primary />
+        <Button onClick={this.handleSubmit} content="Send to server" primary /> <br />
+        <br />
+        <Button onClick={this.props.switch} content="Switch to pair programming" />
       </div>
     )
   }

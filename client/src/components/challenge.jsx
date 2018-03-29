@@ -2,7 +2,7 @@ import React from 'react';
 import ChallengeInfo from './challengeInfo.jsx';
 import Editor from './editor.jsx';
 import ChallengeResultsModal from './challengeResultsModal.jsx'
-import {Grid, Button, Modal, Header, Icon} from 'semantic-ui-react';
+import { Grid, Button, Modal, Header, Icon } from 'semantic-ui-react';
 import $ from 'jquery';
 
 class Challenge extends React.Component {
@@ -35,61 +35,60 @@ class Challenge extends React.Component {
   componentWillMount() {
     if (this.props.user.completedInitial === false) {
       $.get("/initialChallenges", (data) => {
-          this.setState({
-            initialChallenges: data,
-            currentChallengeID: 0,
-            currentChallenge: data[0]
-          })
-        }
+        this.setState({
+          initialChallenges: data,
+          currentChallengeID: 0,
+          currentChallenge: data[0]
+        })
+      }
       )
     } else {
       $.get("/courseChallenges", (data) => {
-          this.setState({
-            courseChallenges: data,
-            currentChallenge: data[0]
-          })
-        }
-      )
+        this.setState({
+          courseChallenges: data,
+          currentChallenge: data[0]
+        })
+      })
     }
   }
 
   //invoked when user clicks 'next problem' button in challengeResults modal
   //uses logic to
-    //target next initialchallenge
-    //get coursechallenges upon completion of initial
-    //target next coursechallenge
+  //target next initialchallenge
+  //get coursechallenges upon completion of initial
+  //target next coursechallenge
   nextChallenge() {
-    this.setState({currentUserCode: undefined});
+    this.setState({ currentUserCode: undefined });
     if (this.props.user.completedInitial === false && this.state.currentChallengeID != 4) {
       let next = this.state.currentChallengeID + 1;
       this.setState({
         currentChallengeID: next,
-        openChallengeResultsModal:false,
+        openChallengeResultsModal: false,
         currentChallenge: this.state.initialChallenges[next],
       })
       if (next === 4) {
-        this.setState({justCompletedInitial: true})
+        this.setState({ justCompletedInitial: true })
       }
     } else if (this.props.user.completedInitial === false && this.state.currentChallengeID === 4) {
-        this.props.initialComplete(this.state.initialScore);
+      this.props.initialComplete(this.state.initialScore);
       this.setState({
-        openChallengeResultsModal:false,
-        currentChallengeID:0,
+        openChallengeResultsModal: false,
+        currentChallengeID: 0,
         justCompletedInitial: false
       })
       $.get('/courseChallenges', (data) => {
         this.setState({
           courseChallenges: data,
-          currentChallenge: data[this.state.initialScore*2]
+          currentChallenge: data[this.state.initialScore * 2]
         })
       })
     } else if (this.props.user.completedInitial === true) {
-      let next = this.state.currentChallengeID+1;
-      this.setState({currentChallenge: this.state.courseChallenges[next], openChallengeResultsModal: false, currentChallengeID: next})
+      let next = this.state.currentChallengeID + 1;
+      this.setState({ currentChallenge: this.state.courseChallenges[next], openChallengeResultsModal: false, currentChallengeID: next })
     }
-};
+  };
 
-//sets state to user challenge submission results...results = {"masterTestResults":[true,true],"message":"Success"} || {"masterTestResults":[true,false],"message":"Failure"} || {"masterTestResults":"'ReferenceError: hey is not defined'","message":"Error"}
+  //sets state to user challenge submission results...results = {"masterTestResults":[true,true],"message":"Success"} || {"masterTestResults":[true,false],"message":"Failure"} || {"masterTestResults":"'ReferenceError: hey is not defined'","message":"Error"}
   displayTestResults(results, userCode) {
     results = JSON.parse(results);
     this.setState({
@@ -108,14 +107,14 @@ class Challenge extends React.Component {
       // currentUserCode: userCode
     })
     if (this.state.justCompletedInitial) {
-      this.setState({currentChallenge: this.state.courseChallenges[this.state.initialScore]})
+      this.setState({ currentChallenge: this.state.courseChallenges[this.state.initialScore] })
     }
   }
 
   render() {
     var descriptions = this.state.currentChallenge.masterTestDescriptions
     const { currentChallenge } = this.state;
-    return(
+    return (
       <Grid>
         <Grid.Row columns={2}>
           <Grid.Column>
@@ -147,24 +146,3 @@ class Challenge extends React.Component {
 }
 
 export default Challenge;
-
-
-
-
-
-
-
-
-
-
-// this.state = {
-//   initialChallenges: [
-//     {
-//       "prompt": "Write a function called helloWorld that Returns the string 'Hello World' using two variables example: helloWorld() // returns 'Hello World'",
-//       "starterCode": "function helloWorld() { \n const hello = ''; \n const world = ''; \n ______ hello + ' ' + world; \n }",
-//       "masterTests": "[typeof helloWorld === 'function', helloWorld() === 'Hello World']",
-//       "masterTestDescriptions": "['helloWorld should be a function', 'return value should be Hello World']",
-//       "challengeNumber": 1,
-//       "challengeName": "Hello World!",
-//       "difficulty": "2"
-//     },
