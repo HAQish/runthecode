@@ -28,6 +28,7 @@ class Login extends React.Component {
         password: this.state.password
     };
     $.post('/login', user, (data) => this.props.handleLogin(data))
+    // this.props.handleLogin(user);
   }
 
   render() {

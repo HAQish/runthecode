@@ -1,6 +1,7 @@
 const Users = require('../database/database-index.js').Users
 const runThis = require('../coderunner/coderunner.js').runThis;
 const db = require('../database/database-index.js');
+const path = require("path");
 
 ///////// PASSPORT ROUTES /////////
 
@@ -35,23 +36,17 @@ var passportRoutes = function(app, passport) {
   });
 
   //Logout route
-  app.get('/logout', function(req, res) {
+  app.get('/logout', function (req, res) {
     console.log("Logging out, current user before logout is ", req.user);
     req.logout();
     res.end('Logged out successfully');
   });
-
-  app.get("/isLoggedIn", function(req, res) {
-    req.user ? console.log("Yes, you are logged in.") : console.log("No, you are not logged in.");
-    res.send(req.user);
-  })
 }
 
 /////// CHALLENGE ROUTES ///////
 
 var challengeRoutes = function(app) {
   //Challenge solution submission routes
-
   app.post("/challengeSolution", function(req, res) { // sending code from editor in app to be run in sandbox
     console.log('😈 in post to challengeSolution', req.body);
     var masterTestResults;
@@ -59,7 +54,7 @@ var challengeRoutes = function(app) {
     var message = "Success";
     var codeResult = runThis(req.body.masterUserSolutionCode, req.body.masterTests).
     then(async (data) => {
-      if (data[0] === "'" || data === "TimeoutError") {
+      if (data[0] === "'") {
         message = 'Error';
         masterTestResults = data;
       } else {
@@ -73,13 +68,9 @@ var challengeRoutes = function(app) {
           }
         }
       }
-      console.log("further down in post to challengeSolution, after returned from coderunner", masterTestResults, message);
+      console.log(masterTestResults, message);
       if (req.body.challengeLevel) { // if not undefined, then it's a course challenge, so must save completed problems
-        //assuming req.body.challengeName is the challengeName and req.user is the user
-        console.log('IN CHALLENGE LEVEL UPDATE');
-        console.log('req.user->', req.user);
         var user = await db.updateCompletedCourseChallenges(req.user, message, req.body.challengeName);
-        console.log('updated user in challengesolution ->', user);
       }
 
       endMsg = JSON.stringify({masterTestResults: masterTestResults, message: message, user: user});
@@ -92,7 +83,6 @@ var challengeRoutes = function(app) {
     console.log("Heard get for initial challenges from app");
     db.selectAllInitialChallenges().then(results => {console.log("results being sent from get to initialChallenges", results); res.send(results)});
   });
-
 
   app.post("/initialChallenges", function(req, res) { // sets flag on user document to show initial challenges are complete and sets score
     console.log('hit initialchallenge post, req.body is:', req.body);
@@ -121,7 +111,8 @@ var challengeRoutes = function(app) {
 
   app.get("/userSubmittedChallenge/:challengeName", function(req, res) { // find user submitted challenge by name
     console.log("Heard get for user submitted challenge, challenge name is ", req.params.challengeName);
-    db.getUserChallengeByName(req.params.challengeName).then(results => console.log(results));
+    // db.getUserChallengeByName(req.params.challengeName).then(results => console.log(results));
+    res.send('Getting all challenges');
   })
 
   // app.get("/challenges/next", function(req, res) { // assuming currentChallenge is in req.body
@@ -164,6 +155,14 @@ var dbRoutes = function(app) {
   app.get("/populatedChallenge", function(req, res) { // retrieves that particular challenge and populates the solution field with the solution ids in place
     db.getPopulatedChallenge("testChallenge1")
       .then(function(results) {console.log("in server-index, get route, the results from the populatedChallenge are ", results)});
+  })
+
+  app.get("/isLoggedIn", function(req, res) {
+    req.user ? res.send(req.user) : res.send(undefined);
+  });
+
+  app.get('/*', function(req, res) {
+    res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
   })
 }
 

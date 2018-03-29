@@ -4,7 +4,7 @@ const passportLocalMongoose = require('passport-local-mongoose'); //simplifies b
 const bcrypt = require('bcrypt'); // handles password hashing in the database
 const saltRounds = 5;
 let Schema = mongoose.Schema;
-let uristring = process.env.MONGODB_URI || 'mongodb://localhost:27017/levelup';
+let uristring = process.env.TESTMONGO_URI || process.env.MONGODB_URI || 'mongodb://localhost:27017/levelup';
 
 
 mongoose.connect(uristring, (err) => { // creating connection to mongod

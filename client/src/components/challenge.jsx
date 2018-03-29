@@ -48,8 +48,7 @@ class Challenge extends React.Component {
           courseChallenges: data,
           currentChallenge: data[0]
         })
-      }
-      )
+      })
     }
   }
 
