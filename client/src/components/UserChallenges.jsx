@@ -25,7 +25,7 @@ class UserChallenges extends React.Component {
       justCompletedInitial: false,
       currentUserCode: undefined,
       pairing: false,
-      endpoint: "localhost:3030",
+      endpoint: "/",
       socket: undefined,
       socketId: undefined
     }
