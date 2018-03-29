@@ -91,8 +91,8 @@ class Navbar extends Component {
       options = <Menu.Menu position='right'>
           <Menu.Item as={Link} to="/" position="right" name="Dashboard" icon="dashboard" active={activeItem === "Dashboard"} onClick={this.handleItemClick} />
           <Menu.Item as={Link} to="/course" position="right" name="Course" active={activeItem === "Course"} onClick={this.handleItemClick} />
-          <Menu.Item as={Link} to="/" position="right" name="logout" active={activeItem === "logout"} onClick={this.handleLogoutClick} />
           <Menu.Item as={Link} to="/challenges" position="right" name="Challenges" active={activeItem === "Challenges"} onClick={this.handleItemClick} />
+          <Menu.Item as={Link} to="/" position="right" name="logout" active={activeItem === "logout"} onClick={this.handleLogoutClick} />
         </Menu.Menu>;
     }
 
