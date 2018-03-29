@@ -21,7 +21,7 @@ app.use(express.static(path.join(__dirname, '../client/dist')));
 
 //socket.io stuff
 io.on("connection", function(socket) {
-  console.log("Connection made via socket.io on ", socket.id);
+  console.log("Connection made viaz socket.io on ", socket.id);
 
   var code;
 
