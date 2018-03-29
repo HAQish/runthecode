@@ -1,6 +1,6 @@
 const Sandbox = require('sandbox');
 var s = new Sandbox();
-
+onmessage = undefined;
 var runThis = function(userCode, tests) {
   var masterTests = tests;
   return new Promise(resolve => {
