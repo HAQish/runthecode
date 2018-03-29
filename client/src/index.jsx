@@ -100,7 +100,7 @@ class App extends React.Component {
               {loggedIn}
               <Route path="/course" component={() => <Challenge initialComplete={this.handleInitialComplete} user={this.state.masterUser} />} />
               <Route path="/allchallenges/:challengeName" component={AllChallenges} />
-              <Route path="/userChallenges" component={() => <UserChallenges initialComplete={this.handleInitialComplete} user={this.state.masterUser} />} />
+              <Route path="/challenges" component={() => <UserChallenges initialComplete={this.handleInitialComplete} user={this.state.masterUser} />} />
             </Side>
           </div>
         <Button onClick={this.isLoggedIn.bind(this)}>Am I logged In?</Button>
