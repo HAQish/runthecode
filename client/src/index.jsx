@@ -8,6 +8,7 @@ import Home from './components/home.jsx';
 import Dashboard from './components/dashboard.jsx';
 import Side from './components/side.jsx';
 import AllChallenges from './components/allChallenges.jsx';
+import UserChallenges from "./components/UserChallenges.jsx";
 import { Sidebar, Button, Menu, Image, Icon, Header, Grid, Segment, Dropdown } from 'semantic-ui-react';
 
 class App extends React.Component {
@@ -99,14 +100,13 @@ class App extends React.Component {
               {loggedIn}
               <Route path="/course" component={() => <Challenge initialComplete={this.handleInitialComplete} user={this.state.masterUser} />} />
               <Route path="/allchallenges/:challengeName" component={AllChallenges} />
+              <Route path="/userChallenges" component={() => <UserChallenges initialComplete={this.handleInitialComplete} user={this.state.masterUser} />} />
             </Side>
           </div>
-        </div>
         <Button onClick={this.isLoggedIn.bind(this)}>Am I logged In?</Button>
-      </div>
-    )
+        </div>
       </BrowserRouter>
-    );
+    )
   }
 }
 
