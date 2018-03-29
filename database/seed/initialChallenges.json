@@ -34,7 +34,7 @@
   {
     "prompt": "write a recursive function fibonacci that takes an integer n and returns the nth number of the fibonacci sequence \n hint - the fibonacci sequence calculates each number by the sum of the two numbers before it \n ex. 0, 1, 1, 2, 3, 5, 8, 13, 21, 34",
     "starterCode": "function fibonacci(n) { \n \n }",
-    "masterTests": "[typeof fibonacci === 'function', typeof fibonacci(n) === 'number', fibonacci(0) === 0, fibonacci(1) === 1, fibonacci(2) === 1, fibonacci(3) === 2, fibonacci(10) === 55, fibonacci(20) === 6765, fibonacci(40) === 102334155]",
+    "masterTests": "[typeof fibonacci === 'function', typeof fibonacci(3) === 'number', fibonacci(0) === 0, fibonacci(1) === 1, fibonacci(2) === 1, fibonacci(3) === 2, fibonacci(10) === 55, fibonacci(20) === 6765, fibonacci(40) === 102334155]",
     "masterTestDescriptions": "['fibonacci should be a function', 'fibonacci should return a number', 'the 0th fibonacci number is 0', 'the 1st fibonacci number is 1', 'the 2nd fibonacci number is 1', 'the 3rd fibonacci number is 2', 'the 10th fibonacci number is 55', 'the 20th fibonacci number is 6765', 'the 40th fibonacci number is 102334155']",
     "challengeName": "Fibonacci",
     "challengeNumber": 5
