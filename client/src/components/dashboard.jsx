@@ -56,34 +56,38 @@ class Dashboard extends React.Component {
   
 
   render() {
+    const { user } = this.props;
     return <div style={{ height: "100vh" }}>
         <TopWrapper>
-          <Label as={Link} size="huge" color="black">
+          <Label size="huge" color="black">
             <Icon name="marker" />
             Current Level:
-            <Label.Detail>???</Label.Detail>
+            <Label.Detail>{user.level}</Label.Detail>
           </Label>
-          <Label as={Link} size="huge" color="black">
+          <Label size="huge" color="black">
             <Icon name="code" />
             Completed Challenges:
-            <Label.Detail>???</Label.Detail>
+            <Label.Detail>{user.completedChallenges.length}</Label.Detail>
           </Label>
-          <Label as={Link} size="huge" color="black">
+          <Label size="huge" color="black">
             <Icon name="trophy" />
             Site Ranking:
-            <Label.Detail>???</Label.Detail>
+            <Label.Detail>{user.level}</Label.Detail>
           </Label>
-          <Label as={Link} size="huge" color="black">
+          <Label as={Link} to="/users" size="huge" color="black">
             <Icon name="users" inverted />
             USERS
           </Label>
-          <Label as={Link} size="huge" color="black">
+          <Label size="huge" color="black">
             <Icon name="mail outline" />
             Messages
-            <Label.Detail>???</Label.Detail>
+            <Label.Detail>0</Label.Detail>
           </Label>
         </TopWrapper>
         <Heading>DASHBOARD</Heading>
+        <Grid columns={2}>
+          
+        </Grid>
       </div>;
   }
 }

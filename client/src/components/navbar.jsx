@@ -91,7 +91,7 @@ class Navbar extends Component {
       options = <Menu.Menu position='right'>
           <Menu.Item as={Link} to="/" position="right" name="Dashboard" icon="dashboard" active={activeItem === "Dashboard"} onClick={this.handleItemClick} />
           <Menu.Item as={Link} to="/course" position="right" name="Challenges" active={activeItem === "Challenges"} onClick={this.handleItemClick} />
-          <Menu.Item position="right" name="logout" active={activeItem === "logout"} onClick={this.handleLogoutClick} />
+          <Menu.Item as={Link} to="/" position="right" name="logout" active={activeItem === "logout"} onClick={this.handleLogoutClick} />
         </Menu.Menu>;
     }
 
@@ -101,7 +101,7 @@ class Navbar extends Component {
             <Menu.Item name="home" active={activeItem === "home"} onClick={this.openSidebar}>
               <Icon name="puzzle" size="big" inverted />
             </Menu.Item>
-            <Menu.Item position="center">
+            <Menu.Item as={Link} to="/">
               <Header style={{ textAlign: "center", color: "white" }}>
                 LevelUP Code
               </Header>
