@@ -45,6 +45,7 @@ class Challenge extends React.Component {
     } else {
       $.get("/courseChallenges", (data) => {
         this.setState({
+          currentChallengeID: 0,
           courseChallenges: data,
           currentChallenge: data[0]
         })
@@ -79,6 +80,7 @@ class Challenge extends React.Component {
       $.get('/courseChallenges', (data) => {
         this.setState({
           courseChallenges: data,
+          currentChallengeID: this.state.intialScore*2,
           currentChallenge: data[this.state.initialScore * 2]
         })
       })
