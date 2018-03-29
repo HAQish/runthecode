@@ -139,7 +139,7 @@ class PairingEditor extends React.Component {
 
         <input placeholder="chat here" onChange={this.chatOnChange}/> 
           <Button onClick={this.sendChat} content="Send" />
-        {this.state.chatMessages.map((el, i) => <div key={i}><img src={el.role === "Driver" ? driverImg : navigatorImg} width="13px" height="13px" />{el.user}: {el.message}</div>)}
+        {this.state.chatMessages.map((el, i) => <div key={i}><img src={el.role === "Driver" ? driverImg : navigatorImg} width="13px" height="13px" />{this.props.user.username}: {el.message}</div>)}
       </div>
     )
   }

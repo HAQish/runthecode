@@ -1,6 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
-import Link from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 
 import {
@@ -11,13 +11,17 @@ import {
   Grid,
   Segment,
   Container,
-  Label
+  Label,
+  Form,
+  Card,
+  Feed
 } from "semantic-ui-react";
 
 const TopWrapper = styled.div`
   display: flex;  
   flex-direction: row;
   justify-content: space-evenly;
+  flex-wrap: wrap;
   width: 100%;
   border-bottom: 5px solid black;
   padding: 10px;
@@ -55,34 +59,144 @@ class Dashboard extends React.Component {
   
 
   render() {
+    const { user } = this.props;
+    let completed = this.props.user.completedInitial ? 'YES' : 'NO';
+    console.log('coooommmmppp', user.completedInitial);
     return <div style={{ height: "100vh" }}>
         <TopWrapper>
-          <Label as={Link} size="huge" color="black">
+          <Label size="huge" color="black">
             <Icon name="marker" />
             Current Level:
-            <Label.Detail>???</Label.Detail>
+            <Label.Detail>{user.level}</Label.Detail>
           </Label>
-          <Label as={Link} size="huge" color="black">
+          <Label size="huge" color="black">
             <Icon name="code" />
             Completed Challenges:
-            <Label.Detail>???</Label.Detail>
+            <Label.Detail>{user.completedChallenges.length}</Label.Detail>
           </Label>
-          <Label as={Link} size="huge" color="black">
+          <Label size="huge" color="black">
             <Icon name="trophy" />
             Site Ranking:
-            <Label.Detail>???</Label.Detail>
+            <Label.Detail>{user.level}</Label.Detail>
           </Label>
-          <Label as={Link} size="huge" color="black">
+          <Label as={Link} to="/users" size="huge" color="black">
             <Icon name="users" inverted />
             USERS
           </Label>
-          <Label as={Link} size="huge" color="black">
+          <Label size="huge" color="black">
             <Icon name="mail outline" />
             Messages
-            <Label.Detail>???</Label.Detail>
+            <Label.Detail>0</Label.Detail>
           </Label>
         </TopWrapper>
-        <Heading>DASHBOARD</Heading>
+        <Heading>Welcome {user.username} to your DASHBOARD</Heading>
+
+        <Grid>
+          <Grid.Row>
+            <Grid.Column width={8}>
+              <Card centered raised color="blue" style={{ width: "70%" }}>
+                <Card.Content>
+                  <Card.Header>Your Learning Path</Card.Header>
+                </Card.Content>
+                <Card.Content>
+                  <br />
+                  <Feed>
+                    <Feed.Event>
+                      <Feed.Content>
+                        <Feed.Summary>
+                          <h3>
+                            Initial Challenges Completed: {completed}
+                          </h3>
+                        </Feed.Summary>
+                        <Feed.Date content="1 day ago" />
+                      </Feed.Content>
+                    </Feed.Event>
+                    <br />
+                    <br />
+                    <Feed.Event>
+                      <Feed.Content>
+                        <Feed.Summary>
+                          <h3>
+                            Course Challenges Completed:{" "}
+                            {
+                              Object.keys(user.completedCourseChallenges)
+                                .length
+                            }
+                          </h3>
+                        </Feed.Summary>
+                        <Feed.Date content="3 hours ago" />
+                      </Feed.Content>
+                    </Feed.Event>
+                  </Feed>
+                  <br />
+                  <br />
+                  <Button as={Link} to="/course" content="Keep Learning" primary />
+                </Card.Content>
+              </Card>
+            </Grid.Column>
+            <Grid.Column width={8}>
+              <Card centered raised color="blue" style={{ width: "70%" }}>
+                <Card.Content>
+                  <Card.Header>Your Challenge Path</Card.Header>
+                </Card.Content>
+                <Card.Content>
+                  <Feed>
+                    <Feed.Event>
+                      <Feed.Content>
+                        <Feed.Summary>
+                          <h3>
+                            Total Challenges Completed:{" "}
+                            {
+                              Object.keys(user.completedCourseChallenges)
+                                .length
+                            }
+                          </h3>
+                        </Feed.Summary>
+                        <Feed.Date content="1 hour ago" />
+                      </Feed.Content>
+                    </Feed.Event>
+                    <br />
+                    <Feed.Event>
+                      <Feed.Content>
+                        <Feed.Summary>
+                          <h3>Your Solution Upvotes: 0</h3>
+                        </Feed.Summary>
+                        <Feed.Date content="1 hours ago" />
+                      </Feed.Content>
+                    </Feed.Event>
+                    <br />
+                    <Feed.Event>
+                      <Feed.Content>
+                        <Feed.Summary>
+                          <h3>Added Challenges: 0</h3>
+                        </Feed.Summary>
+                        <Feed.Date content="1 hours ago" />
+                      </Feed.Content>
+                    </Feed.Event>
+                  </Feed>
+                  <br />
+                  <br />
+                  <Button as={Link} to="/allChallenges" content="All Challenges" primary />
+                </Card.Content>
+              </Card>
+            </Grid.Column>
+          </Grid.Row>
+          <br />
+          <br />
+          <Grid.Row centered columns={1} style={{marginTop: '40px', marginBottom: '30px'}}>
+            <Header>Add your own Challenge for the Site to enjoy!</Header>
+            <Grid.Column centered width={12}>
+              <Segment inverted style={{marginBottom: '40px'}}>
+                <Form inverted>
+                  <Form.Input fluid label='Challenge Name' placeholder='Merge Sort...' />
+                  <Form.TextArea fluid label='Challenge Description' placeholder='Write a description and any instructions necessary...' />
+                  <Form.TextArea fluid label='Challenge Tests' placeholder='Write any tests this challenge needs to pass... Use a new line for each!' />
+                  <Form.Button primary>Submit Challenge</Form.Button>
+                </Form>
+              </Segment>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
       </div>;
   }
 }
