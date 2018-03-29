@@ -105,7 +105,7 @@ var userSchema = new Schema({
   level: String, // changed to string from number for now
   experience: String, // changed to string from number for now
   score: String, // changed to string from number for now
-  completedCourseChallenges: {type: Object, default: {}},
+  completedCourseChallenges: { type : Schema.Types.Mixed, default : {firstChallenge: true}},
   completedChallenges: [{type: Schema.Types.ObjectId, ref: 'Solutions'}]
 })
 

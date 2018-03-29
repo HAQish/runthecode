@@ -136,7 +136,7 @@ class UserChallenges extends React.Component {
     var descriptions = this.state.currentChallenge.masterTestDescriptions
     const { currentChallenge } = this.state;
     const whichEditor = (this.state.pairing) ? 
-      (<PairingEditor starterCode = { this.state.currentUserCode || currentChallenge.starterCode } testDescriptions = { currentChallenge.masterTestDescriptions } masterTests = { currentChallenge.masterTests } displayTestResults = { this.displayTestResults } challengeLevel = { currentChallenge.challengeLevel } challengeName = { currentChallenge.challengeName } switch= { this.switch } socketInitialize={this.socketInitialize} socket={this.state.socket}/>)
+      (<PairingEditor starterCode = { this.state.currentUserCode || currentChallenge.starterCode } testDescriptions = { currentChallenge.masterTestDescriptions } masterTests = { currentChallenge.masterTests } displayTestResults = { this.displayTestResults } challengeLevel = { currentChallenge.challengeLevel } challengeName = { currentChallenge.challengeName } switch= { this.switch } socketInitialize={this.socketInitialize} socket={this.state.socket} user={this.props.user}/>)
      : 
       (<Editor starterCode={this.state.currentUserCode || currentChallenge.starterCode} testDescriptions={currentChallenge.masterTestDescriptions} masterTests={currentChallenge.masterTests} displayTestResults={this.displayTestResults} challengeLevel={currentChallenge.challengeLevel} challengeName={currentChallenge.challengeName} switch={this.switch} />)
     
