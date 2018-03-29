@@ -89,7 +89,7 @@ class Dashboard extends React.Component {
             <Label.Detail>0</Label.Detail>
           </Label>
         </TopWrapper>
-        <Heading>DASHBOARD</Heading>
+        <Heading>Welcome {user.username} to your DASHBOARD</Heading>
 
         <Grid>
           <Grid.Row>
@@ -105,7 +105,7 @@ class Dashboard extends React.Component {
                       <Feed.Content>
                         <Feed.Summary>
                           <h3>
-                            Initial Challenges Completed: {completedInitial}
+                            Initial Challenges Completed: {completed}
                           </h3>
                         </Feed.Summary>
                         <Feed.Date content="1 day ago" />
