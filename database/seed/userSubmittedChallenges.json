@@ -1,0 +1,36 @@
+ createdAt: {type: Date, default: Date.now},
+  starterCode: String,
+  challengeName: String,
+  challengeNumber: Number,
+  createdBy: String,
+  categories: Array,
+  prompt: String,
+  masterTests: String,
+  masterTestDescriptions: String,
+  resources: [{
+    resourceName: String,
+    resourceUrl: String
+  }],
+  hints: [{
+    text: String,
+    deductionValue: String // changed to string from number for now
+  }],
+  masterSolution: String,
+  submittedSolutions: [{type: Schema.Types.ObjectId, ref: 'Solutions'}],
+  maxScore: String, // changed to string from number for now
+  difficulty: String // changed to string from number for now
+  [
+    {
+      starterCode: String,
+      challengeName: String,
+      challengeNumber: Number,
+      createdBy: String,
+      categories: Array,
+      prompt: String,
+      masterTests: String,
+      masterTestDescriptions: String,
+      masterSolution: String,
+      maxScore: String, // changed to string from number for now
+      difficulty: String // changed
+    }
+  ]
