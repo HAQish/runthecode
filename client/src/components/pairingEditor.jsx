@@ -45,6 +45,7 @@ class PairingEditor extends React.Component {
 
   componentWillMount() {
     // this.props.socketInitialize();
+    console.log("In pairingEditor.jsx, socket is", this.props.socket);
     setInterval(this.getPairingId.bind(this), 5000);
     this.props.socket.on("socketIdFromPartner", (partnerId) => {
       this.setState({partnerId : partnerId});

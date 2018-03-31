@@ -1,36 +1,16 @@
- createdAt: {type: Date, default: Date.now},
-  starterCode: String,
-  challengeName: String,
-  challengeNumber: Number,
-  createdBy: String,
-  categories: Array,
-  prompt: String,
-  masterTests: String,
-  masterTestDescriptions: String,
-  resources: [{
-    resourceName: String,
-    resourceUrl: String
-  }],
-  hints: [{
-    text: String,
-    deductionValue: String // changed to string from number for now
-  }],
-  masterSolution: String,
-  submittedSolutions: [{type: Schema.Types.ObjectId, ref: 'Solutions'}],
-  maxScore: String, // changed to string from number for now
-  difficulty: String // changed to string from number for now
-  [
-    {
-      starterCode: String,
-      challengeName: String,
-      challengeNumber: Number,
-      createdBy: String,
-      categories: Array,
-      prompt: String,
-      masterTests: String,
-      masterTestDescriptions: String,
-      masterSolution: String,
-      maxScore: String, // changed to string from number for now
-      difficulty: String // changed
-    }
-  ]
+[
+  {
+    "starterCode": "function addTwo() {}",
+    "challengeName": "addTwo",
+    "challengeNumber": 1,
+    "createdBy": "Admin",
+    "categories": "['test']",
+    "prompt": "Write a function called addTwo that adds 2 to the argument.",
+    "masterTests": "[typeof addTwo === 'function', addTwo(3) === 5]",
+    "masterTestDescriptions": "['addTwo should be a function', 'addTwo(3) should return 5']",
+    "masterSolution": "function addTwo(n) {return n + 2}",
+    "maxScore": "10", 
+    "difficulty": 4
+  }
+]
+

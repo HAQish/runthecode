@@ -10,7 +10,8 @@ class Navbar extends Component {
     super(props);
     this.state = { 
       activeItem: 'home',
-      openSignupModal: false
+      openSignupModal: false,
+      messages: []
     }
     this.handleItemClick = this.handleItemClick.bind(this);
     this.handleLogoutClick = this.handleLogoutClick.bind(this);
@@ -18,7 +19,28 @@ class Navbar extends Component {
     this.closeSignupModal = this.closeSignupModal.bind(this);
     this.openSignupModal = this.openSignupModal.bind(this);
     this.openSidebar = this.openSidebar.bind(this);
+    // this.getOnlineUsers = this.getOnlineUsers.bind(this);
   }
+
+  componentWillMount() {
+    console.log("In navbar.jsx, socket is", this.props.socket);
+    console.log("In navbar.jsx, user is", this.props.user, this.props.isLoggedIn);
+    // this.props.socket.on("sendChatMessage", (message) => {
+    //   console.log("In Navbar.js, heard message from socket from backend", message);
+    //     this.setState({messages: this.state.messages.concat(message)});
+    // })
+  }
+
+  // componentDidMount() {
+  //   this.props.socket.on("returnOnlineUsers", function(usersArr) {
+  //     console.log("In navbar, usersArr returned from backend is", usersArr);
+  //   })
+  //   setInterval(this.getOnlineUsers, 5000);
+  // }
+
+  // getOnlineUsers() {
+  //   this.props.socket.emit("getOnlineUsers");
+  // }
 
   handleItemClick (e, {name}) {
     this.setState({ activeItem: name });
@@ -27,6 +49,7 @@ class Navbar extends Component {
   handleLogoutClick (e) {
     this.setState({activeItem: 'home'});
     this.props.logout();
+    this.props.socket.emit("Logout socket", this.props.user.username);
   }
   
   handleLoginSubmit(user) {
@@ -89,9 +112,11 @@ class Navbar extends Component {
       );
     } else {
       options = <Menu.Menu position='right'>
+          <Menu.Item as={Link} to="/messages" position="right" name="Messages" icon="users" active={activeItem === "Messages"} onClick={this.handleItemClick} user={this.props.user} />
+          <Menu.Item as={Link} to="/users" position="right" name="Users" icon="users" active={activeItem === "Users"} onClick={this.handleItemClick} user={this.props.user}/>
           <Menu.Item as={Link} to="/" position="right" name="Dashboard" icon="dashboard" active={activeItem === "Dashboard"} onClick={this.handleItemClick} />
-          <Menu.Item as={Link} to="/course" position="right" name="Challenges" active={activeItem === "Challenges"} onClick={this.handleItemClick} />
-          <Menu.Item as={Link} to="/userChallenges" position="right" name="UserChallenges" active={activeItem === "UserChallenges"} onClick={this.handleItemClick} />
+          <Menu.Item as={Link} to="/course" position="right" name="Course" active={activeItem === "Course"} onClick={this.handleItemClick} />
+          <Menu.Item as={Link} to="/challenges" position="right" name="Challenges" active={activeItem === "Challenges"} onClick={this.handleItemClick} socket={this.props.socket}/>
           <Menu.Item as={Link} to="/" position="right" name="logout" active={activeItem === "logout"} onClick={this.handleLogoutClick} />
         </Menu.Menu>;
     }
@@ -102,7 +127,7 @@ class Navbar extends Component {
             <Menu.Item name="home" active={activeItem === "home"} onClick={this.openSidebar}>
               <Icon name="puzzle" size="big" inverted />
             </Menu.Item>
-            <Menu.Item position="center">
+            <Menu.Item as={Link} to="/">
               <Header style={{ textAlign: "center", color: "white" }}>
                 LevelUP Code
               </Header>

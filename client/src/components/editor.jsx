@@ -54,29 +54,22 @@ class Editor extends React.Component {
     });
   }  
 
-  // switch(e) {
-  //   this.setState({pairing: !this.state.pairing});
-  // }
-
   render() {
-    return(
-      // this.state.pairing ? <PairingEditor />
-      // :
+    // let show = 
+    return (
       <div>
-        <AceEditor
-          mode='javascript'
-          theme="kuroir"
-          onChange={this.onChange}
-          value={this.state.masterUserSolutionCode || this.props.starterCode}
-          editorProps={{ $blockScrolling: true }}
-          width='100%'
-          height='85vh'
+        <AceEditor 
+        mode="javascript" 
+        theme="kuroir" 
+        onChange={this.onChange} 
+        value={this.state.masterUserSolutionCode || this.props.starterCode} 
+        editorProps={{ $blockScrolling: true }} 
+        width="100%" height="85vh" 
         />
-        <Button onClick={this.handleSubmit} content="Send to server" primary /> <br />
-        <br />
+        <Button onClick={this.handleSubmit} content="Send to server" primary />
         <Button onClick={this.props.switch} content="Switch to pair programming" />
       </div>
-    )
+    );
   }
 }
 
