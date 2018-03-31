@@ -72,8 +72,7 @@ var challengeRoutes = function(app) {
       if (req.body.challengeLevel) { // if not undefined, then it's a course challenge, so must save completed problems
         var user = await db.updateCompletedCourseChallenges(req.user, message, req.body.challengeName);
       }
-
-      endMsg = JSON.stringify({masterTestResults: masterTestResults, message: message, user: user});
+      endMsg = JSON.stringify({masterTestResults: masterTestResults, message: message});
       res.end(endMsg);
     })
     .catch(err => console.log('error in challengeSolution', err))
@@ -104,10 +103,41 @@ var challengeRoutes = function(app) {
 
 
 //User submitted challenge routes
-  app.post("/userSubmittedChallenge", function(req, res) { // create new user submitted challenge
-    console.log("Heard post for user submitted challenge, req.body is ", req.body);
-    db.addUserChallenge(req.body);
+  app.post("/userSubmittedChallenge", function(req, res) { 
+    console.log('aaaaaaaaaa', req.body.user);
+    var challenge = req.body.newChallenge
+    challenge.createdBy = req.body.user.username;
+    var masterTests = challenge.masterTests;
+    var masterSolution = challenge.masterSolution;
+    var masterTestResults;
+    var endMsg;
+    var message="Success";
+    var codeResult = runThis(masterSolution, masterTests).
+    then(async (data) => {
+      if (data[0] === "'") {
+        message = 'Error';
+        masterTestResults = data;
+      } else {
+        console.log('DATA RESULTS', data);
+        var resultArray = JSON.parse(data);
+        masterTestResults = resultArray;
+        for (var i = 0; i < resultArray.length; i++) {
+          if (resultArray[i] === false) {
+            message = "Failure";
+            break;
+          }
+        }
+      }
+      endMsg = JSON.stringify({masterTestResults: masterTestResults, message: message})
+      //on success
+      if (message==="Success") {
+        db.addUserChallenge(challenge);
+      }
+      res.end(endMsg);
+    })
+    .catch(err => console.log('error in challengeSolution', err))
   })
+
 
   app.get("/userSubmittedChallenge/:challengeName", function(req, res) { // find user submitted challenge by name
     console.log("Heard get for user submitted challenge, challenge name is ", req.params.challengeName);

@@ -70,7 +70,7 @@ var userChallengeSchema = new Schema({
   categories: Array,
   prompt: String,
   masterTests: String,
-  masterTestDescriptions: String,
+  testDescriptions: String,
   resources: [{
     resourceName: String,
     resourceUrl: String
@@ -82,7 +82,7 @@ var userChallengeSchema = new Schema({
   masterSolution: String,
   submittedSolutions: [{type: Schema.Types.ObjectId, ref: 'Solutions'}],
   maxScore: String, // changed to string from number for now
-  difficulty: String // changed to string from number for now
+  challengeLevel: String // changed to string from number for now
   // next: String, // removing linked list capabilities from user-submitted challenges for now
   // previous: String // removing linked list capabilities from user-submitted challenges for now
 })
