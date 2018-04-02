@@ -123,7 +123,7 @@ var solutionsSchema = new Schema({
   createdBy: String,
   solvedBy: String,
   score: String, // changed to string from number for now
-  rating: String, // changed to string from number for now
+  rating: {type: Schema.Types.Mixed, default : {kevin: 1}}, // changed to string from number for now
   masterUserSolutionCode: String,
   difficulty: String,
   comments: [{
@@ -158,6 +158,14 @@ var findUserById = function(id, callback) {
   console.log("in findUserById in databaseindex.js, passed-in id is ", id);
   return Users.findById(id, callback);
 }
+
+var rateSolution = function(challengeName, solver, rater, vote) {
+  Solutions.findOne({challengeName: challengeName, solvedBy: solver}, function(err, solution) {
+    if (err) {return err;}
+    Solution.rating[rater]=vote
+    return Solution.save();
+  })
+};
 
 var addNewInitialChallenge = function(obj) {
   var newInitialChallenge = new InitialChallenges(obj);
@@ -227,7 +235,7 @@ var addSolution = function(obj, username, challengeName) { // adds to solutions 
       console.log("in addSolution in database-index, added newSolution with id ", newSolution._id, "to user ", user.username);
 
       user.save(function(err) { // now, we need to save the ID to the supplied challenge
-        Challenges.findOne({challengeName: challengeName}, function(err, challenge) {
+        UserChallenges.findOne({challengeName: challengeName}, function(err, challenge) {
           if (err) {return err;}
 
           challenge.submittedSolutions = challenge.submittedSolutions.concat(newSolution._id);
@@ -336,7 +344,9 @@ module.exports.getUserChallengeByName = getUserChallengeByName;
 module.exports.getAllCourseChallenges = getAllCourseChallenges;
 module.exports.updateUserLevel = updateUserLevel;
 module.exports.updateCompletedCourseChallenges = updateCompletedCourseChallenges;
+module.exports.rateSolution = rateSolution;
 module.exports.db = db;
+
 
 
 

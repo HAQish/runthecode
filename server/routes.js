@@ -100,7 +100,45 @@ var challengeRoutes = function(app) {
   //   db.addNewInitialChallenge(req.body);
   // })
 
+  app.post("/allChallenges", function(req, res) {
+    var masterTestResults;
+    var endMsg;
+    var message = "Success";
+    var codeResult = runThis(req.body.masterUserSolutionCode, req.body.masterTests).
+    then(async (data) => {
+      if (data[0] === "'") {
+        message = 'Error';
+        masterTestResults = data;
+      } else {
+        console.log('DATA RESULTS', data);
+        var resultArray = JSON.parse(data);
+        masterTestResults = resultArray;
+        for (var i = 0; i < resultArray.length; i++) {
+          if (resultArray[i] === false) {
+            message = "Failure";
+            break;
+          }
+        }
+      }
+      console.log(masterTestResults, message);
+      if (message = "Success") {
+        //add to submitted solutions in challenge
+        db.addSolution(req.body.masterUserSolutionCode, req.body.user.username, req.body.challengeName)
+      }
+      endMsg = JSON.stringify({masterTestResults: masterTestResults, message: message});
+      res.end(endMsg);
+    })
+    .catch(err => console.log('error in challengeSolution', err))
+  })
 
+  app.post("/rateSolution", function(req, res) {
+    //needs (challengename, solver, rater, vote) from front end
+    db.rateSolution(req.body.challengeName, req.body.solver, req.body.rater, req.body.vote);
+    rater = req.body.rater;
+    vote = req.body.vote;
+    var rateMsg = {[rater]: vote};
+    res.end(JSON.stringify(rateMsg))
+  });
 
 //User submitted challenge routes
   app.post("/userSubmittedChallenge", function(req, res) { 

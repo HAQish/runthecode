@@ -1,7 +1,7 @@
 [
   {
     "submittedSolutions": [],
-    "challengeName": "['myChallenge should be a function', 'myChallenge should return hello']",
+    "challengeName": "myChallenge",
     "prompt": "write a function, myChallenge, that returns 'hello'",
     "starterCode": "var myChallenge = function() {\n  return '_____';\n};",
     "masterSolution": "var myChallenge = function() {\n  return 'hello'\n};",
