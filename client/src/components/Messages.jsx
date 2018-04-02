@@ -18,6 +18,11 @@ class Messages extends React.Component {
   //functions go here
   componentWillMount() {
     console.log("In Messages.jsx, this.props.messages is", this.props.messages);
+    console.log("In Messages.jsx, this.props.triggerChatAlert", this.props.triggerChatAlert);
+    if (this.props.triggerChatAlert === true) {
+      console.log("in Messages.jsx, triggerChatAlert is true and now setting to false");
+      this.props.setMessagesFalse();
+    }
   }
 
 

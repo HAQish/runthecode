@@ -47,7 +47,7 @@ class Dashboard extends React.Component {
     console.log('I am on the dashboard: ', this.state.onDashboard);
     console.log('The user is: ', this.props.user);
     console.log("In dashboard, socket is ", this.props.socket);
-    // this.onlineUpdate();
+    this.props.onlineUpdate();
   }
 
   // onlineUpdate() {

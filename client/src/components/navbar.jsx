@@ -29,6 +29,7 @@ class Navbar extends Component {
     //   console.log("In Navbar.js, heard message from socket from backend", message);
     //     this.setState({messages: this.state.messages.concat(message)});
     // })
+    
   }
 
   // componentDidMount() {
@@ -74,6 +75,7 @@ class Navbar extends Component {
 
   render() {
     const { activeItem } = this.state;
+    const newMessages = this.props.triggerChatAlert ? "(!)Messages" : "Messages";
     let form;
     if (this.state.activeItem === 'login') {
       form = <Login handleLogin={this.handleLoginSubmit} />;
@@ -112,7 +114,7 @@ class Navbar extends Component {
       );
     } else {
       options = <Menu.Menu position='right'>
-          <Menu.Item as={Link} to="/messages" position="right" name="Messages" icon="users" active={activeItem === "Messages"} onClick={this.handleItemClick} user={this.props.user} />
+          <Menu.Item as={Link} to="/messages" position="right" name="Messages" content={newMessages} icon="mail outline" active={activeItem === "Messages"} onClick={this.handleItemClick} user={this.props.user} triggerChatAlert={this.props.triggerChatAlert} />
           <Menu.Item as={Link} to="/users" position="right" name="Users" icon="users" active={activeItem === "Users"} onClick={this.handleItemClick} user={this.props.user}/>
           <Menu.Item as={Link} to="/" position="right" name="Dashboard" icon="dashboard" active={activeItem === "Dashboard"} onClick={this.handleItemClick} />
           <Menu.Item as={Link} to="/course" position="right" name="Course" active={activeItem === "Course"} onClick={this.handleItemClick} />

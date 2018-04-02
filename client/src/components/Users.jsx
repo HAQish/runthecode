@@ -24,7 +24,7 @@ class Users extends React.Component {
       this.setState({users: usersArr});
     })
     this.getOnlineUsers;
-    setInterval(this.getOnlineUsers, 4000);
+    setInterval(this.getOnlineUsers, 1500);
     // console.log(this.props.users);
   }
 
@@ -45,14 +45,19 @@ class Users extends React.Component {
     const users = this.state.users;
     return (
       <div>
-      {users.map(el => <div>User: {el[0]}, SocketID: {el[1]} <input onChange={this.chatMessageChange} placeholder="Message this user"></input> <button onClick={() => this.sendMessageToUser(el[1])}></button></div>)}
-      
+        {users.map(el => {
+          return (
+            <div>
+              <span>User: {el[0]}, SocketID: {el[1]}</span>
+              <input onChange={this.chatMessageChange} placeholder="Message this user" /> 
+              <button onClick={() => this.sendMessageToUser(el[1])} />
+            </div>
+            )
+          })
+        }
       </div>
     )
-
-    
   }
-
 }
 
 export default Users;

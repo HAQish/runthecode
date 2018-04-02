@@ -12,6 +12,7 @@ import AllChallenges from './components/allChallenges.jsx';
 import UserChallenges from "./components/UserChallenges.jsx";
 import Users from "./components/Users.jsx";
 import Messages from "./components/Messages.jsx";
+import ChatAlert from "./components/ChatAlert.jsx";
 import { Sidebar, Button, Menu, Image, Icon, Header, Grid, Segment, Dropdown } from 'semantic-ui-react';
 
 class App extends React.Component {
@@ -22,7 +23,8 @@ class App extends React.Component {
       masterUser: undefined, //{"local":{"email":"fakeemail@yahoo.com","password":"fakepw"},"completedInitial":false,"completedChallenges":[],"_id":"5ab5358921b7e547a81fcc3e","createdAt":"2018-03-23T17:12:41.095Z","username":"fakeusername","__v":0}
       visible: false,
       endpoint: "/",
-      messages: []
+      messages: [],
+      triggerChatAlert: false
     };
     this.logout = this.logout.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
@@ -31,6 +33,7 @@ class App extends React.Component {
     this.handleInitialComplete = this.handleInitialComplete.bind(this);
     this.socketInitialize = this.socketInitialize.bind(this);
     this.onlineUpdate = this.onlineUpdate.bind(this);
+    this.setMessagesFalse = this.setMessagesFalse.bind(this);
   }
 
   componentDidMount() {
@@ -51,13 +54,19 @@ class App extends React.Component {
     });
     console.log("In index.jsx, socket is", this.state.socket);
     this.state.socket.on("sendChatMessage", (message) => {
-      console.log("In Navbar.js, heard message from socket from backend", message);
-      this.setState({ messages: this.state.messages.concat(message) });
+      console.log("In index.jsx, heard message from socket from backend", message);
+      this.setState({ messages: this.state.messages.concat(message) , triggerChatAlert: true});
     })
   }
   
   componentWillMount() {
     this.socketInitialize();
+  }
+
+  setMessagesFalse() {
+    if (this.state.triggerChatAlert) {
+      this.setState({triggerChatAlert: false});
+    }
   }
 
   onlineUpdate() {
@@ -72,7 +81,8 @@ class App extends React.Component {
     $.ajax({
       type: "GET",
       url: "/logout",
-      success: (data) => {this.clearState()},
+      // success: (data) => {this.clearState(); this.state.socket.emit("disconnect");},
+      success: (data) => { this.clearState(); },
       failure: (err => console.log("error in logout in app", err))
     })
     // fetch('/logout', {credentials: 'include'})
@@ -88,11 +98,15 @@ class App extends React.Component {
 
   handleLogin(user) {
     console.log('😇', user);
-    this.setState({
-      masterUser: user[0],
-    });
+    return new Promise((resolve, reject) => {
+      this.setState({
+        masterUser: user[0],
+      });
+      console.log(user[0]);
+      resolve(5);
+    }).then(() => {setTimeout(() => {this.onlineUpdate}, 1000)});
     console.log(this.state.masterUser);
-    this.onlineUpdate();
+    // setTimeout(this.onlineUpdate, 300);
   }
   
   handleInitialComplete(score) {
@@ -111,24 +125,26 @@ class App extends React.Component {
   render () {
     const {visible} = this.state;
     const loggedIn = this.state.masterUser ? 
-    (<Route exact path="/" component={() => <Dashboard user={this.state.masterUser} socket={this.state.socket}/>} />) 
+    (<Route exact path="/" component={() => <Dashboard user={this.state.masterUser} socket={this.state.socket} onlineUpdate={this.onlineUpdate}/>} />) 
     : 
     (<Route exact path="/" component={() => <Home handleLogin={this.handleLogin} />} />);
+    // const chatAlert = this.state.triggerChatAlert ? "You have new chat messages" : "";
 
     return(
       <BrowserRouter>
         <div>
           <div>
             <Side visible={this.state.visible}>
-              <Navbar handleLogin={this.handleLogin} logout={this.logout} isLoggedIn={this.state.masterUser} toggleSidebar={this.toggleVisibility} socket={this.state.socket} user={this.state.masterUser}/>
+              <Navbar handleLogin={this.handleLogin} logout={this.logout} isLoggedIn={this.state.masterUser} toggleSidebar={this.toggleVisibility} socket={this.state.socket} user={this.state.masterUser}  triggerChatAlert={this.state.triggerChatAlert} setMessagesFalse={this.setMessagesFalse} />
               {loggedIn}
               <Route path="/course" component={() => <Challenge initialComplete={this.handleInitialComplete} user={this.state.masterUser} />} />
               <Route path="/allchallenges/:challengeName" component={AllChallenges} />
               <Route path="/challenges" component={() => <UserChallenges initialComplete={this.handleInitialComplete} user={this.state.masterUser} socket={this.state.socket}/>} />
               <Route path="/users" component={() => <Users user={this.state.masterUser} socket={this.state.socket} />} />
-              <Route path="/messages" component={() => <Messages user={this.state.masterUser} socket={this.state.socket} messages={this.state.messages} />} />
+              <Route path="/messages" component={() => <Messages user={this.state.masterUser} socket={this.state.socket} messages={this.state.messages} triggerChatAlert={this.state.triggerChatAlert} setMessagesFalse={this.setMessagesFalse} />} />
             </Side>
           </div>
+          {/* {ChatAlert} */}
         </div>
       </BrowserRouter>
     )

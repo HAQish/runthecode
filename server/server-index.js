@@ -30,22 +30,15 @@ io.on("connection", function(socket) {
   socket.on("onlineUpdate", function(user) {
     console.log("socket on backend heard onlineUpdate, user is", user);
     if (user !== null) {
+      for (let i = 0; i < usersArr.length; i++) {
+        if (usersArr[i][0] === user || usersArr[i][1] === socket.id) {
+          usersArr.splice(i, 1);
+        }
+      }
       usersArr.push([user, socket.id]);
     }
     console.log("socket on backend heard onlineUpdate, current users are", usersArr);
-    // console.log("Pushed to arr, and it is now", usersArr);
-    // console.log("io.nsps.sockets", io.nsps["/"].sockets);
-    // console.log("ioSite.of().clients", ioSite.of('/').clients);
-    // console.log("io.manager.handshaken", io.manager.handshaken);
-    // console.log("io.manager.connected", io.manager.connected);
-    // console.log("io.manager.open", io.manager.open);
-    // console.log("io.manager.closed", io.manager.closed);
-    // console.log("io.sockets.connected", io.sockets.connected);
-    // console.log("io.sockets.sockets", io.sockets.sockets);
-    // console.log("io.sockets.adapter.sids", io.sockets.adapter.sids);
-    // console.log("io.sockets.adapter.rooms", io.sockets.adapter.rooms);
-    // console.log("io.sockets.server.eio.clients ", io.sockets.server.eio.clients );
-    // console.log("io.sockets.server.eio.clientsCount", io.sockets.server.eio.clientsCount);
+
   })
 
   socket.on("getOnlineUsers", function() {
@@ -71,6 +64,10 @@ io.on("connection", function(socket) {
     console.log("Back end socket heard sent chat message", messageObj);
     socket.to(messageObj.meantFor).emit("sendChatMessage", messageObj);
   })
+
+  // socket.on("Disconnect socket", function() {
+  //   sockets.socket(socket.id).disconnect();
+  // })
 
   socket.on("Logout socket", function(username) {
     for (let i = 0; i < usersArr.length; i++) {
