@@ -13,6 +13,7 @@ import UserChallenges from "./components/UserChallenges.jsx";
 import Users from "./components/Users.jsx";
 import Messages from "./components/Messages.jsx";
 import ChatAlert from "./components/ChatAlert.jsx";
+import NewChallengeForm from './components/NewChallengeForm.jsx';
 import { Sidebar, Button, Menu, Image, Icon, Header, Grid, Segment, Dropdown } from 'semantic-ui-react';
 
 class App extends React.Component {
@@ -142,6 +143,7 @@ class App extends React.Component {
               <Route path="/challenges" component={() => <UserChallenges initialComplete={this.handleInitialComplete} user={this.state.masterUser} socket={this.state.socket}/>} />
               <Route path="/users" component={() => <Users user={this.state.masterUser} socket={this.state.socket} />} />
               <Route path="/messages" component={() => <Messages user={this.state.masterUser} socket={this.state.socket} messages={this.state.messages} triggerChatAlert={this.state.triggerChatAlert} setMessagesFalse={this.setMessagesFalse} />} />
+              <Route path="/newchallengeform" component={() => <NewChallengeForm user={this.state.masterUser}/>} />
             </Side>
           </div>
           {/* {ChatAlert} */}
