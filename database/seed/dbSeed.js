@@ -21,7 +21,7 @@ var docs = fs.readFile('./initialChallenges.json', 'utf8', function (err, data) 
         collection.insert(JSON.parse(data), function(err, docs) {
           collection.count(function(err, count) {
             console.log(count + " items inserted into courseChallenges collection.");
-            var challengeDocs = fs.readFile("./database/seed/allChallenges.json", "utf8", function(err, data) {
+            var challengeDocs = fs.readFile("./allChallenges.json", "utf8", function(err, data) {
               var col = db.collection("userchallenges");
               col.insert(JSON.parse(data), function(err, docs) {
                 col.count(function(err, count) {
