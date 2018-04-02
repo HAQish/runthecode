@@ -12,7 +12,6 @@ import AllChallenges from './components/allChallenges.jsx';
 import UserChallenges from "./components/UserChallenges.jsx";
 import Users from "./components/Users.jsx";
 import Messages from "./components/Messages.jsx";
-import ChatAlert from "./components/ChatAlert.jsx";
 import NewChallengeForm from './components/NewChallengeForm.jsx';
 import { Sidebar, Button, Menu, Image, Icon, Header, Grid, Segment, Dropdown } from 'semantic-ui-react';
 
