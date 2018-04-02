@@ -89,7 +89,7 @@ class Dashboard extends React.Component {
             <Label.Detail>0</Label.Detail>
           </Label>
         </TopWrapper>
-        <Heading>Welcome {user.username} to your DASHBOARD</Heading>
+        <Heading>Welcome {user.username} to your DASHBOARD</Heading> */}
 
         <Grid>
           <Grid.Row>
@@ -177,25 +177,13 @@ class Dashboard extends React.Component {
                   <br />
                   <br />
                   <Button as={Link} to="/allChallenges" content="All Challenges" primary />
+                  <Button as={Link} to="/newChallengeForm" content="Create a challenge!" primary />
                 </Card.Content>
               </Card>
             </Grid.Column>
           </Grid.Row>
           <br />
           <br />
-          <Grid.Row centered columns={1} style={{marginTop: '40px', marginBottom: '30px'}}>
-            <Header>Add your own Challenge for the Site to enjoy!</Header>
-            <Grid.Column centered width={12}>
-              <Segment inverted style={{marginBottom: '40px'}}>
-                <Form inverted>
-                  <Form.Input fluid label='Challenge Name' placeholder='Merge Sort...' />
-                  <Form.TextArea fluid label='Challenge Description' placeholder='Write a description and any instructions necessary...' />
-                  <Form.TextArea fluid label='Challenge Tests' placeholder='Write any tests this challenge needs to pass... Use a new line for each!' />
-                  <Form.Button primary>Submit Challenge</Form.Button>
-                </Form>
-              </Segment>
-            </Grid.Column>
-          </Grid.Row>
         </Grid>
       </div>;
   }
