@@ -10,6 +10,18 @@ import Side from './components/side.jsx';
 import AllChallenges from './components/allChallenges.jsx';
 import UserChallenges from "./components/UserChallenges.jsx";
 import { Sidebar, Button, Menu, Image, Icon, Header, Grid, Segment, Dropdown } from 'semantic-ui-react';
+import styled from 'styled-components';
+
+const Footer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  flex-shrink: 1;
+  background-color: #4CBB6B;
+  justify-content: space-around;
+  align-items: center;
+  height: 70px;
+`;
 
 class App extends React.Component {
   constructor(props) {
@@ -26,7 +38,7 @@ class App extends React.Component {
     this.handleInitialComplete = this.handleInitialComplete.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     // check if user is logged in
     // if so, set user on state
     $.get('/isLoggedIn', data => {
@@ -41,6 +53,7 @@ class App extends React.Component {
         });
       }
     });
+    console.log('🤡🤡🤡🤡🤡🤡', this.state.masterUser);
   }
 
   toggleVisibility() {
@@ -91,9 +104,15 @@ class App extends React.Component {
             <Side visible={this.state.visible}>
               <Navbar handleLogin={this.handleLogin} logout={this.logout} isLoggedIn={this.state.masterUser} toggleSidebar={this.toggleVisibility} />
               {loggedIn}
-              <Route path="/course" component={() => <Challenge initialComplete={this.handleInitialComplete} user={this.state.masterUser} />} />
-              <Route path="/allchallenges/:challengeName" component={AllChallenges} />
-              <Route path="/challenges" component={() => <UserChallenges initialComplete={this.handleInitialComplete} user={this.state.masterUser} />} />
+              <Route path="/course" component={() => <Challenge initialComplete={this.handleInitialComplete} user={this.state.masterUser}/>} />
+              <Route exact path="/allchallenges" component={AllChallenges} />
+              <Route path="/allchallenges/:challengeName" component={UserChallenges} />
+              {/* <Route path="/challenges" component={() => <UserChallenges initialComplete={this.handleInitialComplete} user={this.state.masterUser} />} /> */}
+              <Footer style={{marginTop: '40px'}}>
+                <div>First box</div>
+                <div>Second box</div>
+                <div>Third box</div>
+              </Footer>
             </Side>
           </div>
         </div>

@@ -12,12 +12,6 @@ class UserChallenges extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      initialChallenges: [],
-      initialScore: 0,
-      courseChallenges: [],
-      currentChallengeID: 0,
-      currentChallenge: {},
-    
       openChallengeResultsModal: false,
       currentChallengeResultMessage: '', //"Success"/"Failure"/"Error" -- used to conditionally render ChallengeResultsModal
       currentTestDescriptions: [],
@@ -174,29 +168,3 @@ class UserChallenges extends React.Component {
 }
 
 export default UserChallenges;
-
-
-
-
-
-
-
-
-
-
-// this.state = {
-//   initialChallenges: [
-//     {
-//       "prompt": "Write a function called helloWorld that Returns the string 'Hello World' using two variables example: helloWorld() // returns 'Hello World'",
-//       "starterCode": "function helloWorld() { \n const hello = ''; \n const world = ''; \n ______ hello + ' ' + world; \n }",
-//       "masterTests": "[typeof helloWorld === 'function', helloWorld() === 'Hello World']",
-//       "masterTestDescriptions": "['helloWorld should be a function', 'return value should be Hello World']",
-//       "challengeNumber": 1,
-//       "challengeName": "Hello World!",
-//       "difficulty": "2"
-//     },
-
-  /* current challenge examples
-      initial challenge -> {"_id":"5ab2e6d70ac83a9e404f3a9d","prompt":"Write a function called helloWorld that Returns the string 'Hello World' using two variables example: helloWorld() // returns 'Hello World'","starterCode":"function helloWorld() { \n const hello = ''; \n const world = ''; \n ______ hello + ' ' + world; \n }","masterTests":"[typeof helloWorld === 'function', helloWorld() === 'Hello World']","masterTestDescriptions":"['helloWorld should be a function', 'return value should be Hello World']","challengeNumber":1,"challengeName":"Hello World!"}
-      course challenge -> {"_id":"5ab2e6da0ac83a9e404f3aa2","prompt":"JavaScript can define a variable using the 'var' keyword.  '=' assigns a value, '==' and '===' asserts equality between values.  Check out the examples and then fill in the blanks.","starterCode":"// examples: \n var aNumber = 3;  // typeof aNumber === 'number' \n var aString = 'I am learning JavaScript!';  // typeof aString = 'string' \n var aBoolean = true;  // typeof aBoolean === 'boolean' \n // the typeof operator returns a string indicating the data type \n \n // Fill in the blanks/Fix errors in code \n ___ myNumber = 4; \n ___ myBoolean = 'true'; \\ typeof myBoolean should equal 'boolean' \n  \n // Advanced \n // What would the result of this be? \n // typeof(typeof myNumber); \n var myAnswer = '_____'","masterTests":"[typeof myNumber = 'number', typeof myBoolean === 'boolean', myAnswer === 'string']","masterTestDescriptions":"['myNumber should be a number', 'myBoolean should be a boolean', 'myAnswer should be string']","challengeLevel":1,"challengeNumber":1,"challengeName":"Variables"}
-      */
