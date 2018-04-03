@@ -1,6 +1,7 @@
 const Sandbox = require('sandbox');
 var s = new Sandbox();
-onmessage = undefined;
+s.options.timeout = 1500;
+// onmessage = undefined;
 var runThis = function(userCode, tests) {
   var masterTests = tests;
   return new Promise(resolve => {

@@ -62,7 +62,6 @@ class UserChallenges extends React.Component {
     this.socketInitialize();
   }
   
-
   //sets state to user challenge submission results...results = {"masterTestResults":[true,true],"message":"Success"} || {"masterTestResults":[true,false],"message":"Failure"} || {"masterTestResults":"'ReferenceError: hey is not defined'","message":"Error"}
   displayTestResults(results, userCode) {
     results = JSON.parse(results);
@@ -81,11 +80,6 @@ class UserChallenges extends React.Component {
       openChallengeResultsModal: false,
       currentChallengeResultMessage: ""
     });
-    if (this.state.justCompletedInitial) {
-      this.setState({
-        currentChallenge: this.state.courseChallenges[this.state.initialScore]
-      });
-    }
   }
 
   viewSolutions() {
