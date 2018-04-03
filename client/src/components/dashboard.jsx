@@ -90,7 +90,6 @@ class Dashboard extends React.Component {
           </Label>
         </TopWrapper>
         <Heading>DASHBOARD</Heading>
-
         <Grid>
           <Grid.Row>
             <Grid.Column width={8}>
@@ -177,13 +176,14 @@ class Dashboard extends React.Component {
                   <br />
                   <br />
                   <Button as={Link} to="/allChallenges" content="All Challenges" primary />
+                  <Button as={Link} to="/newChallengeForm" content="Create a challenge!" primary />
                 </Card.Content>
               </Card>
             </Grid.Column>
           </Grid.Row>
           <br />
           <br />
-          <Grid.Row centered columns={1} style={{marginTop: '40px', marginBottom: '30px'}}>
+          {/* <Grid.Row centered columns={1} style={{marginTop: '40px', marginBottom: '30px'}}>
             <Header>Add your own Challenge for the Site to enjoy!</Header>
             <Grid.Column width={12}>
               <Segment inverted style={{marginBottom: '40px'}}>
@@ -195,7 +195,7 @@ class Dashboard extends React.Component {
                 </Form>
               </Segment>
             </Grid.Column>
-          </Grid.Row>
+          </Grid.Row> */}
         </Grid>
       </div>;
   }

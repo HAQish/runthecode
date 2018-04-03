@@ -7,6 +7,7 @@ var db = mongoose.connection;
 
 db.collection('initialChallenges').drop();
 db.collection('courseChallenges').drop();
+db.collection('userchallenges').drop();
 
 //creates new collection of initialTests with data loated in data.json
 var docs = fs.readFile('./database/seed/initialChallenges.json', 'utf8', function (err, data) {
@@ -20,11 +21,19 @@ var docs = fs.readFile('./database/seed/initialChallenges.json', 'utf8', functio
         collection.insert(JSON.parse(data), function(err, docs) {
           collection.count(function(err, count) {
             console.log(count + " items inserted into courseChallenges collection.");
-            db.close();
+            var challengeDocs = fs.readFile("./database/seed/allChallenges.json", "utf8", function(err, data) {
+              var col = db.collection("userchallenges");
+              col.insert(JSON.parse(data), function(err, docs) {
+                col.count(function(err, count) {
+                console.log(count + " items inserted into userchallenges collection.");
+                db.close();
+              })
+            })
           })
         })
       })
     });
   });
+});
 });
 

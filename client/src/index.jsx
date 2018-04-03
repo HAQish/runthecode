@@ -9,6 +9,7 @@ import Dashboard from './components/dashboard.jsx';
 import Side from './components/side.jsx';
 import AllChallenges from './components/allChallenges.jsx';
 import UserChallenges from "./components/UserChallenges.jsx";
+import NewChallengeForm from './components/NewChallengeForm.jsx';
 import { Sidebar, Button, Menu, Image, Icon, Header, Grid, Segment, Dropdown } from 'semantic-ui-react';
 import styled from 'styled-components';
 
@@ -97,18 +98,18 @@ class App extends React.Component {
     : 
     (<Route exact path="/" component={() => <Home handleLogin={this.handleLogin} />} />);
 
-    return(
-      <BrowserRouter>
+    return <BrowserRouter>
         <div>
           <div>
             <Side visible={this.state.visible}>
               <Navbar handleLogin={this.handleLogin} logout={this.logout} isLoggedIn={this.state.masterUser} toggleSidebar={this.toggleVisibility} />
               {loggedIn}
-              <Route path="/course" component={() => <Challenge initialComplete={this.handleInitialComplete} user={this.state.masterUser}/>} />
+              <Route path="/course" component={() => <Challenge initialComplete={this.handleInitialComplete} user={this.state.masterUser} />} />
               <Route exact path="/allchallenges" component={AllChallenges} />
               <Route path="/allchallenges/:challengeName" component={UserChallenges} />
+              <Route path="/newchallengeform" component={() => <NewChallengeForm user={this.state.masterUser} />} />
               {/* <Route path="/challenges" component={() => <UserChallenges initialComplete={this.handleInitialComplete} user={this.state.masterUser} />} /> */}
-              <Footer style={{marginTop: '40px'}}>
+              <Footer style={{ marginTop: "40px" }}>
                 <div>First box</div>
                 <div>Second box</div>
                 <div>Third box</div>
@@ -116,8 +117,7 @@ class App extends React.Component {
             </Side>
           </div>
         </div>
-      </BrowserRouter>
-    )
+      </BrowserRouter>;
   }
 }
 
