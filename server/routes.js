@@ -183,6 +183,13 @@ var challengeRoutes = function(app) {
     res.send('Getting all challenges');
   })
 
+  app.get("/challengeList", function(req, res) { // find user submitted challenge by name
+    //req.params.challengeName
+    // db.getUserChallengeByName(req.params.challengeName).then(results => console.log(results));
+    res.send('Getting all challenges');
+    //send back array of all challenges.
+  })
+
   // app.get("/challenges/next", function(req, res) { // assuming currentChallenge is in req.body
   //   console.log("Heard get for next challenge");
   //   console.log(req.body.currentChallenge);
