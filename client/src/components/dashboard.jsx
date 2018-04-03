@@ -41,11 +41,19 @@ class Dashboard extends React.Component {
     this.state = {
       onDashboard: true
     };
+    // this.onlineUpdate = this.onlineUpdate.bind(this);
   }
   componentDidMount() {
     console.log('I am on the dashboard: ', this.state.onDashboard);
     console.log('The user is: ', this.props.user);
+    console.log("In dashboard, socket is ", this.props.socket);
+    this.props.onlineUpdate();
   }
+
+  // onlineUpdate() {
+  //   this.props.socket.emit("onlineUpdate", this.props.user.username);
+  // }
+
 
   // Friends
   // Site ranking

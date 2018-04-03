@@ -19,11 +19,32 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, '../client/dist')));
 
+//arr for socket users
+var usersArr = [];
+
 //socket.io stuff
 io.on("connection", function(socket) {
-  console.log("Connection made viaz socket.io on ", socket.id);
+  console.log("Connection made via socket.io on", socket.id);
+  
+  
+  socket.on("onlineUpdate", function(user) {
+    console.log("socket on backend heard onlineUpdate, user is", user);
+    if (user !== null) {
+      for (let i = 0; i < usersArr.length; i++) {
+        if (usersArr[i][0] === user || usersArr[i][1] === socket.id) {
+          usersArr.splice(i, 1);
+        }
+      }
+      usersArr.push([user, socket.id]);
+    }
+    console.log("socket on backend heard onlineUpdate, current users are", usersArr);
 
-  var code;
+  })
+
+  socket.on("getOnlineUsers", function() {
+    // console.log("socket on backend heard getOnlineUsers");
+    socket.emit("returnOnlineUsers", usersArr);
+  })
 
   socket.on("codeChange", function(newCode) {
     console.log("the new code being sent to the server's socket is ", newCode);
@@ -39,7 +60,29 @@ io.on("connection", function(socket) {
     io.sockets.emit("sendChatFromServer", chatMsg);
   })
 
+  socket.on("sendChatMessage", function(messageObj) {
+    console.log("Back end socket heard sent chat message", messageObj);
+    socket.to(messageObj.meantFor).emit("sendChatMessage", messageObj);
+  })
+
+  // socket.on("Disconnect socket", function() {
+  //   sockets.socket(socket.id).disconnect();
+  // })
+
+  socket.on("Logout socket", function(username) {
+    for (let i = 0; i < usersArr.length; i++) {
+      if (usersArr[i][0] === username) {
+        usersArr.splice(i, 1);
+      }
+    }
+  })
+
   socket.on("disconnect", function() {
+    for (let i = 0; i < usersArr.length; i++) {
+      if (usersArr[i][1] === socket.id) {
+        usersArr.splice(i, 1);
+      }
+    }
     console.log("Disconnected from socket.");
   });
 

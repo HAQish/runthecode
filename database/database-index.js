@@ -87,7 +87,7 @@ var userChallengeSchema = new Schema({
   // previous: String // removing linked list capabilities from user-submitted challenges for now
 })
 
-var UserChallenges = mongoose.model("UserChallenges", userChallengeSchema);
+var UserChallenges = mongoose.model("UserChallenges", userChallengeSchema, "userChallenges");
 
 // ^^^^^^^^^^^^ User-submitted Challenges ^^^^^^^^^^^^^
 
