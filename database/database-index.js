@@ -106,7 +106,8 @@ var userSchema = new Schema({
   experience: String, // changed to string from number for now
   score: String, // changed to string from number for now
   completedCourseChallenges: { type : Schema.Types.Mixed, default : {firstChallenge: true}},
-  completedChallenges: [{type: Schema.Types.ObjectId, ref: 'Solutions'}]
+  completedChallenges: [{type: Schema.Types.ObjectId, ref: 'Solutions'}],
+  messages: [{message: String, meantFor: String, from: String, to: String}]
 })
 
 var Users = mongoose.model("Users", userSchema);
@@ -328,6 +329,18 @@ var updateCompletedCourseChallenges = function(currentUser, message, challengeNa
   return Users.findOneAndUpdate({username: currentUser.username}, {completedCourseChallenges: finalObj}, {new: true, upsert: true});
 }
 
+var addMessageToUser = function(username, messageObj) {
+  return Users.findOne({username: username}, function(err, user) {
+    console.log("In addMessageToUser in dbindex, user is", user);
+    user.messages = user.messages.concat(messageObj);
+    user.save();
+  })
+}
+
+var retrieveAllMessagesFromUser = function(username) {
+  return Users.findOne({username: username}).select("messages");
+}
+
 // module.exports for each function
 module.exports.findUserById = findUserById;
 module.exports.addSolution = addSolution;
@@ -346,16 +359,5 @@ module.exports.updateUserLevel = updateUserLevel;
 module.exports.updateCompletedCourseChallenges = updateCompletedCourseChallenges;
 module.exports.rateSolution = rateSolution;
 module.exports.db = db;
-
-
-
-
-
-
-
-
-
-
-
-
-
+module.exports.addMessageToUser = addMessageToUser;
+module.exports.retrieveAllMessagesFromUser = retrieveAllMessagesFromUser;

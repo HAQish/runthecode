@@ -44,8 +44,8 @@ class App extends React.Component {
       if (data !== undefined) {
         this.setState({
           masterUser: data
-        });
-        this.onlineUpdate();
+        }, this.onlineUpdate);
+        // this.onlineUpdate();
       } else {
         this.setState({
           masterUser: undefined
@@ -53,9 +53,13 @@ class App extends React.Component {
       }
     });
     console.log("In index.jsx, socket is", this.state.socket);
-    this.state.socket.on("sendChatMessage", (message) => {
-      console.log("In index.jsx, heard message from socket from backend", message);
-      this.setState({ messages: this.state.messages.concat(message) , triggerChatAlert: true});
+    this.state.socket.on("sendChatMessage", (obj) => {
+      console.log("In index.jsx, heard sendChatMessage from server", obj.messages);
+      this.setState({ messages: obj.messages , triggerChatAlert: true});
+    });
+    this.state.socket.on("receiveAllChatMessages", (obj) => {
+      // console.log("Messages.jsx heard these messages from the backend", obj.messages)
+      this.setState({ messages: obj.messages });
     })
   }
   
@@ -141,7 +145,7 @@ class App extends React.Component {
               <Route path="/allchallenges/:challengeName" component={AllChallenges} />
               <Route path="/challenges" component={() => <UserChallenges initialComplete={this.handleInitialComplete} user={this.state.masterUser} socket={this.state.socket}/>} />
               <Route path="/users" component={() => <Users user={this.state.masterUser} socket={this.state.socket} />} />
-              <Route path="/messages" component={() => <Messages user={this.state.masterUser} socket={this.state.socket} messages={this.state.messages} triggerChatAlert={this.state.triggerChatAlert} setMessagesFalse={this.setMessagesFalse} />} />
+              <Route path="/messages" component={() => <Messages user={this.state.masterUser} socket={this.state.socket} triggerChatAlert={this.state.triggerChatAlert} messages={this.state.messages} setMessagesFalse={this.setMessagesFalse} />} />
               <Route path="/newchallengeform" component={() => <NewChallengeForm user={this.state.masterUser}/>} />
             </Side>
           </div>
