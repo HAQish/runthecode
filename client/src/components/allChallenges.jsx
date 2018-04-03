@@ -7,7 +7,11 @@ import AllChallengesListItem from './allChallengesListItem.jsx';
 
 const Wrapper = styled.div`
   display: flex;
-  justify-content: center;
+  flex-direction: row;
+  margin: auto;
+  justify-content: space-around;
+  width: 70vw;
+  text-align: center;
 `;
 
 class AllChallenges extends Component {
@@ -18,14 +22,6 @@ class AllChallenges extends Component {
       challengeList: [],
     }
   }
-
-  // componentWillMount() {
-  //   // const {params} = this.props.match.params;
-  //   console.log('parameters', this.props.match.params)
-  //   $.get(`/userSubmittedChallenge/${this.props.match.params.challengeName}`, (data) => {
-  //     this.setState({response: data});
-  //   });
-  // }
 
   componentWillMount() {
     $.get('/isLoggedIn', data => {
@@ -44,6 +40,7 @@ class AllChallenges extends Component {
 
   componentDidMount() {
     $.get('/challengeList', data => {
+      console.log("❓❓❓❓", data);
       this.setState({
         challengeList: data
       })
@@ -60,14 +57,26 @@ class AllChallenges extends Component {
     return <Wrapper>
         <Grid celled>
           <Grid.Row className="info-header">
-            <Grid.Column width={10}>Name</Grid.Column>
-            <Grid.Column width={2}>Level</Grid.Column>
-            <Grid.Column width={2}>Solutions</Grid.Column>
-            <Grid.Column width={2}>User Rankings</Grid.Column>
+            <Grid.Column width={8}>
+              <h3>Challenge Name</h3>
+            </Grid.Column>
+            <Grid.Column width={2}>
+              <h3>Level</h3>
+            </Grid.Column>
+            <Grid.Column width={2}>
+              <h3>Solutions</h3>
+            </Grid.Column>
+            <Grid.Column width={2}>
+              <h3>Created By</h3>
+            </Grid.Column>
           </Grid.Row>
-          <div>all challenges component ====== {this.state.response}</div>
-          {this.state.challengeList.map(item => (
-            <AllChallengesListItem user={user} challenge={item} />
+          {this.state.challengeList.map((item, i) => (
+            <AllChallengesListItem
+              index={i}
+              key={item.challengeName}
+              user={user}
+              challenge={item}
+            />
           ))}
         </Grid>
       </Wrapper>;

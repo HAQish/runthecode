@@ -1,38 +1,48 @@
 import React from 'react';
 import {Grid, Button, Icon, Label} from 'semantic-ui-react';
+import { Link } from "react-router-dom";
 
 const AllChallengesListItem = (props) => {
-  const {challenge, user} = props;
-  const labelColor = '';
-  if (challenge.level === 1) {
+  const {challenge, user, index} = props;
+  let background; 
+  if(index % 2 === 0) {
+   background = "yellow"; 
+  }
+  // let textColor = (background === 'grey') ? 'white' : 'black';
+  let level = Number(challenge.challengeLevel);
+  let labelColor;
+  if (level < 8) {
     labelColor = 'teal';
-  } else if (challenge.level === 2 || challenge.level === 3) {
+  } else if (level >= 8 && level < 12) {
     labelColor = 'yellow';
   } else {
     labelColor = 'red';
   }
-  const showSolutions = '';
-  if (user.completedChallenges.indexOf(challenge.name) !== -1) {
+  let showSolutions;
+  if (user.completedChallenges.indexOf(challenge.challengeName) !== -1) {
     showSolutions = (<Button animated='vertical'>
       <Button.Content hidden>Solutions</Button.Content>
       <Button.Content visible>
-        <Icon name='puzzle' color='green' />
+        <Icon name='puzzle' color='green' size='big' />
       </Button.Content>
     </Button>)
   } else {
-    showSolutions = <Icon name='remove' color='red' />;
+    showSolutions = <Icon name='remove' color='red' size='big' />;
   }
-  return <Grid.Row key={challenge.name}>
-      <Grid.Column width={10}>
-        <Link to=`/allchallenges/${challenge.name}`>{challenge.name}</Link>
+  return <Grid.Row color={background}>
+      <Grid.Column width={8}>
+        <Link to={`/allchallenges/${challenge.challengeName}`}>
+          <h3>{challenge.challengeName}</h3>
+        </Link>
       </Grid.Column>
       <Grid.Column width={2}>
-        <Label color={color}>{challenge.level}</Label>
+        <Label color={labelColor}>{challenge.challengeLevel}</Label>
       </Grid.Column>
       <Grid.Column width={2}>{showSolutions}</Grid.Column>
       <Grid.Column width={2}>
         <Label color="blue" tag>
-          {challenge.ranking}
+          {/* {challenge.ranking} */}
+          {challenge.createdBy}
         </Label>
       </Grid.Column>
     </Grid.Row>;

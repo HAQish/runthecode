@@ -1,7 +1,7 @@
 import React from 'react';
 import ChallengeInfo from './challengeInfo.jsx';
 import Editor from './editor.jsx';
-import ChallengeResultsModal from './challengeResultsModal.jsx'
+import allChallengesResultsModal from './allChallengesResultsModal.jsx';
 import {Grid, Button, Modal, Header, Icon} from 'semantic-ui-react';
 import $ from 'jquery';
 import PairingEditor from "./pairingEditor.jsx";
@@ -12,103 +12,84 @@ class UserChallenges extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      openChallengeResultsModal: false,
-      currentChallengeResultMessage: '', //"Success"/"Failure"/"Error" -- used to conditionally render ChallengeResultsModal
+      // openChallengeResultsModal: false,
+      // currentChallengeResultMessage: "", //"Success"/"Failure"/"Error" -- used to conditionally render ChallengeResultsModal
       currentTestDescriptions: [],
       currentTestResults: [],
       justCompletedInitial: false,
       currentUserCode: undefined,
+      //////////////////////////
       pairing: false,
       endpoint: "/",
       socket: undefined,
       socketId: undefined
-    }
+    };
     this.displayTestResults = this.displayTestResults.bind(this);
     this.retry = this.retry.bind(this);
-    this.nextChallenge = this.nextChallenge.bind(this);
+    this.viewSolutions = this.viewSolutions.bind(this);
     this.switch = this.switch.bind(this);
     this.socketInitialize = this.socketInitialize.bind(this);
   }
 
-  //if user has not completed initialchallenges -> gets initialchallenges from server and populates state
-  //if user has completed initialchallenges -> gets coursechallenges from server and populates state
+  // categories []
+  // challengeLevel "" /////
+  // challengeName "" //////
+  // createdAt ""
+  // createdBy ""
+  // hints []
+  // masterSolution ""
+  // masterTests "[]" /////
+  // prompt "" /////
+  // resources []
+  // starterCode "" ///////
+  // submittedSolutions []
+  // testDescriptions "[]" /////
+
   componentWillMount() {
-    if (this.props.user.completedInitial === false) {
-      $.get("/initialChallenges", (data) => {
-          this.setState({
-            initialChallenges: data,
-            currentChallengeID: 0,
-            currentChallenge: data[0]
-          })
-        }
-      )
-    } else {
-      $.get("/courseChallenges", (data) => {
-          this.setState({
-            courseChallenges: data,
-          })
-        }
-      )
-    }
+    // const {params} = this.props.match.params;
+    console.log('parameters', this.props.match.params)
+    $.get(`/userSubmittedChallenge/${this.props.match.params.challengeName}`, (data) => {
+      console.log('Data after get to userchallenges', data)
+      this.setState({
+        challengeLevel: data.challengeLevel,
+        challengeName: data.challengeName,
+        masterTests: data.masterTests,
+        prompt: data.prompt,
+        starterCode: data.starterCode,
+        testDescriptions: data.testDescriptions,
+      });
+    });
     this.socketInitialize();
   }
+  
 
-  //invoked when user clicks 'next problem' button in challengeResults modal
-  //uses logic to
-    //target next initialchallenge
-    //get coursechallenges upon completion of initial
-    //target next coursechallenge
-  nextChallenge() {
-    this.setState({currentUserCode: undefined});
-    if (this.props.user.completedInitial === false && this.state.currentChallengeID != 4) {
-      let next = this.state.currentChallengeID + 1;
-      this.setState({
-        currentChallengeID: next,
-        openChallengeResultsModal:false,
-        currentChallenge: this.state.initialChallenges[next],
-      })
-      if (next === 4) {
-        this.setState({justCompletedInitial: true})
-      }
-    } else if (this.props.user.completedInitial === false && this.state.currentChallengeID === 4) {
-        this.props.initialComplete(this.state.initialScore);
-      this.setState({
-        openChallengeResultsModal:false,
-        currentChallengeID:0,
-        justCompletedInitial: false
-      })
-      $.get('/courseChallenges', (data) => {
-        this.setState({
-          courseChallenges: data,
-          currentChallenge: data[this.state.initialScore*2]
-        })
-      })
-    } else if (this.props.user.completedInitial === true) {
-      let next = this.state.currentChallengeID+1;
-      this.setState({currentChallenge: this.state.courseChallenges[next], openChallengeResultsModal: false, currentChallengeID: next})
-    }
-};
-
-//sets state to user challenge submission results...results = {"masterTestResults":[true,true],"message":"Success"} || {"masterTestResults":[true,false],"message":"Failure"} || {"masterTestResults":"'ReferenceError: hey is not defined'","message":"Error"}
+  //sets state to user challenge submission results...results = {"masterTestResults":[true,true],"message":"Success"} || {"masterTestResults":[true,false],"message":"Failure"} || {"masterTestResults":"'ReferenceError: hey is not defined'","message":"Error"}
   displayTestResults(results, userCode) {
     results = JSON.parse(results);
     this.setState({
       currentChallengeResultMessage: results.message,
       currentTestResults: results.masterTestResults,
-      currentTestDescriptions: this.state.currentChallenge.masterTestDescriptions,
+      currentTestDescriptions: this.state.currentChallenge
+        .masterTestDescriptions,
       openChallengeResultsModal: true,
       currentUserCode: userCode
-    })
+    });
   }
 
   retry() {
     this.setState({
       openChallengeResultsModal: false,
-      currentChallengeResultMessage: ''
-    })
+      currentChallengeResultMessage: ""
+    });
     if (this.state.justCompletedInitial) {
-      this.setState({currentChallenge: this.state.courseChallenges[this.state.initialScore]})
+      this.setState({
+        currentChallenge: this.state.courseChallenges[this.state.initialScore]
+      });
     }
+  }
+
+  viewSolutions() {
+
   }
 
   switch(e) {
@@ -124,42 +105,59 @@ class UserChallenges extends React.Component {
     this.setState({ socket: socket });
   }
 
- 
-
   render() {
-    var descriptions = this.state.currentChallenge.masterTestDescriptions
-    const { currentChallenge } = this.state;
-    const whichEditor = (this.state.pairing) ? 
-      (<PairingEditor starterCode = { this.state.currentUserCode || currentChallenge.starterCode } testDescriptions = { currentChallenge.masterTestDescriptions } masterTests = { currentChallenge.masterTests } displayTestResults = { this.displayTestResults } challengeLevel = { currentChallenge.challengeLevel } challengeName = { currentChallenge.challengeName } switch= { this.switch } socketInitialize={this.socketInitialize} socket={this.state.socket} user={this.props.user}/>)
-     : 
-      (<Editor starterCode={this.state.currentUserCode || currentChallenge.starterCode} testDescriptions={currentChallenge.masterTestDescriptions} masterTests={currentChallenge.masterTests} displayTestResults={this.displayTestResults} challengeLevel={currentChallenge.challengeLevel} challengeName={currentChallenge.challengeName} switch={this.switch} />)
-    
+    const whichEditor = this.state.pairing ? (
+      <PairingEditor
+        starterCode={this.state.currentUserCode || this.state.starterCode}
+        testDescriptions={this.state.testDescriptions}
+        masterTests={this.state.masterTests}
+        displayTestResults={this.displayTestResults}
+        challengeLevel={this.state.challengeLevel}
+        challengeName={this.state.challengeName}
+        switch={this.switch}
+        socketInitialize={this.socketInitialize}
+        socket={this.state.socket}
+        user={this.props.user}
+      />
+    ) : (
+      <Editor
+        starterCode={this.state.currentUserCode || this.state.starterCode}
+        testDescriptions={this.state.testDescriptions}
+        masterTests={this.state.masterTests}
+        displayTestResults={this.displayTestResults}
+        challengeLevel={this.state.challengeLevel}
+        challengeName={this.state.challengeName}
+        switch={this.switch}
+      />
+    );
 
-
-    return(
+    return (
       <Grid>
         <Grid.Row columns={2}>
           <Grid.Column>
-            <ChallengeInfo basicTests={this.state.currentChallenge.masterTestDescriptions} challengeDescription={currentChallenge.prompt} challengeName={currentChallenge.challengeName} />
+            <ChallengeInfo
+              basicTests={this.state.testDescriptions}
+              challengeDescription={this.state.prompt}
+              challengeName={this.state.challengeName}
+            />
           </Grid.Column>
-          <Grid.Column>
-            {whichEditor}
-          </Grid.Column>
+          <Grid.Column>{whichEditor}</Grid.Column>
         </Grid.Row>
         <Modal
-          style={{ height: '65%' }}
+          style={{ height: "65%" }}
           basic
           style={{ height: "80%" }}
           open={this.state.openChallengeResultsModal}
-          onClose={this.retry}>
-          <ChallengeResultsModal
+          onClose={this.retry}
+        >
+          <allChallengesResultsModal
             initialScore={this.state.initialScore}
             msg={this.state.currentChallengeResultMessage}
             justCompletedInitial={this.state.justCompletedInitial}
-            nextChallenge={this.nextChallenge}
+            viewSolutions={this.viewSolutions}
             closeResultsModal={this.retry}
             testResults={this.state.currentTestResults}
-            testDescriptions={descriptions}
+            testDescriptions={this.state.testDescriptions}
           />
         </Modal>
       </Grid>

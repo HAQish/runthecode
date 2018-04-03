@@ -42,10 +42,6 @@ class Dashboard extends React.Component {
       onDashboard: true
     };
   }
-  componentDidMount() {
-    console.log('I am on the dashboard: ', this.state.onDashboard);
-    console.log('The user is: ', this.props.user);
-  }
 
   // Friends
   // Site ranking
@@ -56,13 +52,12 @@ class Dashboard extends React.Component {
   // Available Challenges
   // Find a mentor
   // Become a mentor
-  
 
   render() {
     const { user } = this.props;
     let completed = this.props.user.completedInitial ? 'YES' : 'NO';
     console.log('coooommmmppp', user.completedInitial);
-    return <div style={{ height: "100vh" }}>
+    return <div style={{ height: "85vh" }}>
         <TopWrapper>
           <Label size="huge" color="black">
             <Icon name="marker" />
@@ -182,20 +177,6 @@ class Dashboard extends React.Component {
             </Grid.Column>
           </Grid.Row>
           <br />
-          <br />
-          {/* <Grid.Row centered columns={1} style={{marginTop: '40px', marginBottom: '30px'}}>
-            <Header>Add your own Challenge for the Site to enjoy!</Header>
-            <Grid.Column width={12}>
-              <Segment inverted style={{marginBottom: '40px'}}>
-                <Form inverted>
-                  <Form.Input label='Challenge Name' placeholder='Merge Sort...' />
-                  <Form.TextArea label='Challenge Description' placeholder='Write a description and any instructions necessary...' />
-                  <Form.TextArea label='Challenge Tests' placeholder='Write any tests this challenge needs to pass... Use a new line for each!' />
-                  <Form.Button primary>Submit Challenge</Form.Button>
-                </Form>
-              </Segment>
-            </Grid.Column>
-          </Grid.Row> */}
         </Grid>
       </div>;
   }

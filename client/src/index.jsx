@@ -13,11 +13,19 @@ import NewChallengeForm from './components/NewChallengeForm.jsx';
 import { Sidebar, Button, Menu, Image, Icon, Header, Grid, Segment, Dropdown } from 'semantic-ui-react';
 import styled from 'styled-components';
 
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+`;
+const Content = styled.div`
+  flex: 1 0 auto;
+`;
 const Footer = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  flex-shrink: 1;
+  flex-shrink: 0;
   background-color: #4CBB6B;
   justify-content: space-around;
   align-items: center;
@@ -99,8 +107,8 @@ class App extends React.Component {
     (<Route exact path="/" component={() => <Home handleLogin={this.handleLogin} />} />);
 
     return <BrowserRouter>
-        <div>
-          <div>
+        <Wrapper>
+          <Content>
             <Side visible={this.state.visible}>
               <Navbar handleLogin={this.handleLogin} logout={this.logout} isLoggedIn={this.state.masterUser} toggleSidebar={this.toggleVisibility} />
               {loggedIn}
@@ -115,8 +123,8 @@ class App extends React.Component {
                 <div>Third box</div>
               </Footer>
             </Side>
-          </div>
-        </div>
+          </Content>
+        </Wrapper>
       </BrowserRouter>;
   }
 }
