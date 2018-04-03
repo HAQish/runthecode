@@ -8,7 +8,7 @@ import PairingEditor from "./pairingEditor.jsx";
 import socketIOClient from "socket.io-client";
 //import init from '../../../database/seed/initalChallenges.json';
 
-class UserChallenges extends React.Component {
+class Challenges extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,16 +24,13 @@ class UserChallenges extends React.Component {
       currentTestResults: [],
       justCompletedInitial: false,
       currentUserCode: undefined,
-      pairing: false,
-      endpoint: "/",
-      socket: undefined,
-      socketId: undefined
+      pairing: true
     }
     this.displayTestResults = this.displayTestResults.bind(this);
     this.retry = this.retry.bind(this);
     this.nextChallenge = this.nextChallenge.bind(this);
     this.switch = this.switch.bind(this);
-    this.socketInitialize = this.socketInitialize.bind(this);
+    // this.socketInitialize = this.socketInitialize.bind(this);
   }
 
   //if user has not completed initialchallenges -> gets initialchallenges from server and populates state
@@ -56,7 +53,8 @@ class UserChallenges extends React.Component {
         }
       )
     }
-    this.socketInitialize();
+    // this.socketInitialize();
+    console.log("In userChallenges.jsx, socket is", this.props.socket);
   }
 
   //invoked when user clicks 'next problem' button in challengeResults modal
@@ -121,14 +119,14 @@ class UserChallenges extends React.Component {
     this.setState({ pairing: !this.state.pairing });
   }
 
-  socketInitialize() {
-    const socket = socketIOClient(this.state.endpoint);
-    socket.on("connect", () => {
-      console.log("Connected to socket from app, and socket id is", socket.id);
-      this.setState({ socketId: socket.id });
-    });
-    this.setState({ socket: socket });
-  }
+  // socketInitialize() {
+  //   const socket = socketIOClient(this.state.endpoint);
+  //   socket.on("connect", () => {
+  //     console.log("Connected to socket from app, and socket id is", socket.id);
+  //     this.setState({ socketId: socket.id });
+  //   });
+  //   this.setState({ socket: socket });
+  // }
 
  
 
@@ -136,7 +134,7 @@ class UserChallenges extends React.Component {
     var descriptions = this.state.currentChallenge.masterTestDescriptions
     const { currentChallenge } = this.state;
     const whichEditor = (this.state.pairing) ? 
-      (<PairingEditor starterCode = { this.state.currentUserCode || currentChallenge.starterCode } testDescriptions = { currentChallenge.masterTestDescriptions } masterTests = { currentChallenge.masterTests } displayTestResults = { this.displayTestResults } challengeLevel = { currentChallenge.challengeLevel } challengeName = { currentChallenge.challengeName } switch= { this.switch } socketInitialize={this.socketInitialize} socket={this.state.socket} user={this.props.user}/>)
+      (<PairingEditor starterCode = { this.state.currentUserCode || currentChallenge.starterCode } testDescriptions = { currentChallenge.masterTestDescriptions } masterTests = { currentChallenge.masterTests } displayTestResults = { this.displayTestResults } challengeLevel = { currentChallenge.challengeLevel } challengeName = { currentChallenge.challengeName } switch= { this.switch } socketInitialize={this.socketInitialize} socket={this.props.socket} user={this.props.user}/>)
      : 
       (<Editor starterCode={this.state.currentUserCode || currentChallenge.starterCode} testDescriptions={currentChallenge.masterTestDescriptions} masterTests={currentChallenge.masterTests} displayTestResults={this.displayTestResults} challengeLevel={currentChallenge.challengeLevel} challengeName={currentChallenge.challengeName} switch={this.switch} />)
     
@@ -173,7 +171,7 @@ class UserChallenges extends React.Component {
   }
 }
 
-export default UserChallenges;
+export default Challenges;
 
 
 
