@@ -1,7 +1,7 @@
 import React from 'react';
 import ChallengeInfo from './challengeInfo.jsx';
 import Editor from './editor.jsx';
-import allChallengesResultsModal from './allChallengesResultsModal.jsx';
+import AllChallengesResultsModal from './allChallengesResultsModal.jsx';
 import {Grid, Button, Modal, Header, Icon} from 'semantic-ui-react';
 import $ from 'jquery';
 import PairingEditor from "./pairingEditor.jsx";
@@ -58,8 +58,7 @@ class UserChallenges extends React.Component {
     this.setState({
       currentChallengeResultMessage: results.message,
       currentTestResults: results.masterTestResults,
-      currentTestDescriptions: this.state.currentChallenge
-        .masterTestDescriptions,
+      currentTestDescriptions: this.state.testDescriptions,
       openChallengeResultsModal: true,
       currentUserCode: userCode
     });
@@ -124,10 +123,8 @@ class UserChallenges extends React.Component {
           open={this.state.openChallengeResultsModal}
           onClose={this.retry}
         >
-          <allChallengesResultsModal
-            initialScore={this.state.initialScore}
+          <AllChallengesResultsModal
             msg={this.state.currentChallengeResultMessage}
-            justCompletedInitial={this.state.justCompletedInitial}
             viewSolutions={this.viewSolutions}
             closeResultsModal={this.retry}
             testResults={this.state.currentTestResults}
