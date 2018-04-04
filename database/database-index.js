@@ -6,7 +6,6 @@ const saltRounds = 5;
 let Schema = mongoose.Schema;
 let uristring = process.env.TESTMONGO_URI || process.env.MONGODB_URI || 'mongodb://localhost:27017/levelup';
 
-
 mongoose.connect(uristring, (err) => { // creating connection to mongod
   if (err) { console.log('mongodb not connected', err); }
   else {
@@ -91,7 +90,6 @@ var UserChallenges = mongoose.model("UserChallenges", userChallengeSchema, "user
 
 // ^^^^^^^^^^^^ User-submitted Challenges ^^^^^^^^^^^^^
 
-
 // VVVVVVVVVVVVVVV Users VVVVVVVVVVVVVVVVVVVV
 
 var userSchema = new Schema({
@@ -106,7 +104,8 @@ var userSchema = new Schema({
   experience: String, // changed to string from number for now
   score: String, // changed to string from number for now
   completedCourseChallenges: { type : Schema.Types.Mixed, default : {firstChallenge: true}},
-  completedChallenges: [{type: Schema.Types.ObjectId, ref: 'Solutions'}]
+  completedChallenges: [{type: Schema.Types.ObjectId, ref: 'Solutions'}],
+  messages: [{message: String, meantFor: String, from: String, to: String}]
 })
 
 var Users = mongoose.model("Users", userSchema);
@@ -154,18 +153,9 @@ var CourseChallengesLinkedList = mongoose.model("CourseChallengesLinkedList", co
 
  // ^^^^^^^^^^^^^^ Linked List ^^^^^^^^^^^^^^
 
-var findUserById = function(id, callback) {
-  console.log("in findUserById in databaseindex.js, passed-in id is ", id);
-  return Users.findById(id, callback);
-}
+ // VVVVVVVVVVVVV Database functions VVVVVVVVVVVVV
 
-var rateSolution = function(challengeName, solver, rater, vote) {
-  Solutions.findOne({challengeName: challengeName, solvedBy: solver}, function(err, solution) {
-    if (err) {return err;}
-    Solution.rating[rater]=vote
-    return Solution.save();
-  })
-};
+/*          Adding new challenges           */
 
 var addNewInitialChallenge = function(obj) {
   var newInitialChallenge = new InitialChallenges(obj);
@@ -221,6 +211,14 @@ var addNewCourseChallenge = function(obj) {
   })
 }
 
+var addUserChallenge = function (obj) {
+  console.log("in addUserChallenge in database-index, obj is ", obj);
+  var newUserChallenge = new UserChallenges(obj);
+  return newUserChallenge.save();
+}
+
+/*          Solution functions           */
+
 //needs refactor for proper collections
 var addSolution = function(obj, username, challengeName) { // adds to solutions collection and adds id to users and challenges collections
   var newSolution = new Solutions(obj);
@@ -247,10 +245,13 @@ var addSolution = function(obj, username, challengeName) { // adds to solutions 
   })
 }
 
-var selectAllInitialChallenges = function() {
-  console.log("in selectAllInitialChallenges in databaseindex");
-  return InitialChallenges.find();
-}
+var rateSolution = function (challengeName, solver, rater, vote) {
+  Solutions.findOne({ challengeName: challengeName, solvedBy: solver }, function (err, solution) {
+    if (err) { return err; }
+    Solution.rating[rater] = vote
+    return Solution.save();
+  })
+};
 
 var getPopulatedUser = function(username) { // changes object ids into actual objects from other collection
   return new Promise(function(resolve, reject) {
@@ -274,6 +275,8 @@ var getPopulatedChallenge = function(challengeName) { // changes object ids into
 
   })
 }
+
+/*          Linked List functions          */
 
 //needs refactor for proper linked list collection
 var getHeadOfLinkedList = function() {
@@ -299,14 +302,11 @@ var getTailOfLinkedList = function() {
   })
 }
 
-var addUserChallenge = function(obj) {
-  console.log("in addUserChallenge in database-index, obj is ", obj);
-  var newUserChallenge = new UserChallenges(obj);
-  return newUserChallenge.save();
-}
+/*          Retrieving Challenges           */
 
-var getUserChallengeByName = function(name) {
-  return UserChallenges.findOne({challengeName: name});
+var selectAllInitialChallenges = function () {
+  console.log("in selectAllInitialChallenges in databaseindex");
+  return InitialChallenges.find();
 }
 
 var getAllCourseChallenges = function() {
@@ -319,13 +319,23 @@ var getAllUserChallenges = function() {
   return UserChallenges.find();
 }
 
+var getUserChallengeByName = function(name) {
+  return UserChallenges.findOne({challengeName: name});
+}
+
+/*          User Functions           */
+
+var findUserById = function (id, callback) {
+  console.log("in findUserById in databaseindex.js, passed-in id is ", id);
+  return Users.findById(id, callback);
+}
+
 var updateUserLevel = function(username, newLevel) {
   console.log("In updateUserLevel in database-index, username is ", username, "and newLevel is ", newLevel);
   return Users.findOneAndUpdate({username: username}, {level: newLevel, completedInitial: true}, {new: true})
 }
 
 var updateCompletedCourseChallenges = function(currentUser, message, challengeName) {
-
   let msg = message === "Success" ? true : false;
   let obj = {};
   finalObj = currentUser.completedCourseChallenges;
@@ -333,35 +343,56 @@ var updateCompletedCourseChallenges = function(currentUser, message, challengeNa
   return Users.findOneAndUpdate({username: currentUser.username}, {completedCourseChallenges: finalObj}, {new: true, upsert: true});
 }
 
-// module.exports for each function
-module.exports.findUserById = findUserById;
-module.exports.addSolution = addSolution;
-module.exports.getPopulatedUser = getPopulatedUser;
-module.exports.getPopulatedChallenge = getPopulatedChallenge;
-module.exports.Users = Users;
-module.exports.InitialChallenges = InitialChallenges;
-module.exports.selectAllInitialChallenges = selectAllInitialChallenges;
-module.exports.addNewInitialChallenge = addNewInitialChallenge;
-module.exports.getHeadOfLinkedList = getHeadOfLinkedList;
-module.exports.getTailOfLinkedList = getTailOfLinkedList;
-module.exports.addUserChallenge = addUserChallenge;
-module.exports.getUserChallengeByName = getUserChallengeByName;
-module.exports.getAllCourseChallenges = getAllCourseChallenges;
-module.exports.getAllUserChallenges = getAllUserChallenges;
-module.exports.updateUserLevel = updateUserLevel;
-module.exports.updateCompletedCourseChallenges = updateCompletedCourseChallenges;
-module.exports.rateSolution = rateSolution;
+var addMessageToUser = function(username, messageObj) {
+  return Users.findOne({username: username}, function(err, user) {
+    console.log("In addMessageToUser in dbindex, user is", user);
+    user.messages = user.messages.concat(messageObj);
+    user.save();
+  })
+}
+
+var retrieveAllMessagesFromUser = function(username) {
+  return Users.findOne({username: username}).select("messages");
+}
+
+// ^^^^^^^^^^^^^^^ Database functions ^^^^^^^^^^^^^^^
+
+/*          Exports           */
+
+//Database
 module.exports.db = db;
 
+//Collections
+module.exports.Users = Users;
+module.exports.InitialChallenges = InitialChallenges;
+module.exports.CourseChallenges = CourseChallenges;
+module.exports.UserChallenges = UserChallenges;
+module.exports.Solutions = Solutions;
 
+//Adding New Challenges
+module.exports.addNewInitialChallenge = addNewInitialChallenge;
+module.exports.addNewCourseChallenge = addNewCourseChallenge;
+module.exports.addUserChallenge = addUserChallenge;
 
+//Solution Functions
+module.exports.addSolution = addSolution;
+module.exports.rateSolution = rateSolution;
+module.exports.getPopulatedUser = getPopulatedUser;
+module.exports.getPopulatedChallenge = getPopulatedChallenge;
 
+//Linked List Functions
+module.exports.getHeadOfLinkedList = getHeadOfLinkedList;
+module.exports.getTailOfLinkedList = getTailOfLinkedList;
 
+//Retrieving Challenges
+module.exports.selectAllInitialChallenges = selectAllInitialChallenges;
+module.exports.getAllCourseChallenges = getAllCourseChallenges;
+module.exports.getAllUserChallenges = getAllUserChallenges;
+module.exports.getUserChallengeByName = getUserChallengeByName;
 
-
-
-
-
-
-
-
+//User Functions
+module.exports.findUserById = findUserById;
+module.exports.updateUserLevel = updateUserLevel;
+module.exports.updateCompletedCourseChallenges = updateCompletedCourseChallenges;
+module.exports.addMessageToUser = addMessageToUser;
+module.exports.retrieveAllMessagesFromUser = retrieveAllMessagesFromUser;

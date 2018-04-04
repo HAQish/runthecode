@@ -22,10 +22,9 @@ app.use(express.static(path.join(__dirname, '../client/dist')));
 //arr for socket users
 var usersArr = [];
 
-//socket.io stuff
+//socket.io functionality
 io.on("connection", function(socket) {
   console.log("Connection made via socket.io on", socket.id);
-  
   
   socket.on("onlineUpdate", function(user) {
     console.log("socket on backend heard onlineUpdate, user is", user);
@@ -62,12 +61,17 @@ io.on("connection", function(socket) {
 
   socket.on("sendChatMessage", function(messageObj) {
     console.log("Back end socket heard sent chat message", messageObj);
-    socket.to(messageObj.meantFor).emit("sendChatMessage", messageObj);
+    //to is user receiving message
+    db.addMessageToUser(messageObj.to, messageObj)
+      .then(results => db.retrieveAllMessagesFromUser(messageObj.to))
+      .then(results => socket.to(messageObj.meantFor).emit("sendChatMessage", results));
   })
 
-  // socket.on("Disconnect socket", function() {
-  //   sockets.socket(socket.id).disconnect();
-  // })
+  socket.on("receiveAllChatMessages", function(username) {
+    // console.log("backend heard request for all chat messages for user", username);
+    db.retrieveAllMessagesFromUser(username)
+      .then(messages => socket.emit("receiveAllChatMessages", messages));
+  })
 
   socket.on("Logout socket", function(username) {
     for (let i = 0; i < usersArr.length; i++) {
@@ -89,8 +93,6 @@ io.on("connection", function(socket) {
 })
 
 
-
-
 http.listen(PORT, function() {
   console.log(`listening on port ${PORT}`);
 });
@@ -110,39 +112,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-
-
-
 require('./routes.js').passportRoutes(app, passport);
 require('./routes.js').challengeRoutes(app);
 require('./routes.js').dbRoutes(app);
 
 module.exports = app;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
