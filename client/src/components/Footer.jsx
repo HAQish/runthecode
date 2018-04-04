@@ -15,9 +15,10 @@ const Wrapper = styled.div`
 const Footer = (props) => {
   return(
     <Wrapper>
-      <div>First box</div>
-      <div>Second box</div>
-      <div>Third box</div>
+      <div>&copy; &reg; LevelUP Code 2018</div>
+      <div>Kyle McLeod</div>
+      <div>Kevin Doddy</div>
+      <div>Habib Qureshi</div>
     </Wrapper>
   )
 }
