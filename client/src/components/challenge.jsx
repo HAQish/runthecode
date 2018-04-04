@@ -32,25 +32,36 @@ class Challenge extends React.Component {
 
   //if user has not completed initialchallenges -> gets initialchallenges from server and populates state
   //if user has completed initialchallenges -> gets coursechallenges from server and populates state
-  componentWillMount() {
-    if (this.props.user.completedInitial === false) {
-      $.get("/initialChallenges", (data) => {
-        this.setState({
-          initialChallenges: data,
-          currentChallengeID: 0,
-          currentChallenge: data[0]
+  componentDidMount() {
+    console.log('✋✋✋✋✋', this.props);
+    // if (this.props.user) {
+      if (this.props.user.completedInitial === false) {
+        $.get("/initialChallenges", (data) => {
+          this.setState({
+            initialChallenges: data,
+            currentChallengeID: 0,
+            currentChallenge: data[0]
+          })
+        }
+        )
+      } else {
+        $.get("/courseChallenges", (data) => {
+          this.setState({
+            currentChallengeID: 0,
+            courseChallenges: data,
+            currentChallenge: data[0]
+          })
         })
       }
-      )
-    } else {
-      $.get("/courseChallenges", (data) => {
-        this.setState({
-          currentChallengeID: 0,
-          courseChallenges: data,
-          currentChallenge: data[0]
-        })
-      })
-    }
+    // } else {
+    //   $.get("/courseChallenges", (data) => {
+    //     this.setState({
+    //       currentChallengeID: 0,
+    //       courseChallenges: data,
+    //       currentChallenge: data[0]
+    //     })
+    //   })
+    // }
   }
 
   //invoked when user clicks 'next problem' button in challengeResults modal

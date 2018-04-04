@@ -17,6 +17,10 @@ import {
   Feed
 } from "semantic-ui-react";
 
+const Wrapper = styled.div`
+
+`;
+
 const TopWrapper = styled.div`
   display: flex;  
   flex-direction: row;
@@ -64,13 +68,12 @@ class Dashboard extends React.Component {
   // Available Challenges
   // Find a mentor
   // Become a mentor
-  
 
   render() {
     const { user } = this.props;
     let completed = this.props.user.completedInitial ? 'YES' : 'NO';
     console.log('coooommmmppp', user.completedInitial);
-    return <div style={{ height: "100vh" }}>
+    return <Wrapper>
         <TopWrapper>
           <Label size="huge" color="black">
             <Icon name="marker" />
@@ -97,14 +100,13 @@ class Dashboard extends React.Component {
             <Label.Detail>0</Label.Detail>
           </Label>
         </TopWrapper>
-        <Heading>Welcome {user.username} to your DASHBOARD</Heading> */}
-
+        <Heading>DASHBOARD</Heading>
         <Grid>
           <Grid.Row>
             <Grid.Column width={8}>
-              <Card centered raised color="blue" style={{ width: "70%" }}>
+              <Card centered raised color="blue" style={{ width: "70%", minHeight: "40vh" }}>
                 <Card.Content>
-                  <Card.Header>Your Learning Path</Card.Header>
+                  <Card.Header as='h2'>Your Learning Path</Card.Header>
                 </Card.Content>
                 <Card.Content>
                   <br />
@@ -143,9 +145,9 @@ class Dashboard extends React.Component {
               </Card>
             </Grid.Column>
             <Grid.Column width={8}>
-              <Card centered raised color="blue" style={{ width: "70%" }}>
+              <Card centered raised color="blue" style={{ width: "70%", minHeight: "40vh" }}>
                 <Card.Content>
-                  <Card.Header>Your Challenge Path</Card.Header>
+                  <Card.Header as='h1'>Your Challenge Path</Card.Header>
                 </Card.Content>
                 <Card.Content>
                   <Feed>
@@ -190,10 +192,8 @@ class Dashboard extends React.Component {
               </Card>
             </Grid.Column>
           </Grid.Row>
-          <br />
-          <br />
         </Grid>
-      </div>;
+      </Wrapper>;
   }
 }
 

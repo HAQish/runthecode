@@ -315,6 +315,11 @@ var getAllCourseChallenges = function() {
   return CourseChallenges.find();
 }
 
+var getAllUserChallenges = function() {
+  console.log("In getAllUserChallenges in db-index");
+  return UserChallenges.find();
+}
+
 var updateUserLevel = function(username, newLevel) {
   console.log("In updateUserLevel in database-index, username is ", username, "and newLevel is ", newLevel);
   return Users.findOneAndUpdate({username: username}, {level: newLevel, completedInitial: true}, {new: true})
@@ -355,6 +360,7 @@ module.exports.getTailOfLinkedList = getTailOfLinkedList;
 module.exports.addUserChallenge = addUserChallenge;
 module.exports.getUserChallengeByName = getUserChallengeByName;
 module.exports.getAllCourseChallenges = getAllCourseChallenges;
+module.exports.getAllUserChallenges = getAllUserChallenges;
 module.exports.updateUserLevel = updateUserLevel;
 module.exports.updateCompletedCourseChallenges = updateCompletedCourseChallenges;
 module.exports.rateSolution = rateSolution;
