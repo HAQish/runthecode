@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import socketIOClient from "socket.io-client";
+
 import Challenge from './components/challenge.jsx';
 import Navbar from './components/navbar.jsx';
 import Home from './components/home.jsx';
@@ -13,7 +14,19 @@ import UserChallenges from "./components/UserChallenges.jsx";
 import Users from "./components/Users.jsx";
 import Messages from "./components/Messages.jsx";
 import NewChallengeForm from './components/NewChallengeForm.jsx';
+import Footer from './components/Footer.jsx';
+
 import { Sidebar, Button, Menu, Image, Icon, Header, Grid, Segment, Dropdown } from 'semantic-ui-react';
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;
+const Content = styled.div`
+  flex: 1;
+`;
 
 class App extends React.Component {
   constructor(props) {
@@ -45,6 +58,7 @@ class App extends React.Component {
         this.setState({
           masterUser: data
         });
+        console.log('SET MASTER USER STATE', data)
         this.onlineUpdate();
       } else {
         this.setState({
@@ -130,25 +144,26 @@ class App extends React.Component {
     (<Route exact path="/" component={() => <Home handleLogin={this.handleLogin} />} />);
     // const chatAlert = this.state.triggerChatAlert ? "You have new chat messages" : "";
 
-    return(
-      <BrowserRouter>
-        <div>
-          <div>
+    return <BrowserRouter>
+        <Wrapper>
+          <Content>
             <Side visible={this.state.visible}>
               <Navbar handleLogin={this.handleLogin} logout={this.logout} isLoggedIn={this.state.masterUser} toggleSidebar={this.toggleVisibility} socket={this.state.socket} user={this.state.masterUser}  triggerChatAlert={this.state.triggerChatAlert} setMessagesFalse={this.setMessagesFalse} />
               {loggedIn}
               <Route path="/course" component={() => <Challenge initialComplete={this.handleInitialComplete} user={this.state.masterUser} />} />
-              <Route path="/allchallenges/:challengeName" component={AllChallenges} />
-              <Route path="/challenges" component={() => <UserChallenges initialComplete={this.handleInitialComplete} user={this.state.masterUser} socket={this.state.socket}/>} />
+              <Route exact path="/allchallenges" component={AllChallenges} />
+              <Switch>
+                <Route path="/allchallenges/:challengeName" render={(props) => <UserChallenges {...props} user={this.state.masterUser} socket={this.state.socket}/>} />
+              </Switch>
               <Route path="/users" component={() => <Users user={this.state.masterUser} socket={this.state.socket} />} />
               <Route path="/messages" component={() => <Messages user={this.state.masterUser} socket={this.state.socket} messages={this.state.messages} triggerChatAlert={this.state.triggerChatAlert} setMessagesFalse={this.setMessagesFalse} />} />
-              <Route path="/newchallengeform" component={() => <NewChallengeForm user={this.state.masterUser}/>} />
+              <Route path="/newchallengeform" component={() => <NewChallengeForm user={this.state.masterUser} />} />
+              {/* <Route path="/challenges" component={() => <UserChallenges initialComplete={this.handleInitialComplete} user={this.state.masterUser} />} /> */}
             </Side>
-          </div>
-          {/* {ChatAlert} */}
-        </div>
-      </BrowserRouter>
-    )
+          </Content>
+          <Footer />
+        </Wrapper>
+      </BrowserRouter>;
   }
 }
 

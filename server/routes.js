@@ -95,6 +95,11 @@ var challengeRoutes = function(app) {
     db.getAllCourseChallenges().then(results => {console.log(results); res.send(results)});
   })
 
+  app.get("/challengeList", function(req, res) {
+    console.log("Getting all challenge list for allChallenges front end route");
+    db.getAllUserChallenges().then(results => res.send(results));
+  });
+
   // app.post("/createInitialChallenge", function(req, res) { // to create initial challenge, perhaps later in the app itself for admins
   //   console.log("Heard post for new initial challenge, new challenge is ", req.body);
   //   db.addNewInitialChallenge(req.body);
@@ -179,14 +184,15 @@ var challengeRoutes = function(app) {
 
   app.get("/userSubmittedChallenge/:challengeName", function(req, res) { // find user submitted challenge by name
     console.log("Heard get for user submitted challenge, challenge name is ", req.params.challengeName);
-    // db.getUserChallengeByName(req.params.challengeName).then(results => console.log(results));
-    res.send('Getting all challenges');
+    db.getUserChallengeByName(req.params.challengeName).then(results => res.send(results));
+    // res.send(`Getting all challenges && ${req.params.challengeName}`); 
   })
 
   app.get("/challengeList", function(req, res) { // find user submitted challenge by name
     //req.params.challengeName
-    // db.getUserChallengeByName(req.params.challengeName).then(results => console.log(results));
-    res.send('Getting all challenges');
+    console.log('inside route, get all user challenges')
+    db.getAllUserChallenges().then(results => res.send(results));
+    // res.send('Getting all challenges');
     //send back array of all challenges.
   })
 
