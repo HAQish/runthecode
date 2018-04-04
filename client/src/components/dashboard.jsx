@@ -17,6 +17,10 @@ import {
   Feed
 } from "semantic-ui-react";
 
+const Wrapper = styled.div`
+
+`;
+
 const TopWrapper = styled.div`
   display: flex;  
   flex-direction: row;
@@ -69,7 +73,7 @@ class Dashboard extends React.Component {
     const { user } = this.props;
     let completed = this.props.user.completedInitial ? 'YES' : 'NO';
     console.log('coooommmmppp', user.completedInitial);
-    return <div style={{ height: "85vh" }}>
+    return <Wrapper>
         <TopWrapper>
           <Label size="huge" color="black">
             <Icon name="marker" />
@@ -100,7 +104,7 @@ class Dashboard extends React.Component {
         <Grid>
           <Grid.Row>
             <Grid.Column width={8}>
-              <Card centered raised color="blue" style={{ width: "70%" }}>
+              <Card centered raised color="blue" style={{ width: "70%", minHeight: "40vh" }}>
                 <Card.Content>
                   <Card.Header>Your Learning Path</Card.Header>
                 </Card.Content>
@@ -188,9 +192,8 @@ class Dashboard extends React.Component {
               </Card>
             </Grid.Column>
           </Grid.Row>
-          <br />
         </Grid>
-      </div>;
+      </Wrapper>;
   }
 }
 

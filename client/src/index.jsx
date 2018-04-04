@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import socketIOClient from "socket.io-client";
+
 import Challenge from './components/challenge.jsx';
 import Navbar from './components/navbar.jsx';
 import Home from './components/home.jsx';
@@ -13,26 +14,18 @@ import UserChallenges from "./components/UserChallenges.jsx";
 import Users from "./components/Users.jsx";
 import Messages from "./components/Messages.jsx";
 import NewChallengeForm from './components/NewChallengeForm.jsx';
+import Footer from './components/Footer.jsx';
+
 import { Sidebar, Button, Menu, Image, Icon, Header, Grid, Segment, Dropdown } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
+  min-height: 100vh;
 `;
 const Content = styled.div`
-  flex: 1 0 auto;
-`;
-const Footer = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  flex-shrink: 0;
-  background-color: #4CBB6B;
-  justify-content: space-around;
-  align-items: center;
-  height: 70px;
+  flex: 1;
 `;
 
 class App extends React.Component {
@@ -56,7 +49,7 @@ class App extends React.Component {
     this.setMessagesFalse = this.setMessagesFalse.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     // check if user is logged in
     // if so, set user on state
     $.get('/isLoggedIn', data => {
@@ -65,6 +58,7 @@ class App extends React.Component {
         this.setState({
           masterUser: data
         });
+        console.log('SET MASTER USER STATE', data)
         this.onlineUpdate();
       } else {
         this.setState({
@@ -158,18 +152,16 @@ class App extends React.Component {
               {loggedIn}
               <Route path="/course" component={() => <Challenge initialComplete={this.handleInitialComplete} user={this.state.masterUser} />} />
               <Route exact path="/allchallenges" component={AllChallenges} />
-              <Route path="/allchallenges/:challengeName" component={{() => <UserChallenges user={this.state.masterUser} socket={this.state.socket}/>}} />
+              <Switch>
+                <Route path="/allchallenges/:challengeName" render={(props) => <UserChallenges {...props} user={this.state.masterUser} socket={this.state.socket}/>} />
+              </Switch>
               <Route path="/users" component={() => <Users user={this.state.masterUser} socket={this.state.socket} />} />
               <Route path="/messages" component={() => <Messages user={this.state.masterUser} socket={this.state.socket} messages={this.state.messages} triggerChatAlert={this.state.triggerChatAlert} setMessagesFalse={this.setMessagesFalse} />} />
               <Route path="/newchallengeform" component={() => <NewChallengeForm user={this.state.masterUser} />} />
               {/* <Route path="/challenges" component={() => <UserChallenges initialComplete={this.handleInitialComplete} user={this.state.masterUser} />} /> */}
             </Side>
-            <Footer style={{ marginTop: "40px" }}>
-              <div>First box</div>
-              <div>Second box</div>
-              <div>Third box</div>
-            </Footer>
           </Content>
+          <Footer />
         </Wrapper>
       </BrowserRouter>;
   }

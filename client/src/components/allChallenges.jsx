@@ -39,6 +39,7 @@ class AllChallenges extends Component {
   }
 
   componentDidMount() {
+    console.log('INSIDE COMPDIDMOUNT IN ALLCHALLENGES')
     $.get('/challengeList', data => {
       console.log("❓❓❓❓", data);
       this.setState({

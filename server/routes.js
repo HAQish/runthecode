@@ -190,8 +190,9 @@ var challengeRoutes = function(app) {
 
   app.get("/challengeList", function(req, res) { // find user submitted challenge by name
     //req.params.challengeName
-    // db.getUserChallengeByName(req.params.challengeName).then(results => console.log(results));
-    res.send('Getting all challenges');
+    console.log('inside route, get all user challenges')
+    db.getAllUserChallenges().then(results => res.send(results));
+    // res.send('Getting all challenges');
     //send back array of all challenges.
   })
 

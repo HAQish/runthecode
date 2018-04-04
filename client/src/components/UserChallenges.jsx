@@ -46,8 +46,6 @@ class UserChallenges extends React.Component {
   // testDescriptions "[]" /////
 
   componentWillMount() {
-    // const {params} = this.props.match.params;
-    console.log('parameters', this.props.match.params)
     $.get(`/userSubmittedChallenge/${this.props.match.params.challengeName}`, (data) => {
       console.log('Data after get to userchallenges', data)
       this.setState({
