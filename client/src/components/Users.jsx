@@ -23,9 +23,7 @@ class Users extends React.Component {
       // console.log("In Users.jsx, usersArr returned from backend is", usersArr);
       this.setState({users: usersArr});
     })
-    // this.getOnlineUsers;
     setInterval(this.getOnlineUsers, 1500);
-    // console.log(this.props.users);
   }
 
   getOnlineUsers() {

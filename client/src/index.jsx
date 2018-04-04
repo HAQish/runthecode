@@ -32,8 +32,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // isLoggedIn: false, //false?render <Home>...true?render logout button and <Challenge>...set to true on login/signup
-      masterUser: undefined, //{"local":{"email":"fakeemail@yahoo.com","password":"fakepw"},"completedInitial":false,"completedChallenges":[],"_id":"5ab5358921b7e547a81fcc3e","createdAt":"2018-03-23T17:12:41.095Z","username":"fakeusername","__v":0}
+      masterUser: undefined,
       visible: false,
       endpoint: "/",
       messages: [],
@@ -58,7 +57,6 @@ class App extends React.Component {
         this.setState({
           masterUser: data
         }, this.onlineUpdate);
-        // this.onlineUpdate();
       } else {
         this.setState({
           masterUser: undefined
@@ -98,13 +96,9 @@ class App extends React.Component {
     $.ajax({
       type: "GET",
       url: "/logout",
-      // success: (data) => {this.clearState(); this.state.socket.emit("disconnect");},
       success: (data) => { this.clearState(); },
       failure: (err => console.log("error in logout in app", err))
     })
-    // fetch('/logout', {credentials: 'include'})
-    //   .then(data => this.clearState())
-    //   .catch(error => console.log('error', error));
   }
 
   clearState() {
@@ -123,7 +117,6 @@ class App extends React.Component {
       resolve(5);
     }).then(() => {setTimeout(() => {this.onlineUpdate}, 1000)});
     console.log(this.state.masterUser);
-    // setTimeout(this.onlineUpdate, 300);
   }
   
   handleInitialComplete(score) {
@@ -134,7 +127,6 @@ class App extends React.Component {
     const socket = socketIOClient(this.state.endpoint);
     socket.on("connect", () => {
       console.log("Connected to socket from index.jsx, and socket id is", socket.id);
-      // this.setState({ socketId: socket.id });
     });
     this.setState({ socket: socket });
   }
@@ -145,7 +137,6 @@ class App extends React.Component {
     (<Route exact path="/" component={() => <Dashboard user={this.state.masterUser} socket={this.state.socket} onlineUpdate={this.onlineUpdate}/>} />) 
     : 
     (<Route exact path="/" component={() => <Home handleLogin={this.handleLogin} />} />);
-    // const chatAlert = this.state.triggerChatAlert ? "You have new chat messages" : "";
 
     return <BrowserRouter>
         <Wrapper>

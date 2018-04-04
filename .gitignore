@@ -5,4 +5,4 @@ client/dist/bundle.js
 client/.DS_Store
 client/dist/.DS_Store
 client/src/.DS_Store
-database/seed
+database/seed/dbSeed.js

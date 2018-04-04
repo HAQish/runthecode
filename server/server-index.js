@@ -22,10 +22,9 @@ app.use(express.static(path.join(__dirname, '../client/dist')));
 //arr for socket users
 var usersArr = [];
 
-//socket.io stuff
+//socket.io functionality
 io.on("connection", function(socket) {
   console.log("Connection made via socket.io on", socket.id);
-  
   
   socket.on("onlineUpdate", function(user) {
     console.log("socket on backend heard onlineUpdate, user is", user);
@@ -73,10 +72,6 @@ io.on("connection", function(socket) {
     db.retrieveAllMessagesFromUser(username)
       .then(messages => socket.emit("receiveAllChatMessages", messages));
   })
-
-  // socket.on("Disconnect socket", function() {
-  //   sockets.socket(socket.id).disconnect();
-  // })
 
   socket.on("Logout socket", function(username) {
     for (let i = 0; i < usersArr.length; i++) {
