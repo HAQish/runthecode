@@ -222,8 +222,8 @@ const addUserChallenge = function (obj) {
 /*          Solution functions           */
 
 // needs refactor for proper collections
-const addSolution = function (obj, username, challengeName) { // adds to solutions collection and adds id to users and challenges collections
-  const newSolution = new Solutions(obj);
+const addSolution = function (answer, username, challengeName) { // adds to solutions collection and adds id to users and challenges collections
+  const newSolution = new Solutions({masterUserSolutionCode: answer, solvedBy: username, challengeName: challengeName});
   newSolution._id = new mongoose.Types.ObjectId();
   console.log('The new solution being saved to the solutions collection in addSolution in database-index is ', newSolution);
 
@@ -247,11 +247,10 @@ const addSolution = function (obj, username, challengeName) { // adds to solutio
 };
 
 const rateSolution = function (challengeName, solver, rater, vote) {
-  Solutions.findOne({ challengeName, solvedBy: solver }, (err, solution) => {
-    if (err) { return err; }
-    Solution.rating[rater] = vote;
-    return Solution.save();
-  });
+  var rateStr = "rating." + rater;
+  return Solutions.findOneAndUpdate({ challengeName: challengeName, solvedBy: solver },
+    {$set : {[rateStr]: Number(vote)}},
+  {new:true});
 };
 
 const getPopulatedUser = function (username) { // changes object ids into actual objects from other collection
@@ -264,10 +263,10 @@ const getPopulatedUser = function (username) { // changes object ids into actual
 
 // needs refactor for proper challenges collection
 const getPopulatedChallenge = function (challengeName) { // changes object ids into actual objects from other collection
-  return new Promise(((resolve, reject) => Challenges.find({ challengeName }).populate('submittedSolutions').exec((err, data) => {
+  return new Promise(((resolve, reject) => UserChallenges.find({ challengeName }).populate('submittedSolutions').exec((err, data) => {
     if (err) { return err; }
     console.log('data.submittedSolutions in getPopulatedChallenge in database-index is ', data[0].submittedSolutions);
-    resolve(data[0].submittedSolutions);
+    resolve(data[0]);
   })));
 };
 
