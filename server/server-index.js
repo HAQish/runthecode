@@ -45,19 +45,28 @@ io.on('connection', (socket) => {
     socket.emit('returnOnlineUsers', usersArr);
   });
 
-  socket.on('codeChange', (newCode) => {
-    console.log("the new code being sent to the server's socket is ", newCode);
-    const code = newCode;
-    socket.broadcast.emit('codeChangeFromServer', newCode);
-  });
+  socket.on("joinRoom", function(roomName) {
+    console.log("Joining a room in the socket", roomName);
+    socket.join(roomName);
+  })
 
-  socket.on('componentWillMountPairing', (socketID) => {
-    socket.broadcast.emit('socketIdFromPartner', socketID);
-  });
+  socket.on("leaveRoom", function(roomName) {
+    console.log("Leaving a room in the socket", roomName);
+    socket.leave(roomName);
+  })
 
-  socket.on('sendChatFromApp', (chatMsg) => {
-    io.sockets.emit('sendChatFromServer', chatMsg);
-  });
+  socket.on("codeChange", function(newCodeObj) {
+    console.log("the new code being sent to the server's socket is ", newCodeObj);
+    socket.to(newCodeObj.roomName).emit("codeChangeFromServer", newCodeObj.code);
+  })
+
+  socket.on("componentWillMountPairing", function(socketObj) {
+    socket.to(socketObj.roomName).emit("socketIdFromPartner", socketObj.id);
+  })
+
+  socket.on("sendChatFromApp", function(chatMsg) {
+    io.in(chatMsg.roomName).emit("sendChatFromServer", chatMsg);
+  })
 
   socket.on('sendChatMessage', (messageObj) => {
     console.log('Back end socket heard sent chat message', messageObj);

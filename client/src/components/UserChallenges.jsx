@@ -40,6 +40,7 @@ class UserChallenges extends React.Component {
   // testDescriptions "[]" /////
 
   componentWillMount() {
+    console.log("in UserChallenges.jsx, socket is", this.props.socket);
     $.get(`/userSubmittedChallenge/${this.props.match.params.challengeName}`, (data) => {
       console.log('Data after get to userchallenges', data)
       this.setState({
@@ -80,7 +81,8 @@ class UserChallenges extends React.Component {
   }
 
   render() {
-    const whichEditor = this.state.pairing ? (
+    // const whichEditor = this.state.pairing ? (
+    const whichEditor = this.props.match.params.roomName !== undefined ? (
       <PairingEditor
         starterCode={this.state.currentUserCode || this.state.starterCode}
         testDescriptions={this.state.testDescriptions}
@@ -91,6 +93,7 @@ class UserChallenges extends React.Component {
         switch={this.switch}
         socket={this.props.socket}
         user={this.props.user}
+        room={this.props.match.params}
       />
     ) : (
       <Editor
@@ -101,6 +104,8 @@ class UserChallenges extends React.Component {
         challengeLevel={this.state.challengeLevel}
         challengeName={this.state.challengeName}
         switch={this.switch}
+        socket={this.props.socket}
+        user={this.props.user}
       />
     );
 
