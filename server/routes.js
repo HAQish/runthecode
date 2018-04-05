@@ -128,7 +128,7 @@ const challengeRoutes = function (app) {
         console.log(masterTestResults, message);
         if (message = 'Success') {
         // add to submitted solutions in challenge
-          db.addSolution(req.body.masterUserSolutionCode, req.body.user.username, req.body.challengeName);
+          db.addSolution(req.body.masterUserSolutionCode, req.user.username, req.body.challengeName);
         }
         endMsg = JSON.stringify({ masterTestResults, message });
         res.end(endMsg);
@@ -138,11 +138,8 @@ const challengeRoutes = function (app) {
 
   app.post('/rateSolution', (req, res) => {
     // needs (challengename, solver, rater, vote) from front end
-    db.rateSolution(req.body.challengeName, req.body.solver, req.body.rater, req.body.vote);
-    rater = req.body.rater;
-    vote = req.body.vote;
-    const rateMsg = { [rater]: vote };
-    res.end(JSON.stringify(rateMsg));
+    const rateMsg = db.rateSolution(req.body.challengeName, req.body.solver, req.user.username, req.body.vote)
+    .then((z)=>{console.log(z); res.send(z);})
   });
 
   // User submitted challenge routes
@@ -184,7 +181,7 @@ const challengeRoutes = function (app) {
 
   app.get('/userSubmittedChallenge/:challengeName', (req, res) => { // find user submitted challenge by name
     console.log('Heard get for user submitted challenge, challenge name is ', req.params.challengeName);
-    db.getUserChallengeByName(req.params.challengeName).then(results => res.send(results));
+    db.getPopulatedChallenge(req.params.challengeName).then(results => res.send(results));
     // res.send(`Getting all challenges && ${req.params.challengeName}`);
   });
 

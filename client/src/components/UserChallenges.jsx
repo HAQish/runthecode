@@ -11,23 +11,13 @@ class UserChallenges extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // challengeLevel: data.challengeLevel,
-      // challengeName: data.challengeName,
-      // masterTests: data.masterTests,
-      // prompt: data.prompt,
-      // starterCode: data.starterCode,
-      // testDescriptions: data.testDescriptions,
-      
-      // currentChallengeResultMessage: '',
-      // currentTestResults: results.masterTestResults,
-      // currentTestDescriptions: this.state.currentChallenge.masterTestDescriptions,
-      // openChallengeResultsModal: false,
-      // currentUserCode: undefined,
-      
-      // pairing: false,
-      // endpoint: "/",
-      // socket: undefined,
-      // socketId: undefined
+      openChallengeResultsModal: false,
+      // currentChallengeResultMessage: "", //"Success"/"Failure"/"Error" -- used to conditionally render ChallengeResultsModal
+      currentTestDescriptions: [],
+      currentTestResults: [],
+      justCompletedInitial: false,
+      currentUserCode: undefined,
+      pairing: false,
     };
     this.displayTestResults = this.displayTestResults.bind(this);
     this.retry = this.retry.bind(this);
@@ -51,6 +41,7 @@ class UserChallenges extends React.Component {
 
   componentWillMount() {
     console.log('🇺🇸🇸🇸🇸🇸🇸🇸', this.props.match);
+    console.log("in UserChallenges.jsx, socket is", this.props.socket);
     $.get(`/userSubmittedChallenge/${this.props.match.params.challengeName}`, (data) => {
       console.log('Data after get to userchallenges', data)
       this.setState({
@@ -60,6 +51,8 @@ class UserChallenges extends React.Component {
         prompt: data.prompt,
         starterCode: data.starterCode,
         testDescriptions: data.testDescriptions,
+        showSolutions: false,
+        submittedSolutions: data.submittedSolutions,
       });
     });
   }
@@ -83,7 +76,9 @@ class UserChallenges extends React.Component {
   }
 
   viewSolutions() {
-
+    this.setState({
+      showSolutions: true
+    })
   }
 
   switch(e) {
@@ -91,7 +86,8 @@ class UserChallenges extends React.Component {
   }
 
   render() {
-    const whichEditor = this.state.pairing ? (
+    // const whichEditor = this.state.pairing ? (
+    const whichEditor = this.props.match.params.roomName !== undefined ? (
       <PairingEditor
         starterCode={this.state.currentUserCode || this.state.starterCode}
         testDescriptions={this.state.testDescriptions}
@@ -102,9 +98,11 @@ class UserChallenges extends React.Component {
         switch={this.switch}
         socket={this.props.socket}
         user={this.props.user}
+        room={this.props.match.params}
       />
     ) : (
       <Editor
+        destinationUrl="/allChallenges"
         starterCode={this.state.currentUserCode || this.state.starterCode}
         testDescriptions={this.state.testDescriptions}
         masterTests={this.state.masterTests}
@@ -112,6 +110,8 @@ class UserChallenges extends React.Component {
         challengeLevel={this.state.challengeLevel}
         challengeName={this.state.challengeName}
         switch={this.switch}
+        socket={this.props.socket}
+        user={this.props.user}
       />
     );
 
@@ -136,7 +136,10 @@ class UserChallenges extends React.Component {
         >
           <AllChallengesResultsModal
             msg={this.state.currentChallengeResultMessage}
+            solutions={this.state.submittedSolutions}
+            challengeName={this.state.challengeName}
             viewSolutions={this.viewSolutions}
+            showSolutions={this.state.showSolutions}
             closeResultsModal={this.retry}
             testResults={this.state.currentTestResults}
             testDescriptions={this.state.testDescriptions}

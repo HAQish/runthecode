@@ -2,6 +2,7 @@ import React from 'react';
 import AceEditor from 'react-ace';
 import brace from 'brace';
 import $ from 'jquery';
+import { Link } from 'react-router-dom';
 import PairingEditor from "./pairingEditor.jsx";
 import {Link} from 'react-router-dom';
 
@@ -18,7 +19,8 @@ class Editor extends React.Component {
     super(props);
     this.state = {
       masterUserSolutionCode: this.props.starterCode,
-      challengeResults: []
+      challengeResults: [],
+      destinationUrl: props.destinationUrl
     };
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -40,7 +42,7 @@ class Editor extends React.Component {
     const {masterUserSolutionCode} = this.state;
     $.ajax({
       type: "POST",
-      url: "/challengeSolution",
+      url: this.state.destinationUrl,
       data: {
         masterUserSolutionCode: masterUserSolutionCode,
         masterTests: masterTests,
@@ -56,7 +58,7 @@ class Editor extends React.Component {
   }  
 
   render() {
-    // let show = 
+    let pair = (window.location.href.split("/")[3] === "course") ? <br /> : <Button as={Link} to={`/pairing/${this.props.challengeName}/${this.props.socket.id}`} content="Try Pair Programming" />;
     return (
       <div>
         <AceEditor 
@@ -67,8 +69,10 @@ class Editor extends React.Component {
         editorProps={{ $blockScrolling: true }} 
         width="100%" height="85vh" 
         />
-        <Button onClick={this.handleSubmit} content="Submit Code" primary />
-        <Button as={Link} to={`/pairing/${this.props.challengeName}/${this.props.roomname}`} content="Try Pair Programming" />
+        <Button onClick={this.handleSubmit} content="Send to server" primary />
+        {pair}
+        {/* <Button as={Link} to={`/pairing/${this.props.challengeName}/${this.props.socket.id}`} content="Try Pair Programming" /> */}
+        {/* <Button onClick={this.props.switch} content="Switch to pair programming" /> */}
       </div>
     );
   }

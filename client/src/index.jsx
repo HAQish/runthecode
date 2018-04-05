@@ -146,9 +146,12 @@ class App extends React.Component {
               {loggedIn}
               <Route path="/course" component={() => <Challenge initialComplete={this.handleInitialComplete} user={this.state.masterUser} />} />
               <Route exact path="/allchallenges" component={AllChallenges} />
-              <Switch>
-                <Route path="/allchallenges/:challengeName" render={(props) => <UserChallenges {...props} user={this.state.masterUser} socket={this.state.socket}/>} />
-              </Switch>
+            <Switch>
+              <Route path="/allchallenges/:challengeName" render={(props) => <UserChallenges {...props} user={this.state.masterUser} socket={this.state.socket} />} />
+            </Switch>
+            <Switch>
+              <Route path="/pairing/:challengeName/:roomName" render={(props) => <UserChallenges {...props} user={this.state.masterUser} socket={this.state.socket} />} />
+            </Switch>
               <Route path="/users" component={() => <Users user={this.state.masterUser} socket={this.state.socket} />} />
               <Route path="/messages" component={() => <Messages user={this.state.masterUser} socket={this.state.socket} messages={this.state.messages} triggerChatAlert={this.state.triggerChatAlert} setMessagesFalse={this.setMessagesFalse} />} />
               <Route path="/newchallengeform" component={() => <NewChallengeForm user={this.state.masterUser} />} />
