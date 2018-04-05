@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import TestResultsList from './testResultsList.jsx'; //filename will be caps when cleaned up
 import {Modal, Button, Header, Icon, List} from 'semantic-ui-react';
 
@@ -6,12 +7,13 @@ import {Modal, Button, Header, Icon, List} from 'semantic-ui-react';
 export default function ChallengeResultsModal(props) {
   const showInitialCompletionResults = props.justCompletedInitial;
   const startingLevel = props.initialScore;
+  const courseComplete = props.courseComplete;
   const showFailure = props.msg === "Failure";
   const showSuccess = props.msg === "Success";
   const showError = props.msg === "Error";
   const showTests = (showSuccess || showFailure);
-  const failButtons = (showError || showFailure) && !showInitialCompletionResults;
-  const successButtons = showSuccess && !showInitialCompletionResults;
+  const failButtons = (showError || showFailure) && !showInitialCompletionResults && !courseComplete;
+  const successButtons = showSuccess && !showInitialCompletionResults && !courseComplete;
   {/*nextButton vs retryButton indenting?*/}
   const nextButton = successButtons ? (
     <Button color="green" onClick={() => props.nextChallenge()}> {/*onClick like this or in red button?...also, Icon on next line?*/} 
@@ -27,6 +29,9 @@ export default function ChallengeResultsModal(props) {
       Retry <Icon name="arrow right" />
     </Button>
   );
+  const completeButton = (
+    <Button as={Link} to="/" content="Dashboard" color="green" onClick={props.nextChallenge} />
+  )
 {/*how to style conditional ifs like line 34-40(not in airbnb styleguide)
 should modal description + header * end /modal description be one on line?*/}
   return (
@@ -73,6 +78,12 @@ should modal description + header * end /modal description be one on line?*/}
         {successButtons &&
           <Modal.Actions>
             {nextButton}
+          </Modal.Actions>
+        }
+        {courseComplete &&
+          <Modal.Actions>
+            {retryButton}
+            {completeButton}
           </Modal.Actions>
         }
         {showInitialCompletionResults &&

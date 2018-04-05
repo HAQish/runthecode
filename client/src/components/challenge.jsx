@@ -24,6 +24,7 @@ class Challenge extends React.Component {
       currentTestResults: [],
       justCompletedInitial: false,
       currentUserCode: undefined,
+      courseComplete: false, //(this.props.user.completedInitial===true && this.state.courseChallenges[this.state.currentChallengeID+1]===undefined),
     }
     this.displayTestResults = this.displayTestResults.bind(this);
     this.retry = this.retry.bind(this);
@@ -95,7 +96,11 @@ class Challenge extends React.Component {
           currentChallenge: data[this.state.initialScore * 2]
         })
       })
-    } else if (this.props.user.completedInitial === true) {
+    } else if (this.state.courseComplete) {
+      this.setState({openChallengeResultsModal: false});
+    }
+    
+      else if (this.props.user.completedInitial === true) {
       let next = this.state.currentChallengeID + 1;
       this.setState({ currentChallenge: this.state.courseChallenges[next], openChallengeResultsModal: false, currentChallengeID: next })
     }
@@ -104,13 +109,16 @@ class Challenge extends React.Component {
   //sets state to user challenge submission results...results = {"masterTestResults":[true,true],"message":"Success"} || {"masterTestResults":[true,false],"message":"Failure"} || {"masterTestResults":"'ReferenceError: hey is not defined'","message":"Error"}
   displayTestResults(results, userCode) {
     results = JSON.parse(results);
+    if (this.props.user.completedInitial===true && this.state.courseChallenges[this.state.currentChallengeID+1]===undefined) {
+      this.setState({courseComplete: true})
+    };
     this.setState({
       currentChallengeResultMessage: results.message,
       currentTestResults: results.masterTestResults,
       currentTestDescriptions: this.state.currentChallenge.masterTestDescriptions,
       openChallengeResultsModal: true,
       currentUserCode: userCode
-    })
+    });
   }
 
   retry() {
@@ -144,6 +152,7 @@ class Challenge extends React.Component {
           open={this.state.openChallengeResultsModal}
           onClose={this.retry}>
           <ChallengeResultsModal
+            courseComplete={this.state.courseComplete}
             initialScore={this.state.initialScore}
             msg={this.state.currentChallengeResultMessage}
             justCompletedInitial={this.state.justCompletedInitial}
