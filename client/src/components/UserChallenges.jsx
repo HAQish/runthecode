@@ -11,7 +11,7 @@ class UserChallenges extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // openChallengeResultsModal: false,
+      openChallengeResultsModal: false,
       // currentChallengeResultMessage: "", //"Success"/"Failure"/"Error" -- used to conditionally render ChallengeResultsModal
       currentTestDescriptions: [],
       currentTestResults: [],
@@ -50,6 +50,8 @@ class UserChallenges extends React.Component {
         prompt: data.prompt,
         starterCode: data.starterCode,
         testDescriptions: data.testDescriptions,
+        showSolutions: false,
+        submittedSolutions: data.submittedSolutions,
       });
     });
   }
@@ -73,7 +75,9 @@ class UserChallenges extends React.Component {
   }
 
   viewSolutions() {
-
+    this.setState({
+      showSolutions: true
+    })
   }
 
   switch(e) {
@@ -97,6 +101,7 @@ class UserChallenges extends React.Component {
       />
     ) : (
       <Editor
+        destinationUrl="/allChallenges"
         starterCode={this.state.currentUserCode || this.state.starterCode}
         testDescriptions={this.state.testDescriptions}
         masterTests={this.state.masterTests}
@@ -130,7 +135,10 @@ class UserChallenges extends React.Component {
         >
           <AllChallengesResultsModal
             msg={this.state.currentChallengeResultMessage}
+            solutions={this.state.submittedSolutions}
+            challengeName={this.state.challengeName}
             viewSolutions={this.viewSolutions}
+            showSolutions={this.state.showSolutions}
             closeResultsModal={this.retry}
             testResults={this.state.currentTestResults}
             testDescriptions={this.state.testDescriptions}
