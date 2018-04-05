@@ -9,11 +9,11 @@
 function helloWorld() {
   const hello = 'Hello';
   const world = 'World';
-  return hello + " " + world;
+  return `${hello} ${world}`;
 }
-var solutionArray1 = "[typeof helloWorld === 'function', helloWorld() === 'Hello World']";
-var testDescriptionArray1 = "['helloWorld should be a function', 'return value should be Hello World']";
-/*****************************************************************************/
+const solutionArray1 = "[typeof helloWorld === 'function', helloWorld() === 'Hello World']";
+const testDescriptionArray1 = "['helloWorld should be a function', 'return value should be Hello World']";
+/** ************************************************************************** */
 /*
   CHALLENGE 2 - oldEnough
   Write a function called oldEnough that takes a number(age) and a string('drink' or 'drive')
@@ -37,28 +37,25 @@ var testDescriptionArray1 = "['helloWorld should be a function', 'return value s
 */
 // solution
 function oldEnough(age, activity) {
-  const no = 'Sorry, you\'re not old enough to ' + activity + '.';
-  const yes = 'Yes! You\'re old enough to ' + activity + '!';
-  const other = 'You\'re always old enough to ' + activity + '!';
+  const no = `Sorry, you're not old enough to ${activity}.`;
+  const yes = `Yes! You're old enough to ${activity}!`;
+  const other = `You're always old enough to ${activity}!`;
   if (activity === 'drink') {
     if (age < 21) {
       return no;
-    } else {
-      return yes;
     }
+    return yes;
   } else if (activity === 'drive') {
     if (age < 16) {
       return no;
-    } else {
-      return yes;
     }
-  } else {
-    return other;
+    return yes;
   }
+  return other;
 }
-var solutionArray2 = '[typeof oldEnough === "function", oldEnough(10, "play") === "You\'re always old enough to play!", oldEnough(15, "drive") === "Sorry, you\'re not old enough to drive.", oldEnough(16, "drive") === "Yes! You\'re old enough to drive!", oldEnough(20, "drink") === "Sorry, you\'re not old enough to drink.", oldEnough(21, "drink") === "Yes! You\'re old enough to drink!"]';
-var testDescriptionArray2 = '["oldEnough should be a function", "A ten-year-old is old enough to play", "A 15-year-old is not old enough to drive", "A 16-year-old is old enough to drive", "A 20-year-old is not old enough to drink", "A 21-year-old is old enough to drink"]'
-/*****************************************************************************/
+const solutionArray2 = '[typeof oldEnough === "function", oldEnough(10, "play") === "You\'re always old enough to play!", oldEnough(15, "drive") === "Sorry, you\'re not old enough to drive.", oldEnough(16, "drive") === "Yes! You\'re old enough to drive!", oldEnough(20, "drink") === "Sorry, you\'re not old enough to drink.", oldEnough(21, "drink") === "Yes! You\'re old enough to drink!"]';
+const testDescriptionArray2 = '["oldEnough should be a function", "A ten-year-old is old enough to play", "A 15-year-old is not old enough to drive", "A 16-year-old is old enough to drive", "A 20-year-old is not old enough to drink", "A 21-year-old is old enough to drink"]';
+/** ************************************************************************** */
 /*
   CHALLENGE 3 - compareTriangleAndCircle
   write a function called compareTriangleAndCircle that takes 3 arguments, 2 numbers for the base and a height of the triangle
@@ -85,13 +82,12 @@ function compareTriangleAndCircle(base, height, radius) {
   const circleArea = Math.PI * Math.pow(radius, 2);
   if (triArea > circleArea) {
     return 'Triangle';
-  } else {
-    return 'Circle';
   }
+  return 'Circle';
 }
-var solutionArray3 = '[typeof compareTriangleAndCircle === "function", compareTriangleAndCircle(3,4,3) === "Circle", compareTriangleAndCircle(12,24,6.5) === "Triangle", compareTriangleAndCircle(10,10,5) === "Circle", compareTriangleAndCircle(5,21,4) === "Triangle", compareTriangleAndCircle(254,51,50) === "Circle"]';
-var testDescriptionArray3 = '["compareTriangleAndCircle should be a function", "Between a 3, 4 triangle and a circle of radius 3, the circle is bigger", "Between a 12, 24 triangle and a circle of radius 6.5, the triangle is bigger", "Between a 10, 10 triangle and a circle of radius 5, the circle is bigger", "Between a 5, 21 triangle and a circle of radius 4, the triangle is bigger", "Between a 254, 51 triangle and a circle of radius 50, the circle is bigger"]'
-/*****************************************************************************/
+const solutionArray3 = '[typeof compareTriangleAndCircle === "function", compareTriangleAndCircle(3,4,3) === "Circle", compareTriangleAndCircle(12,24,6.5) === "Triangle", compareTriangleAndCircle(10,10,5) === "Circle", compareTriangleAndCircle(5,21,4) === "Triangle", compareTriangleAndCircle(254,51,50) === "Circle"]';
+const testDescriptionArray3 = '["compareTriangleAndCircle should be a function", "Between a 3, 4 triangle and a circle of radius 3, the circle is bigger", "Between a 12, 24 triangle and a circle of radius 6.5, the triangle is bigger", "Between a 10, 10 triangle and a circle of radius 5, the circle is bigger", "Between a 5, 21 triangle and a circle of radius 4, the triangle is bigger", "Between a 254, 51 triangle and a circle of radius 50, the circle is bigger"]';
+/** ************************************************************************** */
 /*
   CHALLENGE 4 -
   Write a function joinObjects that takes in 2 different objects and adds the properties of the 2nd object to the first
@@ -139,7 +135,7 @@ var testDescriptionArray3 = '["compareTriangleAndCircle should be a function", "
 */
 // solution
 function joinObjects(obj1, obj2) {
-  Object.keys(obj2).forEach(function (key) {
+  Object.keys(obj2).forEach((key) => {
     if (obj1[key]) {
       obj1[key] = obj1[key];
     } else {
@@ -148,9 +144,9 @@ function joinObjects(obj1, obj2) {
   });
   return obj1;
 }
-var solutionArray4 = '[typeof joinObjects === "function", typeof joinObjects({1: 1}, {2: 2}) === "object" && !Array.isArray(joinObjects({1: 1}, {2: 2})), joinObjects({1: 1}, {2: 2})[1] === 1 && joinObjects({1: 1}, {2: 2})[2] === 2, joinObjects({1: 1}, {1: 5, 2: 2})[1] === 1 && joinObjects({1: 1}, {1: 5, 2: 2})[2] === 2]';
-var testDescriptionArray4 = '["joinObjects should be a function", "return value should be an object", "should join separate objects into one", "should not overwrite first object"]'
-/*****************************************************************************/
+const solutionArray4 = '[typeof joinObjects === "function", typeof joinObjects({1: 1}, {2: 2}) === "object" && !Array.isArray(joinObjects({1: 1}, {2: 2})), joinObjects({1: 1}, {2: 2})[1] === 1 && joinObjects({1: 1}, {2: 2})[2] === 2, joinObjects({1: 1}, {1: 5, 2: 2})[1] === 1 && joinObjects({1: 1}, {1: 5, 2: 2})[2] === 2]';
+const testDescriptionArray4 = '["joinObjects should be a function", "return value should be an object", "should join separate objects into one", "should not overwrite first object"]';
+/** ************************************************************************** */
 /*
   CHALLENGE 5 -
   write a recursive function fibonacci that takes an integer n and returns the nth number of the fibonacci sequence
@@ -171,9 +167,9 @@ function fibonacci(n) {
   }
   return fibonacci(n - 1) + fibonacci(n - 2);
 }
-var solutionArray5 = '[typeof fibonacci === "function", typeof fibonacci(n) === "number", fibonacci(0) === 0, fibonacci(1) === 1, fibonacci(2) === 1, fibonacci(3) === 2, fibonacci(10) === 55, fibonacci(20) === 6765, fibonacci(40) === 102334155]';
-var testDescriptionArray5 = '["fibonacci should be a function", "fibonacci should return a number", "the 0th fibonacci number is 0", "the 1st fibonacci number is 1", "the 2nd fibonacci number is 1", "the 3rd fibonacci number is 2", "the 10th fibonacci number is 55", "the 20th fibonacci number is 6765", "the 40th fibonacci number is 102334155"]'
-/*****************************************************************************/
+const solutionArray5 = '[typeof fibonacci === "function", typeof fibonacci(n) === "number", fibonacci(0) === 0, fibonacci(1) === 1, fibonacci(2) === 1, fibonacci(3) === 2, fibonacci(10) === 55, fibonacci(20) === 6765, fibonacci(40) === 102334155]';
+const testDescriptionArray5 = '["fibonacci should be a function", "fibonacci should return a number", "the 0th fibonacci number is 0", "the 1st fibonacci number is 1", "the 2nd fibonacci number is 1", "the 3rd fibonacci number is 2", "the 10th fibonacci number is 55", "the 20th fibonacci number is 6765", "the 40th fibonacci number is 102334155"]';
+/** ************************************************************************** */
 /*
   CHALLENGE 6 - BubbleSort
   write a function bubbleSort that takes an array of numbers and sorts them from smallest to largest.

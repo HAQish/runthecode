@@ -23,17 +23,15 @@ class Users extends React.Component {
       // console.log("In Users.jsx, usersArr returned from backend is", usersArr);
       this.setState({users: usersArr});
     })
-    this.getOnlineUsers;
     setInterval(this.getOnlineUsers, 1500);
-    // console.log(this.props.users);
   }
 
   getOnlineUsers() {
     this.props.socket.emit("getOnlineUsers");
   }
 
-  sendMessageToUser(id) {
-    this.props.socket.emit("sendChatMessage", {message: this.state.chatMessage, meantFor: id, from:this.props.user.username});
+  sendMessageToUser(id, to) {
+    this.props.socket.emit("sendChatMessage", {message: this.state.chatMessage, meantFor: id, from:this.props.user.username, to: to});
   }
 
   chatMessageChange(e) {
@@ -50,7 +48,7 @@ class Users extends React.Component {
             <div>
               <span>User: {el[0]}, SocketID: {el[1]}</span>
               <input onChange={this.chatMessageChange} placeholder="Message this user" /> 
-              <button onClick={() => this.sendMessageToUser(el[1])} />
+              <button onClick={() => this.sendMessageToUser(el[1], el[0])} />
             </div>
             )
           })

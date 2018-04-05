@@ -1,12 +1,11 @@
 import React from 'react';
 import ChallengeInfo from './challengeInfo.jsx';
 import Editor from './editor.jsx';
-import allChallengesResultsModal from './allChallengesResultsModal.jsx';
+import AllChallengesResultsModal from './allChallengesResultsModal.jsx';
 import {Grid, Button, Modal, Header, Icon} from 'semantic-ui-react';
 import $ from 'jquery';
 import PairingEditor from "./pairingEditor.jsx";
 import socketIOClient from "socket.io-client";
-//import init from '../../../database/seed/initalChallenges.json';
 
 class UserChallenges extends React.Component {
   constructor(props) {
@@ -34,7 +33,6 @@ class UserChallenges extends React.Component {
     this.retry = this.retry.bind(this);
     this.viewSolutions = this.viewSolutions.bind(this);
     this.switch = this.switch.bind(this);
-    this.socketInitialize = this.socketInitialize.bind(this);
   }
 
   // categories []
@@ -64,16 +62,14 @@ class UserChallenges extends React.Component {
         testDescriptions: data.testDescriptions,
       });
     });
-    this.socketInitialize();
   }
   
-  //sets state to user challenge submission results...results = {"masterTestResults":[true,true],"message":"Success"} || {"masterTestResults":[true,false],"message":"Failure"} || {"masterTestResults":"'ReferenceError: hey is not defined'","message":"Error"}
   displayTestResults(results, userCode) {
     results = JSON.parse(results);
     this.setState({
       currentChallengeResultMessage: results.message,
       currentTestResults: results.masterTestResults,
-      currentTestDescriptions: this.state.currentChallenge.masterTestDescriptions,
+      currentTestDescriptions: this.state.testDescriptions,
       openChallengeResultsModal: true,
       currentUserCode: userCode
     });
@@ -94,15 +90,6 @@ class UserChallenges extends React.Component {
     this.setState({ pairing: !this.state.pairing });
   }
 
-  socketInitialize() {
-    const socket = socketIOClient(this.state.endpoint);
-    socket.on("connect", () => {
-      console.log("Connected to socket from app, and socket id is", socket.id);
-      this.setState({ socketId: socket.id });
-    });
-    this.setState({ socket: socket });
-  }
-
   render() {
     const whichEditor = this.state.pairing ? (
       <PairingEditor
@@ -113,8 +100,7 @@ class UserChallenges extends React.Component {
         challengeLevel={this.state.challengeLevel}
         challengeName={this.state.challengeName}
         switch={this.switch}
-        socketInitialize={this.socketInitialize}
-        socket={this.state.socket}
+        socket={this.props.socket}
         user={this.props.user}
       />
     ) : (
@@ -148,10 +134,8 @@ class UserChallenges extends React.Component {
           open={this.state.openChallengeResultsModal}
           onClose={this.retry}
         >
-          <allChallengesResultsModal
-            // initialScore={this.state.initialScore}
+          <AllChallengesResultsModal
             msg={this.state.currentChallengeResultMessage}
-            justCompletedInitial={this.state.justCompletedInitial}
             viewSolutions={this.viewSolutions}
             closeResultsModal={this.retry}
             testResults={this.state.currentTestResults}
