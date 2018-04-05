@@ -346,6 +346,11 @@ const retrieveAllMessagesFromUser = function (username) {
   return Users.findOne({ username }).select('messages');
 };
 
+const getAllUsers = function() {
+  console.log("in getAllUsers in dbindex");
+  return Users.find().select("username");
+}
+
 // ^^^^^^^^^^^^^^^ Database functions ^^^^^^^^^^^^^^^
 
 /*          Exports           */
@@ -387,3 +392,4 @@ module.exports.updateUserLevel = updateUserLevel;
 module.exports.updateCompletedCourseChallenges = updateCompletedCourseChallenges;
 module.exports.addMessageToUser = addMessageToUser;
 module.exports.retrieveAllMessagesFromUser = retrieveAllMessagesFromUser;
+module.exports.getAllUsers = getAllUsers;

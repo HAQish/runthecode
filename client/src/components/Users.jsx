@@ -15,6 +15,7 @@ class Users extends React.Component {
     this.getOnlineUsers = this.getOnlineUsers.bind(this);
     this.sendMessageToUser = this.sendMessageToUser.bind(this);
     this.chatMessageChange = this.chatMessageChange.bind(this);
+    this.getAllUsers = this.getAllUsers.bind(this);
   }
 
   //functions here
@@ -24,6 +25,14 @@ class Users extends React.Component {
       this.setState({users: usersArr});
     })
     setInterval(this.getOnlineUsers, 1500);
+    this.props.socket.on("getAllUsers", (users) => {
+      this.setState({allUsers: users});
+    })
+    this.getAllUsers()
+  }
+   
+  getAllUsers() {
+    this.props.socket.emit("getAllUsers");
   }
 
   getOnlineUsers() {
@@ -41,6 +50,13 @@ class Users extends React.Component {
 
   render() {
     const users = this.state.users;
+    const allUsers = this.state.allUsers ? (<div>{
+      this.state.allUsers.map(user => {
+        return (
+          <div>User: {user.username}</div>
+        )
+      })
+    }</div>) : (<br />);
     return (
       <div>
         {users.map(el => {
@@ -53,6 +69,8 @@ class Users extends React.Component {
             )
           })
         }
+        <br /> <br />All Users <br /><br />
+        {allUsers}
       </div>
     )
   }

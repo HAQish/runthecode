@@ -45,6 +45,11 @@ io.on('connection', (socket) => {
     socket.emit('returnOnlineUsers', usersArr);
   });
 
+  socket.on("getAllUsers", () => {
+    console.log("socket heard getAllUsers");
+    db.getAllUsers().then(users => socket.emit("getAllUsers", users));
+  })
+
   socket.on("joinRoom", function(roomName) {
     console.log("Joining a room in the socket", roomName);
     socket.join(roomName);
