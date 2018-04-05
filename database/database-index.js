@@ -261,7 +261,6 @@ const getPopulatedUser = function (username) { // changes object ids into actual
   })));
 };
 
-// needs refactor for proper challenges collection
 const getPopulatedChallenge = function (challengeName) { // changes object ids into actual objects from other collection
   return new Promise(((resolve, reject) => UserChallenges.find({ challengeName }).populate('submittedSolutions').exec((err, data) => {
     if (err) { return err; }
@@ -345,6 +344,11 @@ const retrieveAllMessagesFromUser = function (username) {
   return Users.findOne({ username }).select('messages');
 };
 
+const getAllUsers = function() {
+  console.log("in getAllUsers in dbindex");
+  return Users.find().select("username");
+}
+
 // ^^^^^^^^^^^^^^^ Database functions ^^^^^^^^^^^^^^^
 
 /*          Exports           */
@@ -386,3 +390,4 @@ module.exports.updateUserLevel = updateUserLevel;
 module.exports.updateCompletedCourseChallenges = updateCompletedCourseChallenges;
 module.exports.addMessageToUser = addMessageToUser;
 module.exports.retrieveAllMessagesFromUser = retrieveAllMessagesFromUser;
+module.exports.getAllUsers = getAllUsers;
