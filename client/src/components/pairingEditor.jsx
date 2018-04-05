@@ -28,6 +28,7 @@ class PairingEditor extends React.Component {
     this.switchRole = this.switchRole.bind(this);
     this.chatOnChange = this.chatOnChange.bind(this);
     this.sendChat = this.sendChat.bind(this);    
+    this.joinSocketRoom = this.joinSocketRoom.bind(this);
     // this.handleSubmit = this.handleSubmit.bind(this);
     // this.socketEmit = this.socketEmit.bind(this);
   }
@@ -44,8 +45,10 @@ class PairingEditor extends React.Component {
   }
 
   componentWillMount() {
-    // this.props.socketInitialize();
-    console.log("In pairingEditor.jsx, socket is", this.props.socket);
+    console.log("in pairingEditor, this.props.room.roomName", this.props.room.roomName);
+    // var roomName = this.props.room.roomName.reverse().slice(18);
+    this.setState({roomName: this.props.room.roomName.split("").reverse().join("").slice(0, 18)}, this.joinSocketRoom);
+    // console.log("In pairingEditor.jsx, socket is", this.props.socket);
     setInterval(this.getPairingId.bind(this), 5000);
     this.props.socket.on("socketIdFromPartner", (partnerId) => {
       this.setState({partnerId : partnerId});
@@ -53,6 +56,17 @@ class PairingEditor extends React.Component {
     this.props.socket.on("sendChatFromServer", (chatMsg) => {
       this.setState({chatMessages: this.state.chatMessages.concat(chatMsg)});
     })
+    // this.props.socket.join(this.state.roomName);
+  }
+
+  componentWillUnmount() {
+    //leave room
+    // this.props.socket.leave(this.state.roomName);
+    this.props.socket.emit("leaveRoom", this.state.roomName);
+  }
+
+  joinSocketRoom() {
+    this.props.socket.emit("joinRoom", this.state.roomName);
   }
 
   // socketInitialize() {
@@ -67,14 +81,13 @@ class PairingEditor extends React.Component {
   onChange(e) {
     this.setState({ masterUserSolutionCode: e || this.props.starterCode });
     if (this.state.driver) {
-      // var socket = socketIOClient(this.state.endpoint);
-      this.props.socket.emit("codeChange", this.state.masterUserSolutionCode);
+      this.props.socket.emit("codeChange", {code: this.state.masterUserSolutionCode, roomName: this.state.roomName});
     }
     
   }
   
   getPairingId() {
-    this.props.socket.emit("componentWillMountPairing", this.props.socket.id);
+    this.props.socket.emit("componentWillMountPairing", { id: this.props.socket.id, roomName: this.state.roomName});
   }
 
 
@@ -113,7 +126,7 @@ class PairingEditor extends React.Component {
 
   sendChat() {
     //socket stuff
-    this.props.socket.emit("sendChatFromApp", {message: this.state.chat, id: this.props.socket.id, user:this.props.user.username, role: this.state.driver ? "Driver" : "Navigator"});
+    this.props.socket.emit("sendChatFromApp", {message: this.state.chat, id: this.props.socket.id, user: this.props.user.username, role: this.state.driver ? "Driver" : "Navigator", roomName: this.state.roomName});
   }
 
   render() {
