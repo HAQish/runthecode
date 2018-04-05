@@ -56,7 +56,7 @@ class Editor extends React.Component {
   }  
 
   render() {
-    // let show = 
+    let pair = (window.location.href.split("/")[3] === "course") ? <br /> : <Button as={Link} to={`/pairing/${this.props.challengeName}/${this.props.socket.id}`} content="Try Pair Programming" />;
     return (
       <div>
         <AceEditor 
@@ -68,7 +68,8 @@ class Editor extends React.Component {
         width="100%" height="85vh" 
         />
         <Button onClick={this.handleSubmit} content="Send to server" primary />
-        <Button as={Link} to={`/pairing/${this.props.challengeName}/${this.props.socket.id}`} content="Try Pair Programming" />
+        {pair}
+        {/* <Button as={Link} to={`/pairing/${this.props.challengeName}/${this.props.socket.id}`} content="Try Pair Programming" /> */}
         {/* <Button onClick={this.props.switch} content="Switch to pair programming" /> */}
       </div>
     );
