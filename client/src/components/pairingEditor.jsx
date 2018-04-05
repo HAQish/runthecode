@@ -22,13 +22,16 @@ class PairingEditor extends React.Component {
       pairing: false,
       driver: true,
       navigator: false,
-      chatMessages: []
+      chatMessages: [],
+      users: []
     };
     this.onChange = this.onChange.bind(this);
     this.switchRole = this.switchRole.bind(this);
     this.chatOnChange = this.chatOnChange.bind(this);
     this.sendChat = this.sendChat.bind(this);    
     this.joinSocketRoom = this.joinSocketRoom.bind(this);
+    this.getOnlineUsers = this.getOnlineUsers.bind(this);
+    this.inviteUser = this.inviteUser.bind(this);
     // this.handleSubmit = this.handleSubmit.bind(this);
     // this.socketEmit = this.socketEmit.bind(this);
   }
@@ -41,12 +44,15 @@ class PairingEditor extends React.Component {
         this.setState({ masterUserSolutionCode: code });
       }
     });
+    this.props.socket.on("returnOnlineUsers", (usersArr) => {
+      // console.log("In Users.jsx, usersArr returned from backend is", usersArr);
+      this.setState({ users: usersArr });
+    });
     console.log(this.props.socket);
   }
 
   componentWillMount() {
     console.log("in pairingEditor, this.props.room.roomName", this.props.room.roomName);
-    // var roomName = this.props.room.roomName.reverse().slice(18);
     this.setState({roomName: this.props.room.roomName.split("").reverse().join("").slice(0, 18)}, this.joinSocketRoom);
     // console.log("In pairingEditor.jsx, socket is", this.props.socket);
     setInterval(this.getPairingId.bind(this), 5000);
@@ -56,7 +62,11 @@ class PairingEditor extends React.Component {
     this.props.socket.on("sendChatFromServer", (chatMsg) => {
       this.setState({chatMessages: this.state.chatMessages.concat(chatMsg)});
     })
-    // this.props.socket.join(this.state.roomName);
+    setInterval(this.getOnlineUsers, 2500);
+  }
+
+  getOnlineUsers() {
+    this.props.socket.emit("getOnlineUsers");
   }
 
   componentWillUnmount() {
@@ -68,15 +78,6 @@ class PairingEditor extends React.Component {
   joinSocketRoom() {
     this.props.socket.emit("joinRoom", this.state.roomName);
   }
-
-  // socketInitialize() {
-  //   const socket = socketIOClient(this.state.endpoint);
-  //   socket.on("connect", () => {
-  //     console.log("Connected to socket from app, and socket id is", socket.id);
-  //     this.setState({socketId: socket.id});
-  //   });
-  //   this.setState({socket: socket});
-  // }
 
   onChange(e) {
     this.setState({ masterUserSolutionCode: e || this.props.starterCode });
@@ -129,9 +130,14 @@ class PairingEditor extends React.Component {
     this.props.socket.emit("sendChatFromApp", {message: this.state.chat, id: this.props.socket.id, user: this.props.user.username, role: this.state.driver ? "Driver" : "Navigator", roomName: this.state.roomName});
   }
 
+  inviteUser(id, to) {
+    this.props.socket.emit("sendChatMessage", { message: window.location.href, meantFor: id, from: this.props.user.username, to: to });
+  }
+
   render() {
     const driverImg = "https://cdn.iconscout.com/public/images/icon/premium/png-128/steering-wheel-component-accessories-car-33c7476fa85b2199-128x128.png";
     const navigatorImg ="http://icons.iconarchive.com/icons/icons8/android/256/Maps-Compass-icon.png"; 
+    // const users = this.state.users;
     return (
       <div>
         You are currently {this.state.driver ? "Driver" : "Navigator"}. <br /> <br />
@@ -149,8 +155,18 @@ class PairingEditor extends React.Component {
         {/*<Button onClick={this.handleSubmit} content="Send to server" primary />*/} <br />
         <br />
         <Button onClick={this.props.switch} content="Exit to pair programming" />
-        <Button onClick={this.switchRole} content="Switch roles" /> <br /> <br />
+        <Button onClick={this.switchRole} content="Switch roles" /> <br /> 
+        {this.state.users.map(user => {
+          return (<div>
+            {user[0]} <button onClick={() => this.inviteUser(user[1], user[0])}>Invite this user to this session</button>
+            
+            </div>)
 
+        })}        
+        
+        <br />
+
+        <br /><br />
         <input placeholder="chat here" onChange={this.chatOnChange}/> 
           <Button onClick={this.sendChat} content="Send" />
         {this.state.chatMessages.map((el, i) => <div key={i}><img src={el.role === "Driver" ? driverImg : navigatorImg} width="13px" height="13px" />{el.user}: {el.message}</div>)}
