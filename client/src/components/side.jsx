@@ -14,6 +14,7 @@ import {
 const Side = function (props) {
   const {children} = props;
   const {visible} = props;
+  const {user} = props;
   const level1Options = [{ key: 1, text: "Problem 1", value: 1 }, { key: 2, text: "Problem 2", value: 2 }, { key: 3, text: "Problem 3", value: 3 }];
   return ( 
     <Sidebar.Pushable as={Segment} style={{height: "90vh"}}>

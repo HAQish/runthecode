@@ -8,7 +8,7 @@ import AllChallengesListItem from './allChallengesListItem.jsx';
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
-  margin: auto;
+  margin: 40px auto;
   justify-content: space-around;
   width: 70vw;
   text-align: center;
@@ -25,7 +25,6 @@ class AllChallenges extends Component {
 
   componentWillMount() {
     $.get('/isLoggedIn', data => {
-      console.log('🌴', data);
       if (data !== undefined) {
         this.setState({
           masterUser: data
@@ -39,9 +38,7 @@ class AllChallenges extends Component {
   }
 
   componentDidMount() {
-    console.log('INSIDE COMPDIDMOUNT IN ALLCHALLENGES')
     $.get('/challengeList', data => {
-      console.log("❓❓❓❓", data);
       this.setState({
         challengeList: data
       })

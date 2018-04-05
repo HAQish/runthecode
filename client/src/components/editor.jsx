@@ -3,6 +3,7 @@ import AceEditor from 'react-ace';
 import brace from 'brace';
 import $ from 'jquery';
 import PairingEditor from "./pairingEditor.jsx";
+import {Link} from 'react-router-dom';
 
 import 'brace/theme/kuroir';
 import 'brace/mode/javascript';
@@ -66,8 +67,8 @@ class Editor extends React.Component {
         editorProps={{ $blockScrolling: true }} 
         width="100%" height="85vh" 
         />
-        <Button onClick={this.handleSubmit} content="Send to server" primary />
-        <Button onClick={this.props.switch} content="Switch to pair programming" />
+        <Button onClick={this.handleSubmit} content="Submit Code" primary />
+        <Button as={Link} to={`/pairing/${this.props.challengeName}/${this.props.roomname}`} content="Try Pair Programming" />
       </div>
     );
   }

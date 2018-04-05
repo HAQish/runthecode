@@ -12,17 +12,23 @@ class UserChallenges extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      // challengeLevel: data.challengeLevel,
+      // challengeName: data.challengeName,
+      // masterTests: data.masterTests,
+      // prompt: data.prompt,
+      // starterCode: data.starterCode,
+      // testDescriptions: data.testDescriptions,
+      
+      // currentChallengeResultMessage: '',
+      // currentTestResults: results.masterTestResults,
+      // currentTestDescriptions: this.state.currentChallenge.masterTestDescriptions,
       // openChallengeResultsModal: false,
-      // currentChallengeResultMessage: "", //"Success"/"Failure"/"Error" -- used to conditionally render ChallengeResultsModal
-      currentTestDescriptions: [],
-      currentTestResults: [],
-      justCompletedInitial: false,
-      currentUserCode: undefined,
-      //////////////////////////
-      pairing: false,
-      endpoint: "/",
-      socket: undefined,
-      socketId: undefined
+      // currentUserCode: undefined,
+      
+      // pairing: false,
+      // endpoint: "/",
+      // socket: undefined,
+      // socketId: undefined
     };
     this.displayTestResults = this.displayTestResults.bind(this);
     this.retry = this.retry.bind(this);
@@ -46,6 +52,7 @@ class UserChallenges extends React.Component {
   // testDescriptions "[]" /////
 
   componentWillMount() {
+    console.log('🇺🇸🇸🇸🇸🇸🇸🇸', this.props.match);
     $.get(`/userSubmittedChallenge/${this.props.match.params.challengeName}`, (data) => {
       console.log('Data after get to userchallenges', data)
       this.setState({
@@ -66,8 +73,7 @@ class UserChallenges extends React.Component {
     this.setState({
       currentChallengeResultMessage: results.message,
       currentTestResults: results.masterTestResults,
-      currentTestDescriptions: this.state.currentChallenge
-        .masterTestDescriptions,
+      currentTestDescriptions: this.state.currentChallenge.masterTestDescriptions,
       openChallengeResultsModal: true,
       currentUserCode: userCode
     });
@@ -143,7 +149,7 @@ class UserChallenges extends React.Component {
           onClose={this.retry}
         >
           <allChallengesResultsModal
-            initialScore={this.state.initialScore}
+            // initialScore={this.state.initialScore}
             msg={this.state.currentChallengeResultMessage}
             justCompletedInitial={this.state.justCompletedInitial}
             viewSolutions={this.viewSolutions}

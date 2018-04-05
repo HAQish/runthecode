@@ -147,7 +147,7 @@ class App extends React.Component {
     return <BrowserRouter>
         <Wrapper>
           <Content>
-            <Side visible={this.state.visible}>
+            <Side visible={this.state.visible} user={this.state.masterUser}>
               <Navbar handleLogin={this.handleLogin} logout={this.logout} isLoggedIn={this.state.masterUser} toggleSidebar={this.toggleVisibility} socket={this.state.socket} user={this.state.masterUser}  triggerChatAlert={this.state.triggerChatAlert} setMessagesFalse={this.setMessagesFalse} />
               {loggedIn}
               <Route path="/course" component={() => <Challenge initialComplete={this.handleInitialComplete} user={this.state.masterUser} />} />

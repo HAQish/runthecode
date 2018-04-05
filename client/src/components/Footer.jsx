@@ -9,7 +9,7 @@ const Wrapper = styled.div`
   background-color: #4CBB6B;
   justify-content: space-around;
   align-items: center;
-  height: 70px;
+  height: 100px;
 `;
 
 const Footer = (props) => {
