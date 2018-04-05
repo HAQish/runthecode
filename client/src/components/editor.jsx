@@ -17,7 +17,8 @@ class Editor extends React.Component {
     super(props);
     this.state = {
       masterUserSolutionCode: this.props.starterCode,
-      challengeResults: []
+      challengeResults: [],
+      destinationUrl: props.destinationUrl
     };
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -39,7 +40,7 @@ class Editor extends React.Component {
     const {masterUserSolutionCode} = this.state;
     $.ajax({
       type: "POST",
-      url: "/challengeSolution",
+      url: this.state.destinationUrl,
       data: {
         masterUserSolutionCode: masterUserSolutionCode,
         masterTests: masterTests,
