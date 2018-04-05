@@ -1,30 +1,35 @@
 import React from 'react';
-import TestResultsList from './testResultsList.jsx'
+import TestResultsList from './testResultsList.jsx'; //filename will be caps when cleaned up
 import {Modal, Button, Header, Icon, List} from 'semantic-ui-react';
 
-const ChallengeResultsModal = (props) => {
-  var showInitialCompletionResults = props.justCompletedInitial;
-  var startingLevel = props.initialScore;
-  var showFailure = props.msg === "Failure";
-  var showSuccess = props.msg === "Success";
-  var showError = props.msg === "Error";
-  var showTests = (showSuccess || showFailure);
-  var failButtons = (showError || showFailure) && !showInitialCompletionResults;
-  var successButtons = showSuccess && !showInitialCompletionResults;
-  var nextButton = successButtons?
-    (<Button color='green' onClick={props.nextChallenge}>
-      Next Challenge <Icon name='arrow right' />
-    </Button>)
-    :
-    (<Button color='red' onClick={props.nextChallenge}>
-        Skip <Icon name='arrow right' />
-      </Button>);
-  var retryButton = 
-    (<Button color='green' onClick={props.closeResultsModal}>
-      Retry <Icon name='arrow right' />
+//line 6 -> props as argument or destructure each prop in arguments?
+export default function ChallengeResultsModal(props) {
+  const showInitialCompletionResults = props.justCompletedInitial;
+  const startingLevel = props.initialScore;
+  const showFailure = props.msg === "Failure";
+  const showSuccess = props.msg === "Success";
+  const showError = props.msg === "Error";
+  const showTests = (showSuccess || showFailure);
+  const failButtons = (showError || showFailure) && !showInitialCompletionResults;
+  const successButtons = showSuccess && !showInitialCompletionResults;
+  {/*nextButton vs retryButton indenting?*/}
+  const nextButton = successButtons ? (
+    <Button color="green" onClick={() => props.nextChallenge()}> {/*onClick like this or in red button?...also, Icon on next line?*/} 
+      Next Challenge <Icon name="arrow right" />
     </Button>
-    );
-  return(
+  ) : (
+    <Button color="red" onClick={props.nextChallenge}>
+      Skip <Icon name="arrow right" />
+    </Button>
+  );
+  const retryButton = (
+    <Button color="green" onClick={props.closeResultsModal}>
+      Retry <Icon name="arrow right" />
+    </Button>
+  );
+{/*how to style conditional ifs like line 34-40(not in airbnb styleguide)
+should modal description + header * end /modal description be one on line?*/}
+  return (
     <React.Fragment>
       <Modal.Content>
         {showInitialCompletionResults &&
@@ -54,7 +59,7 @@ const ChallengeResultsModal = (props) => {
           <Modal.Description>
             <List divided relaxed>
               {props.testResults.map((value, i) =>
-                <TestResultsList val={value} i={i} description={props.testDescriptions}/>)} 
+                <TestResultsList key={value.id} val={value} i={i} description={props.testDescriptions}/>)} 
             </List>
           </Modal.Description>
         }
@@ -80,5 +85,3 @@ const ChallengeResultsModal = (props) => {
     </React.Fragment>
   )
 }
-
-export default ChallengeResultsModal;

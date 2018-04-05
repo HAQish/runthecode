@@ -2,12 +2,12 @@
 
 /*
   CHALLENGE 1 - helloWorld
-  
+
   Write a function called helloWorld that
   Returns the string 'Hello World' using two variables
 
   test = helloWorld() // 'Hello World'
-  
+
 */
 // solution
 function helloWorld() {
@@ -17,7 +17,7 @@ function helloWorld() {
   return hello + world;
 }
 
-/*****************************************************************************/
+/** ************************************************************************** */
 /*
   CHALLENGE 2 - oldEnough
 
@@ -44,28 +44,25 @@ function helloWorld() {
 */
 // solution
 function oldEnough(age, activity) {
-  const no = 'Sorry, you\'re not old enough to ' + activity + '.';
-  const yes = 'Yes! You\'re old enough to ' + activity + '!';
-  const other = 'You\'re always old enough to ' + activity + '!';
+  const no = `Sorry, you're not old enough to ${activity}.`;
+  const yes = `Yes! You're old enough to ${activity}!`;
+  const other = `You're always old enough to ${activity}!`;
 
   if (activity === 'drink') {
     if (age < 21) {
       return no;
-    } else {
-      return yes;
     }
+    return yes;
   } else if (activity === 'drive') {
     if (age < 16) {
       return no;
-    } else {
-      return yes;
     }
-  } else {
-    return other;
+    return yes;
   }
+  return other;
 }
 
-/*****************************************************************************/
+/** ************************************************************************** */
 /*
   CHALLENGE 3 - compareTriangleAndCirlce
 
@@ -97,25 +94,24 @@ function compareTriangleAndCircle(base, height, radius) {
 
   if (triArea > circleArea) {
     return 'Triangle';
-  } else {
-    return 'Circle';
   }
+  return 'Circle';
 }
 
-/*****************************************************************************/
+/** ************************************************************************** */
 /*
-  CHALLENGE 4 - 
+  CHALLENGE 4 -
 
   Write a function joinObjects that takes in 2 different objects and adds the properties of the 2nd object to the first
   then return the first object with the new properties attached
   If the 1st object already has a given key, ignore it (do not overwrite the property value).
   Do not change the second object
 
-  test1 = 
-  test2 = 
-  test3 = 
-  test4 = 
-  test5 = 
+  test1 =
+  test2 =
+  test3 =
+  test4 =
+  test5 =
 
   describe("joinObjects", function() {
     it("should extend the first object with unrepresented properties from the second object", function() {
@@ -155,8 +151,7 @@ function compareTriangleAndCircle(base, height, radius) {
 */
 // solution
 function joinObjects(obj1, obj2) {
-  
-  Object.keys(obj2).forEach(function (key) {
+  Object.keys(obj2).forEach((key) => {
     if (obj1[key]) {
       obj1[key] = obj1[key];
     } else {
@@ -166,19 +161,19 @@ function joinObjects(obj1, obj2) {
   return obj1;
 }
 
-/*****************************************************************************/
+/** ************************************************************************** */
 /*
-  CHALLENGE 5 - 
+  CHALLENGE 5 -
 
   write a recursive function fibonacci that takes an integer n and returns the nth number of the fibonacci sequence
   hint: the fibonacci sequence calculates each number by the sum of the two numbers before it
     ex. 0, 1, 1, 2, 3, 5, 8, 13, 21, 34
 
-  test1 = 
-  test2 = 
-  test3 = 
-  test4 = 
-  test5 = 
+  test1 =
+  test2 =
+  test3 =
+  test4 =
+  test5 =
 */
 // solution
 function fibonacci(n) {
@@ -190,7 +185,7 @@ function fibonacci(n) {
   return fibonacci(n - 1) + fibonacci(n - 2);
 }
 
-/*****************************************************************************/
+/** ************************************************************************** */
 /*
   CHALLENGE 6 - BubbleSort
 
@@ -203,10 +198,10 @@ function fibonacci(n) {
   * "bubble" to the end of the array. Once it gets to the end of the array, it
   * starts over and repeats the process until the array is sorted numerically.
 
-  test1 = 
-  test2 = 
-  test3 = 
-  test4 = 
-  test5 = 
+  test1 =
+  test2 =
+  test3 =
+  test4 =
+  test5 =
 */
 // solution
