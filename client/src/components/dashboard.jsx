@@ -37,7 +37,12 @@ const Heading = styled.h1`
   text-align: center;
   padding-bottom: 20px;
   font-size: 5rem;
-  color: #4CBB6B;
+  color: #6f999d;
+`;
+
+const SubHeading = styled.h1`
+  color: #9ab751;
+  font-size: 3rem;
 `;
 
 class Dashboard extends React.Component {
@@ -107,7 +112,7 @@ class Dashboard extends React.Component {
             <Grid.Column width={8}>
               <Card centered raised color="blue" style={{ width: "70%", minHeight: "40vh" }}>
                 <Card.Content>
-                  <Card.Header><h1>Your Learning Path</h1></Card.Header>
+                  <Card.Header><SubHeading>Your Learning Path</SubHeading></Card.Header>
                 </Card.Content>
                 <Card.Content>
                   <br />
@@ -148,7 +153,7 @@ class Dashboard extends React.Component {
             <Grid.Column width={8}>
               <Card centered raised color="blue" style={{ width: "70%", minHeight: "40vh" }}>
                 <Card.Content>
-                  <Card.Header><h1>Your Challenge Path</h1></Card.Header>
+                  <Card.Header><SubHeading>Your Challenge Path</SubHeading></Card.Header>
                 </Card.Content>
                 <Card.Content>
                   <Feed>
