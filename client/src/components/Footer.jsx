@@ -6,10 +6,10 @@ const Wrapper = styled.div`
   flex-direction: row;
   flex-wrap: nowrap;
   flex-shrink: 0;
-  background-color: #4CBB6B;
-  justify-content: space-around;
+  background-color: #d7edc6;
+  justify-content: space-around;#d7edc6
   align-items: center;
-  height: 70px;
+  height: 30px;
 `;
 
 const Footer = (props) => {

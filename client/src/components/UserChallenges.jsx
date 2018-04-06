@@ -18,11 +18,17 @@ class UserChallenges extends React.Component {
       justCompletedInitial: false,
       currentUserCode: undefined,
       pairing: false,
+      theme: "kuroir"
     };
     this.displayTestResults = this.displayTestResults.bind(this);
     this.retry = this.retry.bind(this);
     this.viewSolutions = this.viewSolutions.bind(this);
     this.switch = this.switch.bind(this);
+    // this.changeThemeToambiance = this.changeThemeToambiance.bind(this);    
+    // this.changeThemeTochaos = this.changeThemeTochaos.bind(this);
+    // this.changeThemeTochrome = this.changeThemeTochrome.bind(this);
+    // this.changeThemeToclouds = this.changeThemeToclouds.bind(this);
+    // this.changeThemeTocobalt = this.changeThemeTocobalt.bind(this);
   }
 
   // categories []
@@ -84,6 +90,27 @@ class UserChallenges extends React.Component {
     this.setState({ pairing: !this.state.pairing });
   }
 
+  // changeThemeToambiance() {
+  //   this.setState({theme: "ambiance"});
+  // }
+
+  // changeThemeTochaos() {
+  //   this.setState({theme: "chaos"});
+  // }
+
+  // changeThemeTochrome() {
+  //   this.setState({theme: "chrome"});
+  // }
+
+  // changeThemeToclouds() {
+  //   this.setState({theme: "clouds"});
+  // }
+
+  // changeThemeTocobalt() {
+  //   this.setState({theme: "cobalt"});
+  // }
+
+
   render() {
     // const whichEditor = this.state.pairing ? (
     const whichEditor = this.props.match.params.roomName !== undefined ? (
@@ -98,6 +125,7 @@ class UserChallenges extends React.Component {
         socket={this.props.socket}
         user={this.props.user}
         room={this.props.match.params}
+        theme={this.state.theme}
       />
     ) : (
       <Editor
@@ -111,6 +139,7 @@ class UserChallenges extends React.Component {
         switch={this.switch}
         socket={this.props.socket}
         user={this.props.user}
+        theme={this.state.theme}
       />
     );
 
@@ -124,6 +153,11 @@ class UserChallenges extends React.Component {
               challengeName={this.state.challengeName}
             />
           </Grid.Column>
+          {/* <button onClick={this.changeThemeToambiance}>ambiance</button>
+          <button onClick={this.changeThemeTochaos}>chaos</button>
+          <button onClick={this.changeThemeTochrome}>chrome</button>
+          <button onClick={this.changeThemeToclouds}>clouds</button>
+          <button onClick={this.changeThemeTocobalt}>cobalt</button> */}
           <Grid.Column>{whichEditor}</Grid.Column>
         </Grid.Row>
         <Modal

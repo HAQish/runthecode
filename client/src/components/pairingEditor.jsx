@@ -4,6 +4,16 @@ import brace from 'brace';
 import $ from 'jquery';
 
 import 'brace/theme/kuroir';
+import 'brace/theme/ambiance';
+import 'brace/theme/chaos';
+import 'brace/theme/chrome';
+import 'brace/theme/clouds';
+import 'brace/theme/cobalt';
+import 'brace/theme/dawn';
+import 'brace/theme/dracula';
+import 'brace/theme/dreamweaver';
+import 'brace/theme/eclipse';
+import 'brace/theme/gob';
 import 'brace/mode/javascript';
 
 import 'brace/ext/language_tools';
@@ -24,7 +34,8 @@ class PairingEditor extends React.Component {
       driverArr: [],
       navigator: true,
       chatMessages: [],
-      users: []
+      users: [],
+      theme: "kuroir"
     };
     this.onChange = this.onChange.bind(this);
     this.switchRole = this.switchRole.bind(this);
@@ -35,6 +46,17 @@ class PairingEditor extends React.Component {
     this.inviteUser = this.inviteUser.bind(this);
     this.switchRoleSocket = this.switchRoleSocket.bind(this);
     this.getUsersInSession = this.getUsersInSession.bind(this);
+    this.changeThemeToambiance = this.changeThemeToambiance.bind(this);
+    this.changeThemeTochaos = this.changeThemeTochaos.bind(this);
+    this.changeThemeTochrome = this.changeThemeTochrome.bind(this);
+    this.changeThemeToclouds = this.changeThemeToclouds.bind(this);
+    this.changeThemeTocobalt = this.changeThemeTocobalt.bind(this);
+    this.changeThemeTodawn = this.changeThemeTodawn.bind(this);
+    this.changeThemeTodracula = this.changeThemeTodracula.bind(this);
+    this.changeThemeTodreamweaver = this.changeThemeTodreamweaver.bind(this);
+    this.changeThemeToeclipse = this.changeThemeToeclipse.bind(this);
+    this.changeThemeTogob = this.changeThemeTogob.bind(this);
+    
     // this.handleSubmit = this.handleSubmit.bind(this);
     // this.socketEmit = this.socketEmit.bind(this);
   }
@@ -113,26 +135,26 @@ class PairingEditor extends React.Component {
   }
 
 
-  // handleSubmit(e) {
-  //   e.preventDefault();
-  //   const { masterTests, displayTestResults, difficulty, challengeName } = this.props;
-  //   const { masterUserSolutionCode } = this.state;
-  //   $.ajax({
-  //     type: "POST",
-  //     url: "/challengeSolution",
-  //     data: {
-  //       masterUserSolutionCode: masterUserSolutionCode,
-  //       masterTests: masterTests,
-  //       challengeLevel: this.props.challengeLevel,
-  //       challengeName: challengeName
-  //     },
-  //     success: data => {
-  //       displayTestResults(data, masterUserSolutionCode);
-  //       this.setState({ masterUserSolutionCode: '' })
-  //     },
-  //     error: err => console.log(err)
-  //   });
-  // }
+  handleSubmit(e) {
+    e.preventDefault();
+    const { masterTests, displayTestResults, difficulty, challengeName } = this.props;
+    const { masterUserSolutionCode } = this.state;
+    $.ajax({
+      type: "POST",
+      url: "/challengeSolution",
+      data: {
+        masterUserSolutionCode: masterUserSolutionCode,
+        masterTests: masterTests,
+        challengeLevel: this.props.challengeLevel,
+        challengeName: challengeName
+      },
+      success: data => {
+        displayTestResults(data, masterUserSolutionCode);
+        this.setState({ masterUserSolutionCode: '' })
+      },
+      error: err => console.log(err)
+    });
+  }
 
   // switch(e) {
   //   this.setState({ pairing: !this.state.pairing });
@@ -164,6 +186,46 @@ class PairingEditor extends React.Component {
     this.props.socket.emit("sendChatMessage", { message: window.location.href, meantFor: id, from: this.props.user.username, to: to });
   }
 
+  changeThemeToambiance() {
+    this.setState({ theme: "ambiance" });
+  }
+
+  changeThemeTochaos() {
+    this.setState({ theme: "chaos" });
+  }
+
+  changeThemeTochrome() {
+    this.setState({ theme: "chrome" });
+  }
+
+  changeThemeToclouds() {
+    this.setState({ theme: "clouds" });
+  }
+
+  changeThemeTocobalt() {
+    this.setState({ theme: "cobalt" });
+  }
+
+  changeThemeTodawn() {
+    this.setState({theme: "dawn"});
+  } 
+   
+  changeThemeTodracula() {
+    this.setState({theme: "dracula"});
+  }
+  
+  changeThemeTodreamweaver() {
+    this.setState({theme: "dreamweaver"});
+  }
+  
+  changeThemeToeclipse() {
+    this.setState({theme: "eclipse"});
+  }
+  
+  changeThemeTogob() {
+    this.setState({theme: "gob"});
+  }
+  
   render() {
     const driverImg = "https://cdn.iconscout.com/public/images/icon/premium/png-128/steering-wheel-component-accessories-car-33c7476fa85b2199-128x128.png";
     const navigatorImg ="http://icons.iconarchive.com/icons/icons8/android/256/Maps-Compass-icon.png"; 
@@ -172,17 +234,27 @@ class PairingEditor extends React.Component {
       <div>
         You are currently {this.state.driver ? "Driver" : "Navigator"}. <br /> <br />
         The current socket id is {this.props.socketId || this.props.socket.id}. <br />
-        Your partner's socket id is {this.state.partnerId}.
+        Your partner's socket id is {this.state.partnerId}. <br />
+        <button onClick={this.changeThemeToambiance}>ambiance</button>
+        <button onClick={this.changeThemeTochaos}>chaos</button>
+        <button onClick={this.changeThemeTochrome}>chrome</button>
+        <button onClick={this.changeThemeToclouds}>clouds</button>
+        <button onClick={this.changeThemeTocobalt}>cobalt</button>
+        <button onClick={this.changeThemeTodawn}>dawn</button> 
+        <button onClick={this.changeThemeTodracula}>dracula</button>   
+        <button onClick={this.changeThemeTodreamweaver}>dreamweaver</button>   
+        {/* <button onClick={this.changeThemeToeclipse}>eclipse</button>   
+        <button onClick={this.changeThemeTogob}>gob</button>        */}
         <AceEditor
           mode='javascript'
-          theme="kuroir"
+          theme={this.state.theme || "kuroir"}
           onChange={this.onChange}
           value={this.state.masterUserSolutionCode || this.props.starterCode}
           editorProps={{ $blockScrolling: true }}
           width='100%'
           height='85vh'
         />
-        {/*<Button onClick={this.handleSubmit} content="Send to server" primary />*/} <br />
+        <Button onClick={this.handleSubmit} content="Send to server" primary /> <br />
         <br />
         <Button onClick={this.props.switch} content="Exit to pair programming" />
         <Button onClick={this.switchRole} content="Switch roles" /> <br /> 
