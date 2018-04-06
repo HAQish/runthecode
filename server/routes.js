@@ -126,7 +126,7 @@ const challengeRoutes = function (app) {
           }
         }
         console.log(masterTestResults, message);
-        if (message = 'Success') {
+        if (message === 'Success') {
         // add to submitted solutions in challenge
           db.addSolution(req.body.masterUserSolutionCode, req.user.username, req.body.challengeName);
         }
