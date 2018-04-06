@@ -65,14 +65,14 @@ class SolutionList extends React.Component {
             <Grid.Column width={3}>
               <h3>UpVote / DownVote</h3>
             </Grid.Column>
-            <Grid.Column width={1}>
-              <h3>Votes</h3>
-            </Grid.Column>
             <Grid.Column width={2}>
               <h3>User</h3>
             </Grid.Column>
             <Grid.Column width={2}>
               <h3>Date/Time</h3>
+            </Grid.Column>
+            <Grid.Column width={1}>
+              <h3>Votes</h3>
             </Grid.Column>
             <Grid.Column width={8}>
               <h3>Submitted Solution</h3>
