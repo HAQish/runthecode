@@ -38,32 +38,32 @@ should modal description + header * end /modal description be one on line?*/}
     <React.Fragment>
       <Modal.Content>
         {showInitialCompletionResults &&
-          <Modal.Description>
+          <Modal.Description style={{fontSize: "1.5rem"}}>
             <Header inverted>Congrats! You have completed the placement challenges!</Header>
             <Header inverted>You have earned level: {startingLevel}</Header>
             <Header inverted>Click Begin Course to start at a recommended challenge</Header>
           </Modal.Description>
         }
         {showError && 
-          <Modal.Description>
+          <Modal.Description style={{fontSize: "1.5rem"}}>
             <Header inverted size={"large"} style={{color:"red"}}>Failed tests</Header>
             <Header inverted>Error: {props.testResults}</Header>
           </Modal.Description>
         }
         {showFailure && 
-          <Modal.Description>
+          <Modal.Description style={{fontSize: "1.5rem"}}>
             <Header inverted size={"large"} dividing style={{color:"red"}}>Failed</Header>
             <Header sub></Header>
           </Modal.Description>
         }
         {showSuccess &&
-          <Modal.Description>
+          <Modal.Description style={{fontSize: "1.5rem"}}>
             <Header inverted size={"large"} style={{color:"green"}}>Success!</Header>
             <Header sub></Header>
           </Modal.Description>
         }
         {showTests &&
-          <Modal.Description>
+          <Modal.Description style={{fontSize: "1.5rem"}}>
             <List divided inverted relaxed>
               {props.testResults.map((value, i) =>
                 <TestResultsList key={value.id} val={value} i={i} description={props.testDescriptions}/>)} 

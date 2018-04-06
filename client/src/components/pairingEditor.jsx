@@ -22,6 +22,7 @@ import 'brace/ext/searchbox';
 import { Grid, Button } from 'semantic-ui-react';
 import { Dropdown, Menu } from 'semantic-ui-react'
 
+import {Link} from 'react-router-dom';
 import socketIOClient from "socket.io-client";
 
 const chatStyle = {
@@ -43,6 +44,9 @@ class PairingEditor extends React.Component {
       navigator: true,
       chatMessages: [],
       users: [],
+      usersInSession: [],
+      usernamesArr: [],
+      currentDriver: "",
       theme: "kuroir"
     };
     this.onChange = this.onChange.bind(this);
@@ -73,6 +77,21 @@ class PairingEditor extends React.Component {
     });
     this.props.socket.on("returnOnlineUsers", (usersArr) => {
       // console.log("In Users.jsx, usersArr returned from backend is", usersArr);
+      for (let i = 0; i < this.state.usersInSession.length; i++) {
+        for (let j = 0; j < usersArr.length; j++) {
+          if (this.state.usersInSession[i][0] === usersArr[j][0]) {
+            usersArr[j] = "removeMe";
+          }
+        }
+      }
+
+      for (let i = 0; i < usersArr.length; i++) {
+        if (usersArr[i] === "removeMe") {
+          usersArr.splice(i, 1);
+          i = -1;
+        }
+      }
+
       this.setState({ users: usersArr });
     });
     console.log("in pairingEditor, this.props.user", this.props.user);
@@ -91,7 +110,20 @@ class PairingEditor extends React.Component {
       this.setState({chatMessages: this.state.chatMessages.concat(chatMsg)});
     })
     this.props.socket.on("getUsersInSession", (users) => {
+      let usernamesArr = [];
+      let currentDriver = "";
+      for (let i = 0; i < users.length; i++) {
+        usernamesArr.push(users[i][0]);
+      }
+
+      for (let i = 0; i < users.length; i++) {
+        if (users[i][1] === "Driver") {
+          currentDriver = users[i][0];
+        }
+      }
+      this.setState({usernamesArr: usernamesArr});
       this.setState({usersInSession: users});
+      this.setState({currentDriver: currentDriver});
     })
     setInterval(this.getOnlineUsers, 2500);
     setInterval(this.getUsersInSession, 1000);
@@ -211,15 +243,15 @@ class PairingEditor extends React.Component {
       { key: 8, text: 'dreamweaver', value: "dreamweaver"}, 
       { key: 9, text: 'eclipse', value: "eclipse"}, 
       { key: 10, text: 'gob', value: "gob"}
-
-
-    ]
+    ];
+    const currentDriver = (this.state.navigator ? "The current driver is " + this.state.currentDriver  : "");
     // const users = this.state.users;
-    return (
-      <div>
-        You are currently {this.state.driver ? "Driver" : "Navigator"}. <br /> <br />
-        The current socket id is {this.props.socketId || this.props.socket.id}. <br />
-        Your partner's socket id is {this.state.partnerId}. <br />
+    return <div>
+        You are currently {this.state.driver ? "Driver" : "Navigator"}.  {currentDriver}<br /> 
+        {/* var usersInSession={JSON.stringify(this.state.usernamesArr).replace("\",\"", "\", \"")} */}
+        <br />
+        {/* The current socket id is {this.props.socketId || this.props.socket.id}. <br /> */}
+        {/* Your partner's socket id is {this.state.partnerId}. <br /> */}
         <Menu compact>
           <Dropdown text='Editor Theme' options={options} simple item onChange={this.dropDownChange}/>
         </Menu> 
@@ -232,27 +264,35 @@ class PairingEditor extends React.Component {
           width='100%'
           height='40vh'
         />
-        <Button onClick={this.handleSubmit} content="Send to server" primary /> <br />
+        <Button onClick={this.handleSubmit} content="Send to server" primary /> 
+        {/* <br /> */}
+        {/* <br /> */}
+        <Button onClick={this.switchRole} content="Switch roles" /> 
+        {/* <br />  */}
+        <Button as={Link} to={`/allchallenges/${this.props.challengeName}`} content="Exit pair programming" />
         <br />
-        <Button onClick={this.props.switch} content="Exit to pair programming" />
-        <Button onClick={this.switchRole} content="Switch roles" /> <br /> 
+        Users currently in this session: {this.state.usernamesArr.map(user => <span>{user} </span>)}
+        <br /> <br />
+        Invite other online users: <br />
         {this.state.users.map(user => {
-          return (<div>
-            {user[0]} <button onClick={() => this.inviteUser(user[1], user[0])}>Invite this user to this session</button>
-            
-            </div>)
-
-        })}        
-        
+          return <div>
+              {user[0]} <button
+                onClick={() => this.inviteUser(user[1], user[0])}
+              >
+                Invite this user to this session
+              </button>
+            </div>;
+        })}
         <br />
-
-        <input value={this.state.chat} placeholder="chat here" onChange={this.chatOnChange}/> 
-          <Button onClick={this.sendChat} content="Send" />
+        <input value={this.state.chat} placeholder="chat here" onChange={this.chatOnChange} />
+        <Button onClick={this.sendChat} content="Send" />
         <div style={chatStyle}>
-        {this.state.chatMessages.map((el, i) => <div key={i}><img src={el.role === "Driver" ? driverImg : navigatorImg} width="13px" height="13px" />{el.user}: {el.message}</div>)}
+          {this.state.chatMessages.map((el, i) => <div key={i}>
+              <img src={el.role === "Driver" ? driverImg : navigatorImg} width="13px" height="13px" />
+              {el.user}: {el.message}
+            </div>)}
         </div>
-      </div>
-    )
+      </div>;
   }
 }
 

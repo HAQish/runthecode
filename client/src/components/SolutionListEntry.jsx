@@ -1,6 +1,6 @@
 import React from "react";
 import $ from 'jquery';
-import { Modal, Button, Header, Icon, List } from "semantic-ui-react";
+import { Modal, Button, Header, Icon, List, Grid, Label } from "semantic-ui-react";
 
 const getRating = function(ratings) {
   let sum = 0;
@@ -53,23 +53,27 @@ class SolutionListEntry extends React.Component {
   };
     
   render() {
-    return (
-      <li>{!this.state.didUpvote &&
-        <button onClick={this.handleUpvote}>
-          ^^      
-        </button>
-        }
-        {!this.state.didDownvote &&
-        <button onClick={this.handleDownvote}>
-          vv     
-        </button>
-        }
-        Rating: {this.state.totalRating}
-        Solved by: {this.props.solution.solvedBy}
-        Solution: {this.props.solution.masterUserSolutionCode}
-        Date: {this.props.solution.createdAt}
-      </li>
-    )
+    const created = (new Date(this.props.solution.createdAt).toUTCString());
+    return <Grid.Row className="list-view">
+        <Grid.Column width={3}>
+          {!this.state.didUpvote && <Button color="green" onClick={this.handleUpvote}>
+              <Icon name="chevron up" size="large" />
+            </Button>}
+          {!this.state.didDownvote && <Button color="red" onClick={this.handleDownvote}>
+              <Icon name="chevron down" size="large" />
+            </Button>}
+        </Grid.Column>
+        <Grid.Column width={2}>
+          <h3>{this.props.solution.solvedBy}</h3>
+        </Grid.Column>
+        <Grid.Column width={2}>{created}</Grid.Column>
+        <Grid.Column width={1}>
+          <Label size="large" color="teal">{this.state.totalRating}</Label>
+        </Grid.Column>
+        <Grid.Column width={8}>
+          {this.props.solution.masterUserSolutionCode}
+        </Grid.Column>
+      </Grid.Row>;
   }
 };
 

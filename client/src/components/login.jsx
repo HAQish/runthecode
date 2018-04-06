@@ -36,7 +36,7 @@ class Login extends React.Component {
       <Menu.Item style={{padding: '0px'}}>
         <Form size='mini'>
           <Form.Group inline widths='equal' style={{margin: '0px'}}>
-            <Button type='button' size='small' type='submit' onClick={this.handleSubmit}>Login</Button>
+            <Button type='button' size='small' primary type='submit' onClick={this.handleSubmit}>Login</Button>
             <Form.Field control='input' type='email' name='email' placeholder='Email' onChange={this.handleInputChange} />
             <Form.Field control='input' type='password' name='password' placeholder='Password' onChange={this.handleInputChange} />
           </Form.Group>

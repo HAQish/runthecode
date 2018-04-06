@@ -235,7 +235,11 @@ const dbRoutes = function (app) {
   });
 
   app.get('/isLoggedIn', (req, res) => {
-    req.user ? res.send(req.user) : res.send(undefined);
+    if (req.user) {
+      db.getPopulatedUser(req.user.username).then(results => res.send(results))
+    } else {
+      res.send(undefined);
+    }
   });
 
   app.get('/*', (req, res) => {

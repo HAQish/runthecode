@@ -33,7 +33,7 @@ class Challenge extends React.Component {
 
   //if user has not completed initialchallenges -> gets initialchallenges from server and populates state
   //if user has completed initialchallenges -> gets coursechallenges from server and populates state
-  componentDidMount() {
+  componentWillMount() {
     console.log('✋✋✋✋✋', this.props);
     // if (this.props.user) {
       if (this.props.user.completedInitial === false) {
@@ -133,7 +133,8 @@ class Challenge extends React.Component {
   }
 
   render() {
-    var descriptions = this.state.currentChallenge.masterTestDescriptions
+    var descriptions = this.state.currentChallenge.masterTestDescriptions;
+    console.log('descriptionssssssssssss', descriptions);
     const { currentChallenge } = this.state;
     return (
       <Grid>

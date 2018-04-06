@@ -15,6 +15,7 @@ import Users from "./components/Users.jsx";
 import Messages from "./components/Messages.jsx";
 import NewChallengeForm from './components/NewChallengeForm.jsx';
 import Footer from './components/Footer.jsx';
+import SolutionList from './components/SolutionList.jsx';
 
 import { Sidebar, Button, Menu, Image, Icon, Header, Grid, Segment, Dropdown } from 'semantic-ui-react';
 import styled from 'styled-components';
@@ -141,17 +142,18 @@ class App extends React.Component {
     return <BrowserRouter>
         <Wrapper>
           <Content>
-            <Side visible={this.state.visible}>
+            <Side visible={this.state.visible} user={this.state.masterUser}>
               <Navbar handleLogin={this.handleLogin} logout={this.logout} isLoggedIn={this.state.masterUser} toggleSidebar={this.toggleVisibility} socket={this.state.socket} user={this.state.masterUser}  triggerChatAlert={this.state.triggerChatAlert} setMessagesFalse={this.setMessagesFalse} />
               {loggedIn}
               <Route path="/course" component={() => <Challenge initialComplete={this.handleInitialComplete} user={this.state.masterUser} />} />
               <Route exact path="/allchallenges" component={AllChallenges} />
-            <Switch>
-              <Route path="/allchallenges/:challengeName" render={(props) => <UserChallenges {...props} user={this.state.masterUser} socket={this.state.socket} />} />
-            </Switch>
-            <Switch>
-              <Route path="/pairing/:challengeName/:roomName" render={(props) => <UserChallenges {...props} user={this.state.masterUser} socket={this.state.socket} />} />
-            </Switch>
+              <Switch>
+                <Route path="/allchallenges/:challengeName" render={(props) => <UserChallenges {...props} user={this.state.masterUser} socket={this.state.socket} />} />
+              </Switch>
+              <Switch>
+                <Route path="/pairing/:challengeName/:roomName" render={(props) => <UserChallenges {...props} user={this.state.masterUser} socket={this.state.socket} />} />
+              </Switch>
+              <Route path="/solutions/:challengeName" component={SolutionList} />
               <Route path="/users" component={() => <Users user={this.state.masterUser} socket={this.state.socket} />} />
               <Route path="/messages" component={() => <Messages user={this.state.masterUser} socket={this.state.socket} messages={this.state.messages} triggerChatAlert={this.state.triggerChatAlert} setMessagesFalse={this.setMessagesFalse} />} />
               <Route path="/newchallengeform" component={() => <NewChallengeForm user={this.state.masterUser} />} />

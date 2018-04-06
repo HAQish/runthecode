@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Link from 'react-router-dom';
 import styled from 'styled-components';
 import $ from 'jquery';
 import {Grid, Button} from 'semantic-ui-react';
@@ -8,7 +7,7 @@ import AllChallengesListItem from './allChallengesListItem.jsx';
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
-  margin: auto;
+  margin: 40px auto;
   justify-content: space-around;
   width: 70vw;
   text-align: center;
@@ -20,16 +19,22 @@ class AllChallenges extends Component {
     this.state = {
       masterUser: undefined,
       challengeList: [],
+      compChallengeNames: [],
     }
   }
 
   componentWillMount() {
     $.get('/isLoggedIn', data => {
-      console.log('🌴', data);
       if (data !== undefined) {
+        console.log('DAAAATTTTAAAA', data);
         this.setState({
           masterUser: data
         });
+        let compChallenges = [];
+        this.state.masterUser.completedChallenges.forEach(el =>
+          compChallenges.push(el.challengeName)
+        );
+        this.setState({ compChallengeNames: compChallenges });
       } else {
         this.setState({
           masterUser: undefined
@@ -39,9 +44,7 @@ class AllChallenges extends Component {
   }
 
   componentDidMount() {
-    console.log('INSIDE COMPDIDMOUNT IN ALLCHALLENGES')
     $.get('/challengeList', data => {
-      console.log("❓❓❓❓", data);
       this.setState({
         challengeList: data
       })
@@ -71,11 +74,11 @@ class AllChallenges extends Component {
               <h3>Created By</h3>
             </Grid.Column>
           </Grid.Row>
-          {this.state.challengeList.map((item, i) => (
+          {this.state.challengeList.map((item) => (
             <AllChallengesListItem
-              index={i}
               key={item.challengeName}
               user={user}
+              compChallengeNames={this.state.compChallengeNames}
               challenge={item}
             />
           ))}
