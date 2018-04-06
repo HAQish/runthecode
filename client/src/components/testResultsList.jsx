@@ -7,7 +7,7 @@ const TestResultsList = (props) => {
       <List.Item>
         <List.Icon name='checkmark' color='green' size='large' verticalAlign='middle' />
         <List.Content>
-          <List.Header>PASSED: {description[props.i]} </List.Header>
+          <List.Header style={{color:"white"}}>{description[props.i]} </List.Header>
         </List.Content>
       </List.Item>
     )
@@ -16,7 +16,7 @@ const TestResultsList = (props) => {
       <List.Item>
         <List.Icon name='remove' color='red' size='large' verticalAlign='middle' />
         <List.Content>
-          <List.Header>FAILED: {description[props.i]}</List.Header>
+          <List.Header style={{color:"white"}}>{description[props.i]}</List.Header>
         </List.Content>
       </List.Item>
     )
