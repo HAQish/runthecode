@@ -69,7 +69,7 @@ class Editor extends React.Component {
         width="100%" height="60vh" 
         />
         <br />
-        <Button onClick={this.handleSubmit} content="Send to server" primary />
+        <Button onClick={this.handleSubmit} content="Submit" primary />
         {pair}
         {/* <Button as={Link} to={`/pairing/${this.props.challengeName}/${this.props.socket.id}`} content="Try Pair Programming" /> */}
         {/* <Button onClick={this.props.switch} content="Switch to pair programming" /> */}

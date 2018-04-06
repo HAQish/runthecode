@@ -40,7 +40,6 @@ class UserChallenges extends React.Component {
   // testDescriptions "[]" /////
 
   componentWillMount() {
-    console.log('🇺🇸🇸🇸🇸🇸🇸🇸', this.props.match);
     console.log("in UserChallenges.jsx, socket is", this.props.socket);
     $.get(`/userSubmittedChallenge/${this.props.match.params.challengeName}`, (data) => {
       console.log('Data after get to userchallenges', data)
@@ -59,7 +58,6 @@ class UserChallenges extends React.Component {
   
   displayTestResults(results, userCode) {
     results = JSON.parse(results);
-    console.log('REZZZZ', results);
     this.setState({
       currentChallengeResultMessage: results.message,
       currentTestResults: results.masterTestResults,
