@@ -46,23 +46,25 @@ should modal description + header * end /modal description be one on line?*/}
         }
         {showError && 
           <Modal.Description>
-            <Header inverted>Failed tests</Header>
+            <Header inverted size={"large"} style={{color:"red"}}>Failed tests</Header>
             <Header inverted>Error: {props.testResults}</Header>
           </Modal.Description>
         }
         {showFailure && 
           <Modal.Description>
-            <Header inverted>Failed</Header>
+            <Header inverted size={"large"} dividing style={{color:"red"}}>Failed</Header>
+            <Header sub></Header>
           </Modal.Description>
         }
         {showSuccess &&
           <Modal.Description>
-            <Header inverted>Success!</Header>
+            <Header inverted size={"large"} style={{color:"green"}}>Success!</Header>
+            <Header sub></Header>
           </Modal.Description>
         }
         {showTests &&
           <Modal.Description>
-            <List divided relaxed>
+            <List divided inverted relaxed>
               {props.testResults.map((value, i) =>
                 <TestResultsList key={value.id} val={value} i={i} description={props.testDescriptions}/>)} 
             </List>
