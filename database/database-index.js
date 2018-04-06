@@ -100,7 +100,7 @@ const userSchema = new Schema({
     password: String,
   },
   completedInitial: { type: Boolean, default: false },
-  level: String, // changed to string from number for now
+  level: {type: Number, default: 0}, // changed to string from number for now
   experience: String, // changed to string from number for now
   score: String, // changed to string from number for now
   completedCourseChallenges: { type: Schema.Types.Mixed, default: { firstChallenge: true } },
@@ -256,7 +256,7 @@ const rateSolution = function (challengeName, solver, rater, vote) {
 const getPopulatedUser = function (username) { // changes object ids into actual objects from other collection
   return new Promise(((resolve, reject) => Users.find({ username }).populate('completedChallenges').exec((err, data) => {
     if (err) { return err; }
-    console.log('data.completedChallenges in getPopulatedUser in database-index is ', data[0].completedChallenges);
+    console.log('data.completedChallenges in getPopulatedUser in database-index is ', data[0]);
     resolve(data[0]);
   })));
 };
@@ -329,7 +329,11 @@ const updateCompletedCourseChallenges = function (currentUser, message, challeng
   const obj = {};
   finalObj = currentUser.completedCourseChallenges;
   finalObj[challengeName] = msg;
-  return Users.findOneAndUpdate({ username: currentUser.username }, { completedCourseChallenges: finalObj }, { new: true, upsert: true });
+  if (msg) {
+    return Users.findOneAndUpdate({ username: currentUser.username }, {completedCourseChallenges: finalObj, level: currentUser.level+0.5}, { new: true, upsert: true });
+  } else {
+    return Users.findOneAndUpdate({ username: currentUser.username }, { completedCourseChallenges: finalObj }, { new: true, upsert: true });
+  }
 };
 
 const addMessageToUser = function (username, messageObj) {

@@ -1,6 +1,7 @@
 import React from 'react';
 import Editor from './editor.jsx';
 import Signup from './signup.jsx';
+import HomeResultsPopup from './HomeResultsPopup.jsx';
 import { Container, Segment, Button, Header, Icon, Card, Image, List, Grid, Modal } from 'semantic-ui-react';
 import $ from 'jquery';
 
@@ -25,21 +26,23 @@ class Home extends React.Component {
         challengeNumber: 1,
         challengeName: "Hello World!",
       },
-      masterSolutionCode: "function helloWorld() { \n const hello = ''; \n const world = ''; \n ______ hello + ' ' + world; \n }",
+      masterSolutionCode: "function helloWorld() {\n//make me return Hello World \n const hello = ''; \n const world = ''; \n ______ hello + ' ' + world; \n}",
       openModal: false,
+      msg: '',
+      openResults: false,
     }
     this.onChange = this.onChange.bind(this);
     this.onSubmitToServer = this.onSubmitToServer.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
+    this.onBegin = this.onBegin.bind(this);
   }
 
   onChange(e) {
     this.setState({masterSolutionCode: e});
   }
 
-  onSubmitToServer(e) {
-    e.preventDefault();
+  onSubmitToServer() {
     const { masterTests } = this.state.starterChallenge;
     const { masterSolutionCode } = this.state;
     console.log('😇', masterSolutionCode);
@@ -53,24 +56,25 @@ class Home extends React.Component {
       success: data => {
         var results = JSON.parse(data);
         console.log('✋ Success!', results);
-        if (results.message === 'Success') {
-          this.setState({openModal: true});
-        }
-        if (data.message === 'Error') {
-          // tell them they have an error
-          // data.masterTestResults
-        }
+        this.setState({
+          openResults: true,
+          msg: results.message,
+        });
       },
       error: err => console.log(err)
     });
   }
 
+  onBegin() {
+    this.setState({openModal:true})
+  }
+
   closeModal() {
     this.setState({openModal: false});
   }
-  handleLoginSubmit() {
+  handleLoginSubmit(user) {
     this.setState({openModal: false});
-    this.props.handleLogin();
+    this.props.handleLogin(user);
   }
 
   render() {
@@ -86,25 +90,28 @@ class Home extends React.Component {
             <Image className="monitor" src="images/monitor.png" />
             <div className="editor">
               <AceEditor className="editor" mode="javascript" theme="kuroir" onChange={this.onChange} value={masterSolutionCode} editorProps={{ $blockScrolling: true }} width="100%" height="100%" />
-              <Button onClick={this.onSubmitToServer} primary content="Start your journey" style={{ float: "left", marginBottom: "10px" }} />
+              <HomeResultsPopup submit={() => {
+                  this.onSubmitToServer();
+                }} open={this.state.openResults} msg={this.state.msg} />
+              <Button onClick={this.onBegin} primary content="Begin your journey" style={{ float: "right", marginBottom: "10px" }} />
             </div>
+            <Modal style={{ height: "65%" }} basic dimmer style={{ height: "80%" }} closeOnDimmerClick open={this.state.openModal} onClose={this.closeModal}>
+              <Header icon="signup" content="Signup" />
+              <Modal.Content>
+                <Modal.Description>
+                  <Header inverted>
+                    Get Ready for a coding experience like no other
+                  </Header>
+                  <Signup handleLogin={this.handleLoginSubmit} />
+                </Modal.Description>
+              </Modal.Content>
+              <Modal.Actions>
+                <Button color="red" onClick={this.closeModal}>
+                  <Icon name="remove" /> Close
+                </Button>
+              </Modal.Actions>
+            </Modal>
           </div>
-          <Modal style={{ height: "65%" }} basic dimmer style={{ height: "80%" }} closeOnDimmerClick open={this.state.openModal} onClose={this.closeModal}>
-            <Header icon="signup" content="Signup Page" />
-            <Modal.Content>
-              <Modal.Description>
-                <Header inverted>
-                  Get Ready for a coding experience like no other
-                </Header>
-                <Signup handleLogin={this.handleLoginSubmit} />
-              </Modal.Description>
-            </Modal.Content>
-            <Modal.Actions>
-              <Button color="red" onClick={this.closeSignupModal}>
-                <Icon name="remove" /> Close
-              </Button>
-            </Modal.Actions>
-          </Modal>
         </div>
         <div className="marketing">
           <Header as="h1">Welcome to LevelUp Code</Header>
@@ -119,13 +126,15 @@ class Home extends React.Component {
             engineer!
           </Header.Subheader>
           <Header.Subheader as="h3">
-            Take your skills to the next level by yourself or with a friend... You can even meet like minded
-            future programmers right on the site! So what are you waiting for? Fill out our first test above and signup
-            for an adventure in the wonderful world of software engineering!
+            Take your skills to the next level by yourself or with a
+            friend... You can even meet like minded future programmers right
+            on the site! So what are you waiting for? Fill out our first
+            test above and signup for an adventure in the wonderful world of
+            software engineering!
           </Header.Subheader>
         </div>
         <Grid columns={2} relaxed textAlign="center" divided="vertically" style={{ padding: "30px" }} className="about-us">
-          <Grid.Row className="about-us">
+          <Grid.Row>
             <Grid.Column width={10}>
               <Container text>
                 <Segment raised>

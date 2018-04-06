@@ -79,6 +79,7 @@ class Dashboard extends React.Component {
     const { user } = this.props;
     let completed = this.props.user.completedInitial ? 'YES' : 'NO';
     console.log('coooommmmppp', user.completedInitial);
+    console.log('AYYYYYYY', user);
     return <Wrapper>
         <TopWrapper>
           <Label size="huge" color="black">

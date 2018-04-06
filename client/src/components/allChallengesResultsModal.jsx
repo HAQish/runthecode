@@ -19,36 +19,31 @@ const AllChallengesResultsModal = props => {
       Retry <Icon name="arrow right" />
     </Button>
   );
-  return (
-    <React.Fragment>
+  return <React.Fragment>
       <Modal.Content>
-        {props.showSolutions && (
-          <Modal.Description>
-            <SolutionList
-              solutions={props.solutions}
-              challengeName={props.challengeName}
-            />
-          </Modal.Description>
-        )}
-        {showError && (
-          <Modal.Description>
-            <Header inverted>Failed tests</Header>
+        {props.showSolutions && <Modal.Description style={{ fontSize: "1.5rem" }}>
+            <SolutionList solutions={props.solutions} challengeName={props.challengeName} />
+          </Modal.Description>}
+        {showError && <Modal.Description style={{ fontSize: "1.5rem" }}>
+            <Header inverted size={"large"} style={{ color: "red" }}>
+              Failed tests
+            </Header>
             <Header inverted>Error: {props.testResults}</Header>
-          </Modal.Description>
-        )}
-        {showFailure && (
-          <Modal.Description>
-            <Header inverted>Failed</Header>
-          </Modal.Description>
-        )}
-        {showSuccess && (
-          <Modal.Description>
-            <Header inverted>Success!</Header>
-          </Modal.Description>
-        )}
-        {showTests && (
-          <Modal.Description>
-            <List divided relaxed>
+          </Modal.Description>}
+        {showFailure && <Modal.Description style={{ fontSize: "1.5rem" }}>
+            <Header size={"large"} inverted dividing style={{ color: "red" }}>
+              Failed
+            </Header>
+            <Header sub />
+          </Modal.Description>}
+        {showSuccess && <Modal.Description style={{ fontSize: "1.5rem" }}>
+            <Header inverted size={"large"} style={{ color: "green" }}>
+              Success!
+            </Header>
+            <Header sub />
+          </Modal.Description>}
+        {showTests && <Modal.Description style={{ fontSize: "1.5rem" }}>
+            <List divided inverted relaxed>
               {props.testResults.map((value, i) => (
                 <TestResultsList
                   val={value}
@@ -57,17 +52,11 @@ const AllChallengesResultsModal = props => {
                 />
               ))}
             </List>
-          </Modal.Description>
-        )}
+          </Modal.Description>}
       </Modal.Content>
-      {failButtons && (
-        <Modal.Actions>
-          {retryButton}
-        </Modal.Actions>
-      )}
+      {failButtons && <Modal.Actions>{retryButton}</Modal.Actions>}
       {showSuccess && <Modal.Actions>{solutionButton}</Modal.Actions>}
-    </React.Fragment>
-  );
+    </React.Fragment>;
 };
 
 export default AllChallengesResultsModal;

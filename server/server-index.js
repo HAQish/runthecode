@@ -23,6 +23,10 @@ app.use(express.static(path.join(__dirname, '../client/dist')));
 // arr for socket users
 const usersArr = [];
 
+const roomsObj = {};
+
+//{roomName: [[user1, driver], [user2, nav], [user3, nav] ] } 
+
 // socket.io functionality
 io.on('connection', (socket) => {
   console.log('Connection made via socket.io on', socket.id);
@@ -50,14 +54,48 @@ io.on('connection', (socket) => {
     db.getAllUsers().then(users => socket.emit("getAllUsers", users));
   })
 
-  socket.on("joinRoom", function(roomName) {
-    console.log("Joining a room in the socket", roomName);
-    socket.join(roomName);
+  socket.on("newDriver", (usernameObj) => {
+    console.log("socket heard a new driver", usernameObj.username);
+    io.in(usernameObj.roomName).emit("newDriver", usernameObj.username);
   })
 
-  socket.on("leaveRoom", function(roomName) {
-    console.log("Leaving a room in the socket", roomName);
-    socket.leave(roomName);
+  socket.on("joinRoom", function(obj) {
+    console.log("Joining a room in the socket", obj.roomName);
+    if (roomsObj.hasOwnProperty(obj.roomName)) {
+      roomsObj[obj.roomName].push([obj.username, obj.role]);
+    } else {
+      roomsObj[obj.roomName] = [[obj.username, obj.role]];
+    }
+    socket.join(obj.roomName);
+  })
+
+  socket.on("getUsersInSession", function(roomName) {
+    socket.emit("getUsersInSession", roomsObj[roomName]);
+  })
+
+  socket.on("roleChange", function(obj) {
+    console.log("Backend heard rolechange", obj);
+    console.log("in roleChange roomsObj[roomName] is", roomsObj[obj.roomName]);
+    for (let i = 0; i < roomsObj[obj.roomName].length; i++) {
+      if (roomsObj[obj.roomName][i][0] === obj.user) {
+        console.log("in roleCHange, if branch activted");
+        roomsObj[obj.roomName][i][1] === "Driver" ? roomsObj[obj.roomName][i][1] = "Navigator" : roomsObj[obj.roomName][i][1] = "Driver";
+      }
+    }
+  })
+
+  socket.on("leaveRoom", function(obj) {
+    console.log("Leaving a room in the socket", obj.roomName);
+    for (let i = 0; i < roomsObj[obj.roomName].length; i++) {
+      if (roomsObj[obj.roomName][i][0] === obj.username) {
+        roomsObj[obj.roomName].splice(i, 1);
+      }
+    }
+
+    if (roomsObj[obj.roomName].length === 0) {
+      delete roomsObj[obj.roomName];
+    }
+    socket.leave(obj.roomName);
   })
 
   socket.on("codeChange", function(newCodeObj) {
