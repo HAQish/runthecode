@@ -111,6 +111,7 @@ class PairingEditor extends React.Component {
     })
     this.props.socket.on("getUsersInSession", (users) => {
       let usernamesArr = [];
+      users = users === null ? [] : users;
       let currentDriver = "";
       for (let i = 0; i < users.length; i++) {
         usernamesArr.push(users[i][0]);
@@ -126,7 +127,7 @@ class PairingEditor extends React.Component {
       this.setState({currentDriver: currentDriver});
     })
     setInterval(this.getOnlineUsers, 2500);
-    setInterval(this.getUsersInSession, 1000);
+    setInterval(this.getUsersInSession, 1500);
     // this.props.socket.on("newDriver", (username) => {
     //   if (this.state.driverArr.length === 0) {
     //     this.state.driverArr.push(username);
@@ -252,12 +253,12 @@ class PairingEditor extends React.Component {
         <br />
         {/* The current socket id is {this.props.socketId || this.props.socket.id}. <br /> */}
         {/* Your partner's socket id is {this.state.partnerId}. <br /> */}
-        <Menu compact>
+        {/* <Menu compact>
           <Dropdown text='Editor Theme' options={options} simple item onChange={this.dropDownChange}/>
-        </Menu> 
+        </Menu>  */}
         <AceEditor
           mode='javascript'
-          theme={this.state.theme || "kuroir"}
+          theme={"chaos"}
           onChange={this.onChange}
           value={this.state.masterUserSolutionCode || this.props.starterCode}
           editorProps={{ $blockScrolling: true }}

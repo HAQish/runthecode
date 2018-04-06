@@ -90,12 +90,12 @@ class Editor extends React.Component {
     let pair = (window.location.href.split("/")[3] === "course") ? <br /> : <Button as={Link} to={`/pairing/${this.props.challengeName}/${this.props.socket.id}`} content="Try Pair Programming" />;
     return (
       <div style={{height: "80vh", marginTop: "30px"}}>
-        <Menu compact>
+        {/* <Menu compact>
           <Dropdown text='Editor Theme' options={options} simple item onChange={this.dropDownChange} />
-        </Menu> 
+        </Menu>  */}
         <AceEditor 
         mode="javascript" 
-        theme={this.state.theme || "kuroir"}
+        theme={"chaos"}
         onChange={this.onChange} 
         value={this.state.masterUserSolutionCode || this.props.starterCode} 
         editorProps={{ $blockScrolling: true }} 
