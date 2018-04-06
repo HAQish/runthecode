@@ -20,8 +20,9 @@ class PairingEditor extends React.Component {
       masterUserSolutionCode: '',
       challengeResults: [],
       pairing: false,
-      driver: true,
-      navigator: false,
+      driver: false,
+      driverArr: [],
+      navigator: true,
       chatMessages: [],
       users: []
     };
@@ -32,12 +33,16 @@ class PairingEditor extends React.Component {
     this.joinSocketRoom = this.joinSocketRoom.bind(this);
     this.getOnlineUsers = this.getOnlineUsers.bind(this);
     this.inviteUser = this.inviteUser.bind(this);
+    this.switchRoleSocket = this.switchRoleSocket.bind(this);
+    this.getUsersInSession = this.getUsersInSession.bind(this);
     // this.handleSubmit = this.handleSubmit.bind(this);
     // this.socketEmit = this.socketEmit.bind(this);
   }
 
   componentDidMount() {
     // setInterval(this.socketEmit, 1000);
+    console.log("in pairingEditor.jsx, this.props", this.props);
+    setTimeout(this.joinSocketRoom, 1500);
     this.props.socket.on("codeChangeFromServer", (code) => {
       if (this.state.navigator) {
         console.log("App heard the codeChange from the server");
@@ -48,12 +53,13 @@ class PairingEditor extends React.Component {
       // console.log("In Users.jsx, usersArr returned from backend is", usersArr);
       this.setState({ users: usersArr });
     });
-    console.log(this.props.socket);
+    console.log("in pairingEditor, this.props.user", this.props.user);
   }
 
   componentWillMount() {
+    console.log("in pairingEditor.jsx, this.props", this.props);
     console.log("in pairingEditor, this.props.room.roomName", this.props.room.roomName);
-    this.setState({roomName: this.props.room.roomName.split("").reverse().join("").slice(0, 18)}, this.joinSocketRoom);
+    this.setState({roomName: this.props.room.roomName.split("").reverse().join("").slice(0, 18)});
     // console.log("In pairingEditor.jsx, socket is", this.props.socket);
     setInterval(this.getPairingId.bind(this), 5000);
     this.props.socket.on("socketIdFromPartner", (partnerId) => {
@@ -62,21 +68,36 @@ class PairingEditor extends React.Component {
     this.props.socket.on("sendChatFromServer", (chatMsg) => {
       this.setState({chatMessages: this.state.chatMessages.concat(chatMsg)});
     })
+    this.props.socket.on("getUsersInSession", (users) => {
+      this.setState({usersInSession: users});
+    })
     setInterval(this.getOnlineUsers, 2500);
+    setInterval(this.getUsersInSession, 1000);
+    // this.props.socket.on("newDriver", (username) => {
+    //   if (this.state.driverArr.length === 0) {
+    //     this.state.driverArr.push(username);
+    //   } else {
+    //     alert("There is already a driver.");
+    //   }
+    // })
   }
 
   getOnlineUsers() {
     this.props.socket.emit("getOnlineUsers");
   }
 
+  getUsersInSession() {
+    this.props.socket.emit("getUsersInSession", this.state.roomName);
+  }
+
   componentWillUnmount() {
     //leave room
     // this.props.socket.leave(this.state.roomName);
-    this.props.socket.emit("leaveRoom", this.state.roomName);
+    this.props.socket.emit("leaveRoom", {roomName: this.state.roomName, username: this.props.user.username, role: this.state.driver ? "driver" : "navigator"});
   }
 
   joinSocketRoom() {
-    this.props.socket.emit("joinRoom", this.state.roomName);
+    this.props.socket.emit("joinRoom", {roomName: this.state.roomName, username: this.props.user.username, role: this.state.driver ? "Driver" : "Navigator"});
   }
 
   onChange(e) {
@@ -118,11 +139,20 @@ class PairingEditor extends React.Component {
   // }
 
   switchRole(e) {
-    this.setState({driver: !this.state.driver, navigator: !this.state.navigator});
+    if (this.state.navigator && this.state.usersInSession.some(el => el[1] === "Driver")) { 
+      // if switching to driver and there is already at least one driver
+      alert("There is already a driver.")
+    } else {
+      this.setState({driver: !this.state.driver, navigator: !this.state.navigator}, this.switchRoleSocket);
+    }
+  }
+
+  switchRoleSocket() {
+    this.props.socket.emit("roleChange", {user: this.props.user.username, role: this.state.driver ? "Driver" : "Navigator", roomName: this.state.roomName});
   }
 
   chatOnChange(e) {
-    this.setState({chat: e.target.value})
+    this.setState({chat: e.target.value});
   }
 
   sendChat() {
