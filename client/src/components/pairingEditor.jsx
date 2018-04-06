@@ -10,7 +10,7 @@ import 'brace/ext/language_tools';
 import 'brace/ext/searchbox';
 
 import { Grid, Button } from 'semantic-ui-react';
-
+import {Link} from 'react-router-dom';
 import socketIOClient from "socket.io-client";
 
 const chatStyle = {
@@ -181,40 +181,33 @@ class PairingEditor extends React.Component {
     const driverImg = "https://cdn.iconscout.com/public/images/icon/premium/png-128/steering-wheel-component-accessories-car-33c7476fa85b2199-128x128.png";
     const navigatorImg ="http://icons.iconarchive.com/icons/icons8/android/256/Maps-Compass-icon.png"; 
     // const users = this.state.users;
-    return (
-      <div>
+    return <div>
         You are currently {this.state.driver ? "Driver" : "Navigator"}. <br /> <br />
         The current socket id is {this.props.socketId || this.props.socket.id}. <br />
         Your partner's socket id is {this.state.partnerId}.
-        <AceEditor
-          mode='javascript'
-          theme="kuroir"
-          onChange={this.onChange}
-          value={this.state.masterUserSolutionCode || this.props.starterCode}
-          editorProps={{ $blockScrolling: true }}
-          width='100%'
-          height='40vh'
-        />
+        <AceEditor mode="javascript" theme="kuroir" onChange={this.onChange} value={this.state.masterUserSolutionCode || this.props.starterCode} editorProps={{ $blockScrolling: true }} width="100%" height="40vh" />
         {/*<Button onClick={this.handleSubmit} content="Send to server" primary />*/} <br />
-        <Button onClick={this.switchBack} content="Exit pair programming" />
-        <Button onClick={this.switchRole} content="Switch roles" /> <br /> 
+        <Button as={Link} to={`/allchallenges/${this.props.challengeName}`} content="Exit pair programming" />
+        <Button onClick={this.switchRole} content="Switch roles" /> <br />
         {this.state.users.map(user => {
-          return (<div>
-            {user[0]} <button onClick={() => this.inviteUser(user[1], user[0])}>Invite this user to this session</button>
-            
-            </div>)
-
-        })}        
-        
+          return <div>
+              {user[0]} <button
+                onClick={() => this.inviteUser(user[1], user[0])}
+              >
+                Invite this user to this session
+              </button>
+            </div>;
+        })}
         <br />
-
-        <input value={this.state.chat} placeholder="chat here" onChange={this.chatOnChange}/> 
-          <Button onClick={this.sendChat} content="Send" />
+        <input value={this.state.chat} placeholder="chat here" onChange={this.chatOnChange} />
+        <Button onClick={this.sendChat} content="Send" />
         <div style={chatStyle}>
-        {this.state.chatMessages.map((el, i) => <div key={i}><img src={el.role === "Driver" ? driverImg : navigatorImg} width="13px" height="13px" />{el.user}: {el.message}</div>)}
+          {this.state.chatMessages.map((el, i) => <div key={i}>
+              <img src={el.role === "Driver" ? driverImg : navigatorImg} width="13px" height="13px" />
+              {el.user}: {el.message}
+            </div>)}
         </div>
-      </div>
-    )
+      </div>;
   }
 }
 
