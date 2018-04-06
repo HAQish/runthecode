@@ -174,7 +174,7 @@ class PairingEditor extends React.Component {
     const { masterUserSolutionCode } = this.state;
     $.ajax({
       type: "POST",
-      url: "/challengeSolution",
+      url: "/allChallenges",
       data: {
         masterUserSolutionCode: masterUserSolutionCode,
         masterTests: masterTests,
