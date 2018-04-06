@@ -20,6 +20,7 @@ import 'brace/ext/language_tools';
 import 'brace/ext/searchbox';
 
 import { Grid, Button } from 'semantic-ui-react';
+import { Dropdown, Menu } from 'semantic-ui-react'
 
 import socketIOClient from "socket.io-client";
 
@@ -53,19 +54,10 @@ class PairingEditor extends React.Component {
     this.inviteUser = this.inviteUser.bind(this);
     this.switchRoleSocket = this.switchRoleSocket.bind(this);
     this.getUsersInSession = this.getUsersInSession.bind(this);
-    this.changeThemeToambiance = this.changeThemeToambiance.bind(this);
-    this.changeThemeTochaos = this.changeThemeTochaos.bind(this);
-    this.changeThemeTochrome = this.changeThemeTochrome.bind(this);
-    this.changeThemeToclouds = this.changeThemeToclouds.bind(this);
-    this.changeThemeTocobalt = this.changeThemeTocobalt.bind(this);
-    this.changeThemeTodawn = this.changeThemeTodawn.bind(this);
-    this.changeThemeTodracula = this.changeThemeTodracula.bind(this);
-    this.changeThemeTodreamweaver = this.changeThemeTodreamweaver.bind(this);
-    this.changeThemeToeclipse = this.changeThemeToeclipse.bind(this);
-    this.changeThemeTogob = this.changeThemeTogob.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.switchBack = this.switchBack.bind(this);
-    // this.handleSubmit = this.handleSubmit.bind(this);
+    this.dropDownChange = this.dropDownChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     // this.socketEmit = this.socketEmit.bind(this);
   }
 
@@ -194,70 +186,43 @@ class PairingEditor extends React.Component {
   inviteUser(id, to) {
     this.props.socket.emit("sendChatMessage", { message: window.location.href, meantFor: id, from: this.props.user.username, to: to });
   }
-
-  changeThemeToambiance() {
-    this.setState({ theme: "ambiance" });
-  }
-
-  changeThemeTochaos() {
-    this.setState({ theme: "chaos" });
-  }
-
-  changeThemeTochrome() {
-    this.setState({ theme: "chrome" });
-  }
-
-  changeThemeToclouds() {
-    this.setState({ theme: "clouds" });
-  }
-
-  changeThemeTocobalt() {
-    this.setState({ theme: "cobalt" });
-  }
-
-  changeThemeTodawn() {
-    this.setState({theme: "dawn"});
-  } 
-   
-  changeThemeTodracula() {
-    this.setState({theme: "dracula"});
-  }
-  
-  changeThemeTodreamweaver() {
-    this.setState({theme: "dreamweaver"});
-  }
-  
-  changeThemeToeclipse() {
-    this.setState({theme: "eclipse"});
-  }
-  
-  changeThemeTogob() {
-    this.setState({theme: "gob"});
-  }
   
   switchBack() {
     this.props.switch()
   };
 
+  dropDownChange(e, data) {
+    console.log("dropDownChange", e, data);
+    this.setState({theme: data.value});
+  }
+
+
   render() {
     const driverImg = "https://cdn.iconscout.com/public/images/icon/premium/png-128/steering-wheel-component-accessories-car-33c7476fa85b2199-128x128.png";
     const navigatorImg ="http://icons.iconarchive.com/icons/icons8/android/256/Maps-Compass-icon.png"; 
+    const options = [
+      { key: 1, text: 'ambiance', value: "ambiance" },
+      { key: 2, text: 'chaos', value: "chaos" },
+      { key: 3, text: 'chrome', value: "chrome" },
+      { key: 4, text: 'clouds', value: "clouds"},   
+      { key: 5, text: 'cobalt', value: "cobalt"},
+      { key: 6, text: 'dawn', value: "dawn"}, 
+      { key: 7, text: 'dracula', value: "dracula"}, 
+      { key: 8, text: 'dreamweaver', value: "dreamweaver"}, 
+      { key: 9, text: 'eclipse', value: "eclipse"}, 
+      { key: 10, text: 'gob', value: "gob"}
+
+
+    ]
     // const users = this.state.users;
     return (
       <div>
         You are currently {this.state.driver ? "Driver" : "Navigator"}. <br /> <br />
         The current socket id is {this.props.socketId || this.props.socket.id}. <br />
         Your partner's socket id is {this.state.partnerId}. <br />
-        <button onClick={this.changeThemeToambiance}>ambiance</button>
-        <button onClick={this.changeThemeTochaos}>chaos</button>
-        <button onClick={this.changeThemeTochrome}>chrome</button>
-        <button onClick={this.changeThemeToclouds}>clouds</button>
-        <button onClick={this.changeThemeTocobalt}>cobalt</button>
-        <button onClick={this.changeThemeTodawn}>dawn</button> 
-        <button onClick={this.changeThemeTodracula}>dracula</button>   
-        <button onClick={this.changeThemeTodreamweaver}>dreamweaver</button>   
-        {/* <button onClick={this.changeThemeToeclipse}>eclipse</button>   
-        <button onClick={this.changeThemeTogob}>gob</button>        */}
+        <Menu compact>
+          <Dropdown text='Editor Theme' options={options} simple item onChange={this.dropDownChange}/>
+        </Menu> 
         <AceEditor
           mode='javascript'
           theme={this.state.theme || "kuroir"}
