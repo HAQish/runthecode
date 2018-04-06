@@ -58,6 +58,7 @@ class UserChallenges extends React.Component {
   
   displayTestResults(results, userCode) {
     results = JSON.parse(results);
+    console.log('REZZZZ', results);
     this.setState({
       currentChallengeResultMessage: results.message,
       currentTestResults: results.masterTestResults,
