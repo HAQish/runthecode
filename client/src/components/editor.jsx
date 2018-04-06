@@ -66,7 +66,7 @@ class Editor extends React.Component {
         onChange={this.onChange} 
         value={this.state.masterUserSolutionCode || this.props.starterCode} 
         editorProps={{ $blockScrolling: true }} 
-        width="100%" height="85vh" 
+        width="100%" height="60vh" 
         />
         <Button onClick={this.handleSubmit} content="Send to server" primary />
         {pair}
