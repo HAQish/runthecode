@@ -3,6 +3,24 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import { BrowserRouter, Route } from 'react-router-dom';
 import socketIOClient from "socket.io-client";
+import {Grid, Button, Input} from 'semantic-ui-react';
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 40px auto;
+  justify-content: space-around;
+  width: 70vw;
+  text-align: center;
+`;
+
+const Heading = styled.h3`
+  text-align: center;
+  padding-bottom: 20px;
+  font-size: 3rem;
+  color: #6f999d;
+`;
 
 class Users extends React.Component {
   constructor(props) {
@@ -50,29 +68,59 @@ class Users extends React.Component {
 
   render() {
     const users = this.state.users;
-    const allUsers = this.state.allUsers ? (<div>{
-      this.state.allUsers.map(user => {
+    let allUsers;
+    if (this.state.allUsers) {
+      allUsers = <React.Fragment>{this.state.allUsers.map(user => {
         return (
-          <div>Username: {user.username}</div>
+          <Grid.Row className="list-view">
+            <Grid.Column width={4}>
+              <h3>Username:</h3>
+            </Grid.Column>
+            <Grid.Column width={8}>
+              <h3>{user.username}</h3>
+            </Grid.Column>
+          </Grid.Row>
         )
-      })
-    }</div>) : (<br />);
-    return (
-      <div>Online Users <br />
-        {users.map(el => {
-          return (
-            <div>
-              <span>Username: {el[0]}</span>
-              <input onChange={this.chatMessageChange} placeholder="Message this user" /> 
-              <button onClick={() => this.sendMessageToUser(el[1], el[0])} >Send</button>
-            </div>
-            )
-          })
-        }
-        <br /> <br /><br />All Users<br /><br />
-        {allUsers}
-      </div>
-    )
+      })}</React.Fragment>
+    } else {
+      allUsers = <span />
+    }
+
+    return <Wrapper>
+        <Grid divided="vertically">
+          <Grid.Row>
+            <Heading>Online Users</Heading>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column width={6}>
+              <h3>Username</h3>
+            </Grid.Column>
+            <Grid.Column width={10}>
+              <h3>Message this User</h3>
+            </Grid.Column>
+          </Grid.Row>
+          {users.map(el => <Grid.Row className="list-view">
+              <Grid.Column width={6}>
+                <h3>{el[0]}</h3>
+              </Grid.Column>
+              <Grid.Column width={8}>
+                <Input onChange={this.chatMessageChange} fluid placeholder="Message this User" />
+                {/* <input onChange={this.chatMessageChange} placeholder="Message this user" /> */}
+              </Grid.Column>
+              <Grid.Column width={2}>
+                <Button primary onClick={() => this.sendMessageToUser(el[1], el[0])}>
+                  Send
+                </Button>
+              </Grid.Column>
+            </Grid.Row>)}
+        </Grid>
+        <Grid divided="vertically">
+          <Grid.Row>
+            <Heading>All Users</Heading>
+          </Grid.Row>
+          {allUsers}
+        </Grid>
+      </Wrapper>;
   }
 }
 
