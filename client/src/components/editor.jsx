@@ -4,7 +4,6 @@ import brace from 'brace';
 import $ from 'jquery';
 import { Link } from 'react-router-dom';
 import PairingEditor from "./pairingEditor.jsx";
-import {Link} from 'react-router-dom';
 
 import 'brace/theme/kuroir';
 import 'brace/mode/javascript';

@@ -6,7 +6,7 @@ const Wrapper = styled.div`
   flex-direction: row;
   flex-wrap: nowrap;
   flex-shrink: 0;
-  background-color: #4CBB6B;
+  background-color: #6f999d;
   justify-content: space-around;
   align-items: center;
   height: 100px;

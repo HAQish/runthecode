@@ -257,7 +257,7 @@ const getPopulatedUser = function (username) { // changes object ids into actual
   return new Promise(((resolve, reject) => Users.find({ username }).populate('completedChallenges').exec((err, data) => {
     if (err) { return err; }
     console.log('data.completedChallenges in getPopulatedUser in database-index is ', data[0].completedChallenges);
-    resolve(data[0].completedChallenges);
+    resolve(data[0]);
   })));
 };
 

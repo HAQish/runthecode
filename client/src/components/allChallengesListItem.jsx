@@ -3,12 +3,7 @@ import {Grid, Button, Icon, Label} from 'semantic-ui-react';
 import { Link } from "react-router-dom";
 
 const AllChallengesListItem = (props) => {
-  const {challenge, user, index} = props;
-  let background; 
-  if(index % 2 === 0) {
-   background = "yellow"; 
-  }
-  // let textColor = (background === 'grey') ? 'white' : 'black';
+  const { challenge, user, index, compChallengeNames } = props;
   let level = Number(challenge.challengeLevel);
   let labelColor;
   if (level < 8) {
@@ -19,17 +14,12 @@ const AllChallengesListItem = (props) => {
     labelColor = 'red';
   }
   let showSolutions;
-  if (user.completedChallenges.indexOf(challenge.challengeName) !== -1) {
-    showSolutions = (<Button animated='vertical'>
-      <Button.Content hidden>Solutions</Button.Content>
-      <Button.Content visible>
-        <Icon name='puzzle' color='green' size='big' />
-      </Button.Content>
-    </Button>)
+  if (compChallengeNames.indexOf(challenge.challengeName) !== -1) {
+    showSolutions = <Link to={`/solutions/${challenge.challengeName}`}><Icon name="puzzle" color="green" size="big" /></Link>;
   } else {
     showSolutions = <Icon name='remove' color='red' size='big' />;
   }
-  return <Grid.Row color={background}>
+  return <Grid.Row className="list-view">
       <Grid.Column width={8}>
         <Link to={`/allchallenges/${challenge.challengeName}`}>
           <h3>{challenge.challengeName}</h3>

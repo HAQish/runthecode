@@ -28,3 +28,11 @@
   width: 100%;
   border: 3px solid black;
 }
+
+.list-view:nth-child(even) {
+  background-color: #EBF3F9;
+}
+
+.info-header {
+  color: #6F999D;
+}
