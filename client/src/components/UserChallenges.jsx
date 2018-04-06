@@ -40,7 +40,7 @@ class UserChallenges extends React.Component {
   // submittedSolutions []
   // testDescriptions "[]" /////
 
-  componentWillMount() {
+  componentDidMount() {
     console.log("in UserChallenges.jsx, socket is", this.props.socket);
     $.get(`/userSubmittedChallenge/${this.props.match.params.challengeName}`, (data) => {
       console.log('Data after get to userchallenges', data)

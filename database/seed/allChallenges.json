@@ -1,7 +1,7 @@
 [
   {
     "submittedSolutions": "[]",
-    "challengeName": "Find the unique number",
+    "challengeName": "Findtheuniquenumber",
     "prompt": "There is an array with some numbers. All numbers are equal except for one. Try to find it!\n\nfindUniq([ 1, 1, 1, 2, 1, 1 ]) === 2\nfindUniq([ 0, 0, 0.55, 0, 0 ]) === 0.55\n\nIt\u2019s guaranteed that array contains more than 3 numbers.",
     "starterCode": "var findUniq = function(arr) {\n    \n};",
     "masterSolution": "var findUniq = function (arr) {\n  arr.sort((a,b)=>a-b);\n  return arr[0]==arr[1]?arr.pop():arr[0]\n};",
