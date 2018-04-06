@@ -32,23 +32,25 @@ const AllChallengesResultsModal = props => {
         )}
         {showError && (
           <Modal.Description>
-            <Header inverted>Failed tests</Header>
+            <Header inverted size={"large"} style={{color:"red"}}>Failed tests</Header>
             <Header inverted>Error: {props.testResults}</Header>
           </Modal.Description>
         )}
         {showFailure && (
           <Modal.Description>
-            <Header inverted>Failed</Header>
+            <Header size={"large"} inverted dividing style={{color:"red"}}>Failed</Header>
+            <Header sub></Header>
           </Modal.Description>
         )}
         {showSuccess && (
           <Modal.Description>
-            <Header inverted>Success!</Header>
+            <Header inverted size={"large"} style={{color:"green"}}>Success!</Header>
+            <Header sub></Header>
           </Modal.Description>
         )}
         {showTests && (
           <Modal.Description>
-            <List divided relaxed>
+            <List divided inverted relaxed>
               {props.testResults.map((value, i) => (
                 <TestResultsList
                   val={value}

@@ -81,7 +81,7 @@ class UserChallenges extends React.Component {
   }
 
   switch(e) {
-    this.setState({ pairing: !this.state.pairing });
+    this.setState({pairing: !this.state.pairing })
   }
 
   render() {
