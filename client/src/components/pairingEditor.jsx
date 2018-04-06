@@ -57,7 +57,7 @@ class PairingEditor extends React.Component {
     this.changeThemeToeclipse = this.changeThemeToeclipse.bind(this);
     this.changeThemeTogob = this.changeThemeTogob.bind(this);
     
-    // this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     // this.socketEmit = this.socketEmit.bind(this);
   }
 
@@ -137,7 +137,7 @@ class PairingEditor extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const { masterTests, displayTestResults, difficulty, challengeName } = this.props;
+    const { masterTests, displayTestResults, difficulty, challengeName, challengeLevel } = this.props;
     const { masterUserSolutionCode } = this.state;
     $.ajax({
       type: "POST",
@@ -145,7 +145,7 @@ class PairingEditor extends React.Component {
       data: {
         masterUserSolutionCode: masterUserSolutionCode,
         masterTests: masterTests,
-        challengeLevel: this.props.challengeLevel,
+        challengeLevel: challengeLevel,
         challengeName: challengeName
       },
       success: data => {
