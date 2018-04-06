@@ -18,6 +18,7 @@ class UserChallenges extends React.Component {
       justCompletedInitial: false,
       currentUserCode: undefined,
       pairing: false,
+      theme: "kuroir"
     };
     this.displayTestResults = this.displayTestResults.bind(this);
     this.retry = this.retry.bind(this);
@@ -86,7 +87,6 @@ class UserChallenges extends React.Component {
   }
 
   render() {
-    // const whichEditor = this.state.pairing ? (
     const whichEditor = this.props.match.params.roomName !== undefined ? (
       <PairingEditor
         starterCode={this.state.currentUserCode || this.state.starterCode}
@@ -99,6 +99,7 @@ class UserChallenges extends React.Component {
         socket={this.props.socket}
         user={this.props.user}
         room={this.props.match.params}
+        theme={this.state.theme}
       />
     ) : (
       <Editor
@@ -112,6 +113,7 @@ class UserChallenges extends React.Component {
         switch={this.switch}
         socket={this.props.socket}
         user={this.props.user}
+        theme={this.state.theme}
       />
     );
 
