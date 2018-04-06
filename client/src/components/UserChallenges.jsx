@@ -24,11 +24,6 @@ class UserChallenges extends React.Component {
     this.retry = this.retry.bind(this);
     this.viewSolutions = this.viewSolutions.bind(this);
     this.switch = this.switch.bind(this);
-    // this.changeThemeToambiance = this.changeThemeToambiance.bind(this);    
-    // this.changeThemeTochaos = this.changeThemeTochaos.bind(this);
-    // this.changeThemeTochrome = this.changeThemeTochrome.bind(this);
-    // this.changeThemeToclouds = this.changeThemeToclouds.bind(this);
-    // this.changeThemeTocobalt = this.changeThemeTocobalt.bind(this);
   }
 
   // categories []
@@ -90,29 +85,7 @@ class UserChallenges extends React.Component {
     this.setState({pairing: !this.state.pairing })
   }
 
-  // changeThemeToambiance() {
-  //   this.setState({theme: "ambiance"});
-  // }
-
-  // changeThemeTochaos() {
-  //   this.setState({theme: "chaos"});
-  // }
-
-  // changeThemeTochrome() {
-  //   this.setState({theme: "chrome"});
-  // }
-
-  // changeThemeToclouds() {
-  //   this.setState({theme: "clouds"});
-  // }
-
-  // changeThemeTocobalt() {
-  //   this.setState({theme: "cobalt"});
-  // }
-
-
   render() {
-    // const whichEditor = this.state.pairing ? (
     const whichEditor = this.props.match.params.roomName !== undefined ? (
       <PairingEditor
         starterCode={this.state.currentUserCode || this.state.starterCode}
@@ -153,11 +126,6 @@ class UserChallenges extends React.Component {
               challengeName={this.state.challengeName}
             />
           </Grid.Column>
-          {/* <button onClick={this.changeThemeToambiance}>ambiance</button>
-          <button onClick={this.changeThemeTochaos}>chaos</button>
-          <button onClick={this.changeThemeTochrome}>chrome</button>
-          <button onClick={this.changeThemeToclouds}>clouds</button>
-          <button onClick={this.changeThemeTocobalt}>cobalt</button> */}
           <Grid.Column>{whichEditor}</Grid.Column>
         </Grid.Row>
         <Modal
