@@ -80,7 +80,7 @@ class Navbar extends Component {
             open={this.state.openSignupModal}
             onClose={this.closeSignupModal}
             trigger={<Menu.Item name='signup' active={activeItem === 'signup'} onClick={this.openSignupModal} />}>
-            <Header icon='signup' content='Signup Page' />
+            <Header icon='signup' content='Signup' />
             <Modal.Content>
               <Modal.Description>
                 <Header inverted>Get Ready for a coding experience like no other</Header>

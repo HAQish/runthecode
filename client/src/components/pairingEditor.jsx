@@ -23,6 +23,13 @@ import { Grid, Button } from 'semantic-ui-react';
 
 import socketIOClient from "socket.io-client";
 
+const chatStyle = {
+  overflowY: 'scroll',
+  border:'1px solid black',
+  width:'100%',
+  height:'200px',
+  position:'relative'
+};
 class PairingEditor extends React.Component {
   constructor(props) {
     super(props);
@@ -56,7 +63,7 @@ class PairingEditor extends React.Component {
     this.changeThemeTodreamweaver = this.changeThemeTodreamweaver.bind(this);
     this.changeThemeToeclipse = this.changeThemeToeclipse.bind(this);
     this.changeThemeTogob = this.changeThemeTogob.bind(this);
-    
+    this.switchBack = this.switchBack.bind(this);
     // this.handleSubmit = this.handleSubmit.bind(this);
     // this.socketEmit = this.socketEmit.bind(this);
   }
@@ -180,6 +187,7 @@ class PairingEditor extends React.Component {
   sendChat() {
     //socket stuff
     this.props.socket.emit("sendChatFromApp", {message: this.state.chat, id: this.props.socket.id, user: this.props.user.username, role: this.state.driver ? "Driver" : "Navigator", roomName: this.state.roomName});
+    this.setState({chat: ""});
   }
 
   inviteUser(id, to) {
@@ -226,6 +234,10 @@ class PairingEditor extends React.Component {
     this.setState({theme: "gob"});
   }
   
+  switchBack() {
+    this.props.switch()
+  };
+
   render() {
     const driverImg = "https://cdn.iconscout.com/public/images/icon/premium/png-128/steering-wheel-component-accessories-car-33c7476fa85b2199-128x128.png";
     const navigatorImg ="http://icons.iconarchive.com/icons/icons8/android/256/Maps-Compass-icon.png"; 
@@ -252,7 +264,7 @@ class PairingEditor extends React.Component {
           value={this.state.masterUserSolutionCode || this.props.starterCode}
           editorProps={{ $blockScrolling: true }}
           width='100%'
-          height='85vh'
+          height='40vh'
         />
         <Button onClick={this.handleSubmit} content="Send to server" primary /> <br />
         <br />
@@ -268,10 +280,11 @@ class PairingEditor extends React.Component {
         
         <br />
 
-        <br /><br />
-        <input placeholder="chat here" onChange={this.chatOnChange}/> 
+        <input value={this.state.chat} placeholder="chat here" onChange={this.chatOnChange}/> 
           <Button onClick={this.sendChat} content="Send" />
+        <div style={chatStyle}>
         {this.state.chatMessages.map((el, i) => <div key={i}><img src={el.role === "Driver" ? driverImg : navigatorImg} width="13px" height="13px" />{el.user}: {el.message}</div>)}
+        </div>
       </div>
     )
   }
