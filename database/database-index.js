@@ -263,7 +263,7 @@ const getPopulatedUser = function (username) { // changes object ids into actual
 
 const getPopulatedChallenge = function (challengeName) { // changes object ids into actual objects from other collection
   return new Promise(((resolve, reject) => UserChallenges.find({ challengeName }).populate('submittedSolutions').exec((err, data) => {
-    if (err) { return err; }
+    if (err) { console.log('EEEERRR', err); return err;  }
     console.log('data.submittedSolutions in getPopulatedChallenge in database-index is ', data[0].submittedSolutions);
     resolve(data[0]);
   })));

@@ -1,7 +1,7 @@
 [
   {
-    "submittedSolutions": "[]",
-    "challengeName": "Find the unique number",
+    "submittedSolutions": [],
+    "challengeName": "Findtheuniquenumber",
     "prompt": "There is an array with some numbers. All numbers are equal except for one. Try to find it!\n\nfindUniq([ 1, 1, 1, 2, 1, 1 ]) === 2\nfindUniq([ 0, 0, 0.55, 0, 0 ]) === 0.55\n\nIt\u2019s guaranteed that array contains more than 3 numbers.",
     "starterCode": "var findUniq = function(arr) {\n    \n};",
     "masterSolution": "var findUniq = function (arr) {\n  arr.sort((a,b)=>a-b);\n  return arr[0]==arr[1]?arr.pop():arr[0]\n};",
@@ -11,7 +11,7 @@
     "createdBy": "codingchartreuse"
   },
   {
-    "submittedSolutions": "[]",
+    "submittedSolutions": [],
     "challengeName": "rot13",
     "prompt": "There is a basic cipher commonly used to obfuscate jokes.  It is called ROT13 and you can find the details about the cipher here: http://en.wikipedia.org/wiki/ROT13.  \n\nYour task is to create a function that accepts a single string as a parameter, applies the ROT13 cipher and then returns the new string. It should be noted that you are only substituting characters.  \n\nI have listed an example below: \n\nrot13('EBG13 rknzcyr.') // => 'ROT13 example'\n ",
     "starterCode": "const rot13 = (string) => {\n    let newString = '';\n    // Make sure that you return a string\n    // Your code\n    return newString;\n};",
