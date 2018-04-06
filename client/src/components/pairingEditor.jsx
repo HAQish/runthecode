@@ -4,12 +4,24 @@ import brace from 'brace';
 import $ from 'jquery';
 
 import 'brace/theme/kuroir';
+import 'brace/theme/ambiance';
+import 'brace/theme/chaos';
+import 'brace/theme/chrome';
+import 'brace/theme/clouds';
+import 'brace/theme/cobalt';
+import 'brace/theme/dawn';
+import 'brace/theme/dracula';
+import 'brace/theme/dreamweaver';
+import 'brace/theme/eclipse';
+import 'brace/theme/gob';
 import 'brace/mode/javascript';
 
 import 'brace/ext/language_tools';
 import 'brace/ext/searchbox';
 
 import { Grid, Button } from 'semantic-ui-react';
+import { Dropdown, Menu } from 'semantic-ui-react'
+
 import {Link} from 'react-router-dom';
 import socketIOClient from "socket.io-client";
 
@@ -31,7 +43,11 @@ class PairingEditor extends React.Component {
       driverArr: [],
       navigator: true,
       chatMessages: [],
-      users: []
+      users: [],
+      usersInSession: [],
+      usernamesArr: [],
+      currentDriver: "",
+      theme: "kuroir"
     };
     this.onChange = this.onChange.bind(this);
     this.switchRole = this.switchRole.bind(this);
@@ -42,8 +58,10 @@ class PairingEditor extends React.Component {
     this.inviteUser = this.inviteUser.bind(this);
     this.switchRoleSocket = this.switchRoleSocket.bind(this);
     this.getUsersInSession = this.getUsersInSession.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.switchBack = this.switchBack.bind(this);
-    // this.handleSubmit = this.handleSubmit.bind(this);
+    this.dropDownChange = this.dropDownChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     // this.socketEmit = this.socketEmit.bind(this);
   }
 
@@ -59,6 +77,21 @@ class PairingEditor extends React.Component {
     });
     this.props.socket.on("returnOnlineUsers", (usersArr) => {
       // console.log("In Users.jsx, usersArr returned from backend is", usersArr);
+      for (let i = 0; i < this.state.usersInSession.length; i++) {
+        for (let j = 0; j < usersArr.length; j++) {
+          if (this.state.usersInSession[i][0] === usersArr[j][0]) {
+            usersArr[j] = "removeMe";
+          }
+        }
+      }
+
+      for (let i = 0; i < usersArr.length; i++) {
+        if (usersArr[i] === "removeMe") {
+          usersArr.splice(i, 1);
+          i = -1;
+        }
+      }
+
       this.setState({ users: usersArr });
     });
     console.log("in pairingEditor, this.props.user", this.props.user);
@@ -77,10 +110,24 @@ class PairingEditor extends React.Component {
       this.setState({chatMessages: this.state.chatMessages.concat(chatMsg)});
     })
     this.props.socket.on("getUsersInSession", (users) => {
+      let usernamesArr = [];
+      users = users === null ? [] : users;
+      let currentDriver = "";
+      for (let i = 0; i < users.length; i++) {
+        usernamesArr.push(users[i][0]);
+      }
+
+      for (let i = 0; i < users.length; i++) {
+        if (users[i][1] === "Driver") {
+          currentDriver = users[i][0];
+        }
+      }
+      this.setState({usernamesArr: usernamesArr});
       this.setState({usersInSession: users});
+      this.setState({currentDriver: currentDriver});
     })
     setInterval(this.getOnlineUsers, 2500);
-    setInterval(this.getUsersInSession, 1000);
+    setInterval(this.getUsersInSession, 1500);
     // this.props.socket.on("newDriver", (username) => {
     //   if (this.state.driverArr.length === 0) {
     //     this.state.driverArr.push(username);
@@ -121,26 +168,26 @@ class PairingEditor extends React.Component {
   }
 
 
-  // handleSubmit(e) {
-  //   e.preventDefault();
-  //   const { masterTests, displayTestResults, difficulty, challengeName } = this.props;
-  //   const { masterUserSolutionCode } = this.state;
-  //   $.ajax({
-  //     type: "POST",
-  //     url: "/challengeSolution",
-  //     data: {
-  //       masterUserSolutionCode: masterUserSolutionCode,
-  //       masterTests: masterTests,
-  //       challengeLevel: this.props.challengeLevel,
-  //       challengeName: challengeName
-  //     },
-  //     success: data => {
-  //       displayTestResults(data, masterUserSolutionCode);
-  //       this.setState({ masterUserSolutionCode: '' })
-  //     },
-  //     error: err => console.log(err)
-  //   });
-  // }
+  handleSubmit(e) {
+    e.preventDefault();
+    const { masterTests, displayTestResults, difficulty, challengeName, challengeLevel } = this.props;
+    const { masterUserSolutionCode } = this.state;
+    $.ajax({
+      type: "POST",
+      url: "/challengeSolution",
+      data: {
+        masterUserSolutionCode: masterUserSolutionCode,
+        masterTests: masterTests,
+        challengeLevel: challengeLevel,
+        challengeName: challengeName
+      },
+      success: data => {
+        displayTestResults(data, masterUserSolutionCode);
+        this.setState({ masterUserSolutionCode: '' })
+      },
+      error: err => console.log(err)
+    });
+  }
 
   // switch(e) {
   //   this.setState({ pairing: !this.state.pairing });
@@ -172,23 +219,62 @@ class PairingEditor extends React.Component {
   inviteUser(id, to) {
     this.props.socket.emit("sendChatMessage", { message: window.location.href, meantFor: id, from: this.props.user.username, to: to });
   }
-
+  
   switchBack() {
     this.props.switch()
   };
 
+  dropDownChange(e, data) {
+    console.log("dropDownChange", e, data);
+    this.setState({theme: data.value});
+  }
+
+
   render() {
     const driverImg = "https://cdn.iconscout.com/public/images/icon/premium/png-128/steering-wheel-component-accessories-car-33c7476fa85b2199-128x128.png";
     const navigatorImg ="http://icons.iconarchive.com/icons/icons8/android/256/Maps-Compass-icon.png"; 
+    const options = [
+      { key: 1, text: 'ambiance', value: "ambiance" },
+      { key: 2, text: 'chaos', value: "chaos" },
+      { key: 3, text: 'chrome', value: "chrome" },
+      { key: 4, text: 'clouds', value: "clouds"},   
+      { key: 5, text: 'cobalt', value: "cobalt"},
+      { key: 6, text: 'dawn', value: "dawn"}, 
+      { key: 7, text: 'dracula', value: "dracula"}, 
+      { key: 8, text: 'dreamweaver', value: "dreamweaver"}, 
+      { key: 9, text: 'eclipse', value: "eclipse"}, 
+      { key: 10, text: 'gob', value: "gob"}
+    ];
+    const currentDriver = (this.state.navigator ? "The current driver is " + this.state.currentDriver  : "");
     // const users = this.state.users;
     return <div>
-        You are currently {this.state.driver ? "Driver" : "Navigator"}. <br /> <br />
-        The current socket id is {this.props.socketId || this.props.socket.id}. <br />
-        Your partner's socket id is {this.state.partnerId}.
-        <AceEditor mode="javascript" theme="kuroir" onChange={this.onChange} value={this.state.masterUserSolutionCode || this.props.starterCode} editorProps={{ $blockScrolling: true }} width="100%" height="40vh" />
-        {/*<Button onClick={this.handleSubmit} content="Send to server" primary />*/} <br />
+        You are currently {this.state.driver ? "Driver" : "Navigator"}.  {currentDriver}<br /> 
+        {/* var usersInSession={JSON.stringify(this.state.usernamesArr).replace("\",\"", "\", \"")} */}
+        <br />
+        {/* The current socket id is {this.props.socketId || this.props.socket.id}. <br /> */}
+        {/* Your partner's socket id is {this.state.partnerId}. <br /> */}
+        {/* <Menu compact>
+          <Dropdown text='Editor Theme' options={options} simple item onChange={this.dropDownChange}/>
+        </Menu>  */}
+        <AceEditor
+          mode='javascript'
+          theme={"chaos"}
+          onChange={this.onChange}
+          value={this.state.masterUserSolutionCode || this.props.starterCode}
+          editorProps={{ $blockScrolling: true }}
+          width='100%'
+          height='40vh'
+        />
+        <Button onClick={this.handleSubmit} content="Send to server" primary /> 
+        {/* <br /> */}
+        {/* <br /> */}
+        <Button onClick={this.switchRole} content="Switch roles" /> 
+        {/* <br />  */}
         <Button as={Link} to={`/allchallenges/${this.props.challengeName}`} content="Exit pair programming" />
-        <Button onClick={this.switchRole} content="Switch roles" /> <br />
+        <br />
+        Users currently in this session: {this.state.usernamesArr.map(user => <span>{user} </span>)}
+        <br /> <br />
+        Invite other online users: <br />
         {this.state.users.map(user => {
           return <div>
               {user[0]} <button

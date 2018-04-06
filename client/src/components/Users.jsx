@@ -53,23 +53,23 @@ class Users extends React.Component {
     const allUsers = this.state.allUsers ? (<div>{
       this.state.allUsers.map(user => {
         return (
-          <div>User: {user.username}</div>
+          <div>Username: {user.username}</div>
         )
       })
     }</div>) : (<br />);
     return (
-      <div>
+      <div>Online Users <br />
         {users.map(el => {
           return (
             <div>
-              <span>User: {el[0]}, SocketID: {el[1]}</span>
+              <span>Username: {el[0]}</span>
               <input onChange={this.chatMessageChange} placeholder="Message this user" /> 
-              <button onClick={() => this.sendMessageToUser(el[1], el[0])} />
+              <button onClick={() => this.sendMessageToUser(el[1], el[0])} >Send</button>
             </div>
             )
           })
         }
-        <br /> <br />All Users <br /><br />
+        <br /> <br /><br />All Users<br /><br />
         {allUsers}
       </div>
     )

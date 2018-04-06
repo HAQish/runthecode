@@ -70,6 +70,7 @@ io.on('connection', (socket) => {
   })
 
   socket.on("getUsersInSession", function(roomName) {
+    console.log("roomsObj", roomsObj[roomName]);
     socket.emit("getUsersInSession", roomsObj[roomName]);
   })
 
@@ -86,15 +87,18 @@ io.on('connection', (socket) => {
 
   socket.on("leaveRoom", function(obj) {
     console.log("Leaving a room in the socket", obj.roomName);
-    for (let i = 0; i < roomsObj[obj.roomName].length; i++) {
-      if (roomsObj[obj.roomName][i][0] === obj.username) {
-        roomsObj[obj.roomName].splice(i, 1);
+    
+    if (roomsObj.hasOwnProperty(obj.roomName)) {
+      for (let i = 0; i < roomsObj[obj.roomName].length; i++) {
+        if (roomsObj[obj.roomName][i][0] === obj.username) {
+          roomsObj[obj.roomName].splice(i, 1);
+        }
       }
     }
 
     if (roomsObj[obj.roomName].length === 0) {
       delete roomsObj[obj.roomName];
-    }
+    } 
     socket.leave(obj.roomName);
   })
 

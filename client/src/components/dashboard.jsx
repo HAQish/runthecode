@@ -97,15 +97,6 @@ class Dashboard extends React.Component {
             Site Ranking:
             <Label.Detail>{user.level}</Label.Detail>
           </Label>
-          <Label as={Link} to="/users" size="huge" color="black">
-            <Icon name="users" inverted />
-            USERS
-          </Label>
-          <Label size="huge" color="black">
-            <Icon name="mail outline" />
-            Messages
-            <Label.Detail>0</Label.Detail>
-          </Label>
         </TopWrapper>
         <Heading>DASHBOARD</Heading>
         <Grid>
