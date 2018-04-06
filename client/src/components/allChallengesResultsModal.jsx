@@ -2,6 +2,7 @@ import React from "react";
 import TestResultsList from "./testResultsList.jsx";
 import SolutionList from "./SolutionList.jsx";
 import { Modal, Button, Header, Icon, List } from "semantic-ui-react";
+import {Link} from 'react-router-dom';
 
 const AllChallengesResultsModal = props => {
   var showFailure = props.msg === "Failure";
@@ -10,7 +11,7 @@ const AllChallengesResultsModal = props => {
   var showTests = showSuccess || showFailure;
   var failButtons = (showError || showFailure);
   var solutionButton = (
-    <Button color="green" onClick={props.viewSolutions}>
+    <Button color="green" as={Link} to={`/solutions/${props.challengeName}`}>
       View other solutions <Icon name="arrow right" />
     </Button>
   )
