@@ -100,7 +100,7 @@ const userSchema = new Schema({
     password: String,
   },
   completedInitial: { type: Boolean, default: false },
-  level: {type: Number, default: 0}, // changed to string from number for now
+  level: { type: Number, default: 0 }, // changed to string from number for now
   experience: String, // changed to string from number for now
   score: String, // changed to string from number for now
   completedCourseChallenges: { type: Schema.Types.Mixed, default: { firstChallenge: true } },
@@ -223,7 +223,7 @@ const addUserChallenge = function (obj) {
 
 // needs refactor for proper collections
 const addSolution = function (answer, username, challengeName) { // adds to solutions collection and adds id to users and challenges collections
-  const newSolution = new Solutions({masterUserSolutionCode: answer, solvedBy: username, challengeName: challengeName});
+  const newSolution = new Solutions({ masterUserSolutionCode: answer, solvedBy: username, challengeName });
   newSolution._id = new mongoose.Types.ObjectId();
   console.log('The new solution being saved to the solutions collection in addSolution in database-index is ', newSolution);
 
@@ -247,10 +247,12 @@ const addSolution = function (answer, username, challengeName) { // adds to solu
 };
 
 const rateSolution = function (challengeName, solver, rater, vote) {
-  var rateStr = "rating." + rater;
-  return Solutions.findOneAndUpdate({ challengeName: challengeName, solvedBy: solver },
-    {$set : {[rateStr]: Number(vote)}},
-  {new:true});
+  const rateStr = `rating.${rater}`;
+  return Solutions.findOneAndUpdate(
+    { challengeName, solvedBy: solver },
+    { $set: { [rateStr]: Number(vote) } },
+    { new: true },
+  );
 };
 
 const getPopulatedUser = function (username) { // changes object ids into actual objects from other collection
@@ -263,7 +265,7 @@ const getPopulatedUser = function (username) { // changes object ids into actual
 
 const getPopulatedChallenge = function (challengeName) { // changes object ids into actual objects from other collection
   return new Promise(((resolve, reject) => UserChallenges.find({ challengeName }).populate('submittedSolutions').exec((err, data) => {
-    if (err) { console.log('EEEERRR', err); return err;  }
+    if (err) { console.log('EEEERRR', err); return err; }
     console.log('data.submittedSolutions in getPopulatedChallenge in database-index is ', data[0].submittedSolutions);
     resolve(data[0]);
   })));
@@ -330,10 +332,9 @@ const updateCompletedCourseChallenges = function (currentUser, message, challeng
   finalObj = currentUser.completedCourseChallenges;
   finalObj[challengeName] = msg;
   if (msg) {
-    return Users.findOneAndUpdate({ username: currentUser.username }, {completedCourseChallenges: finalObj, level: currentUser.level+0.5}, { new: true, upsert: true });
-  } else {
-    return Users.findOneAndUpdate({ username: currentUser.username }, { completedCourseChallenges: finalObj }, { new: true, upsert: true });
+    return Users.findOneAndUpdate({ username: currentUser.username }, { completedCourseChallenges: finalObj, level: currentUser.level + 0.5 }, { new: true, upsert: true });
   }
+  return Users.findOneAndUpdate({ username: currentUser.username }, { completedCourseChallenges: finalObj }, { new: true, upsert: true });
 };
 
 const addMessageToUser = function (username, messageObj) {
@@ -348,10 +349,10 @@ const retrieveAllMessagesFromUser = function (username) {
   return Users.findOne({ username }).select('messages');
 };
 
-const getAllUsers = function() {
-  console.log("in getAllUsers in dbindex");
-  return Users.find().select("username");
-}
+const getAllUsers = function () {
+  console.log('in getAllUsers in dbindex');
+  return Users.find().select('username');
+};
 
 // ^^^^^^^^^^^^^^^ Database functions ^^^^^^^^^^^^^^^
 

@@ -25,7 +25,7 @@ const usersArr = [];
 
 const roomsObj = {};
 
-//{roomName: [[user1, driver], [user2, nav], [user3, nav] ] } 
+// {roomName: [[user1, driver], [user2, nav], [user3, nav] ] }
 
 // socket.io functionality
 io.on('connection', (socket) => {
@@ -49,45 +49,45 @@ io.on('connection', (socket) => {
     socket.emit('returnOnlineUsers', usersArr);
   });
 
-  socket.on("getAllUsers", () => {
-    console.log("socket heard getAllUsers");
-    db.getAllUsers().then(users => socket.emit("getAllUsers", users));
-  })
+  socket.on('getAllUsers', () => {
+    console.log('socket heard getAllUsers');
+    db.getAllUsers().then(users => socket.emit('getAllUsers', users));
+  });
 
-  socket.on("newDriver", (usernameObj) => {
-    console.log("socket heard a new driver", usernameObj.username);
-    io.in(usernameObj.roomName).emit("newDriver", usernameObj.username);
-  })
+  socket.on('newDriver', (usernameObj) => {
+    console.log('socket heard a new driver', usernameObj.username);
+    io.in(usernameObj.roomName).emit('newDriver', usernameObj.username);
+  });
 
-  socket.on("joinRoom", function(obj) {
-    console.log("Joining a room in the socket", obj.roomName);
+  socket.on('joinRoom', (obj) => {
+    console.log('Joining a room in the socket', obj.roomName);
     if (roomsObj.hasOwnProperty(obj.roomName)) {
       roomsObj[obj.roomName].push([obj.username, obj.role]);
     } else {
       roomsObj[obj.roomName] = [[obj.username, obj.role]];
     }
     socket.join(obj.roomName);
-  })
+  });
 
-  socket.on("getUsersInSession", function(roomName) {
-    console.log("roomsObj", roomsObj[roomName]);
-    socket.emit("getUsersInSession", roomsObj[roomName]);
-  })
+  socket.on('getUsersInSession', (roomName) => {
+    console.log('roomsObj', roomsObj[roomName]);
+    socket.emit('getUsersInSession', roomsObj[roomName]);
+  });
 
-  socket.on("roleChange", function(obj) {
-    console.log("Backend heard rolechange", obj);
-    console.log("in roleChange roomsObj[roomName] is", roomsObj[obj.roomName]);
+  socket.on('roleChange', (obj) => {
+    console.log('Backend heard rolechange', obj);
+    console.log('in roleChange roomsObj[roomName] is', roomsObj[obj.roomName]);
     for (let i = 0; i < roomsObj[obj.roomName].length; i++) {
       if (roomsObj[obj.roomName][i][0] === obj.user) {
-        console.log("in roleCHange, if branch activted");
-        roomsObj[obj.roomName][i][1] === "Driver" ? roomsObj[obj.roomName][i][1] = "Navigator" : roomsObj[obj.roomName][i][1] = "Driver";
+        console.log('in roleCHange, if branch activted');
+        roomsObj[obj.roomName][i][1] === 'Driver' ? roomsObj[obj.roomName][i][1] = 'Navigator' : roomsObj[obj.roomName][i][1] = 'Driver';
       }
     }
-  })
+  });
 
-  socket.on("leaveRoom", function(obj) {
-    console.log("Leaving a room in the socket", obj.roomName);
-    
+  socket.on('leaveRoom', (obj) => {
+    console.log('Leaving a room in the socket', obj.roomName);
+
     if (roomsObj.hasOwnProperty(obj.roomName)) {
       for (let i = 0; i < roomsObj[obj.roomName].length; i++) {
         if (roomsObj[obj.roomName][i][0] === obj.username) {
@@ -98,22 +98,22 @@ io.on('connection', (socket) => {
 
     if (roomsObj[obj.roomName].length === 0) {
       delete roomsObj[obj.roomName];
-    } 
+    }
     socket.leave(obj.roomName);
-  })
+  });
 
-  socket.on("codeChange", function(newCodeObj) {
+  socket.on('codeChange', (newCodeObj) => {
     console.log("the new code being sent to the server's socket is ", newCodeObj);
-    socket.to(newCodeObj.roomName).emit("codeChangeFromServer", newCodeObj.code);
-  })
+    socket.to(newCodeObj.roomName).emit('codeChangeFromServer', newCodeObj.code);
+  });
 
-  socket.on("componentWillMountPairing", function(socketObj) {
-    socket.to(socketObj.roomName).emit("socketIdFromPartner", socketObj.id);
-  })
+  socket.on('componentWillMountPairing', (socketObj) => {
+    socket.to(socketObj.roomName).emit('socketIdFromPartner', socketObj.id);
+  });
 
-  socket.on("sendChatFromApp", function(chatMsg) {
-    io.in(chatMsg.roomName).emit("sendChatFromServer", chatMsg);
-  })
+  socket.on('sendChatFromApp', (chatMsg) => {
+    io.in(chatMsg.roomName).emit('sendChatFromServer', chatMsg);
+  });
 
   socket.on('sendChatMessage', (messageObj) => {
     console.log('Back end socket heard sent chat message', messageObj);
