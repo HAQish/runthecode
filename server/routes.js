@@ -139,7 +139,7 @@ const challengeRoutes = function (app) {
   app.post('/rateSolution', (req, res) => {
     // needs (challengename, solver, rater, vote) from front end
     const rateMsg = db.rateSolution(req.body.challengeName, req.body.solver, req.user.username, req.body.vote)
-    .then((z)=>{console.log(z); res.send(z);})
+      .then((z) => { console.log(z); res.send(z); });
   });
 
   // User submitted challenge routes
@@ -236,7 +236,7 @@ const dbRoutes = function (app) {
 
   app.get('/isLoggedIn', (req, res) => {
     if (req.user) {
-      db.getPopulatedUser(req.user.username).then(results => res.send(results))
+      db.getPopulatedUser(req.user.username).then(results => res.send(results));
     } else {
       res.send(undefined);
     }

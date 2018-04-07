@@ -26,8 +26,8 @@ const docs = fs.readFile('./database/seed/initialChallenges.json', 'utf8', (err,
               const col = db.collection('userChallenges');
               col.insert(JSON.parse(data), (err, docs) => {
                 col.count((err, count) => {
-                console.log(`${count  } items inserted into userChallenges collection.`);
-                db.close();
+                  console.log(`${count} items inserted into userChallenges collection.`);
+                  db.close();
                 });
               });
             });
