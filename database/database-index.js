@@ -33,7 +33,7 @@ const initialChallengeSchema = new Schema({
   challengeNumber: Number,
   challengeName: { type: String, unique: true },
   next: String,
-  previous: String,
+  previous: String
 });
 
 const InitialChallenges = mongoose.model('InitialChallenges', initialChallengeSchema, 'initialChallenges');
@@ -51,7 +51,7 @@ const courseChallengeSchema = new Schema({
   challengeNumber: Number,
   challengeName: { type: String, unique: true },
   next: String,
-  previous: String,
+  previous: String
 });
 
 const CourseChallenges = mongoose.model('CourseChallenges', courseChallengeSchema, 'courseChallenges');
@@ -81,7 +81,7 @@ const userChallengeSchema = new Schema({
   masterSolution: String,
   submittedSolutions: [{ type: Schema.Types.ObjectId, ref: 'Solutions' }],
   maxScore: String, // changed to string from number for now
-  challengeLevel: String, // changed to string from number for now
+  challengeLevel: String // changed to string from number for now
   // next: String, // removing linked list capabilities from user-submitted challenges for now
   // previous: String // removing linked list capabilities from user-submitted challenges for now
 });
@@ -106,7 +106,7 @@ const userSchema = new Schema({
   completedCourseChallenges: { type: Schema.Types.Mixed, default: { firstChallenge: true } },
   completedChallenges: [{ type: Schema.Types.ObjectId, ref: 'Solutions' }],
   messages: [{
-    message: String, meantFor: String, from: String, to: String,
+    message: String, meantFor: String, from: String, to: String
   }],
 });
 
@@ -129,8 +129,8 @@ const solutionsSchema = new Schema({
   difficulty: String,
   comments: [{
     user: String,
-    comment: String,
-  }],
+    comment: String
+  }]
 });
 
 const Solutions = mongoose.model('Solutions', solutionsSchema);
@@ -141,14 +141,14 @@ const Solutions = mongoose.model('Solutions', solutionsSchema);
 
 const initialChallengesLinkedListSchema = new Schema({
   position: { type: String, unique: true }, // head or tail
-  idOfObject: String,
+  idOfObject: String
 });
 
 const InitialChallengesLinkedList = mongoose.model('InitialChallengesLinkedList', initialChallengesLinkedListSchema, 'initialChallengesLinkedList');
 
 const courseChallengesLinkedListSchema = new Schema({
   position: { type: String, unique: true }, // head or tail
-  idOfObject: String,
+  idOfObject: String
 });
 
 const CourseChallengesLinkedList = mongoose.model('CourseChallengesLinkedList', courseChallengesLinkedListSchema, 'courseChallengesLinkedList');

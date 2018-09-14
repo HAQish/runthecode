@@ -11,6 +11,7 @@
     "start": "node server/server-index.js",
     "react-dev": "webpack -d --watch",
     "server-dev": "nodemon --inspect server/server-index.js",
+    "server-dev-no-inspect": "nodemon server/server-index.js",
     "test": "SET TESTMONGO_URI='mongodb://localhost:27017/TESTlevelup' && node database/seed/dbSeed.js --timeout 1000 && mocha --timeout 10000"
   },
   "repository": {

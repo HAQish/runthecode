@@ -47,7 +47,7 @@ class PairingEditor extends React.Component {
       usersInSession: [],
       usernamesArr: [],
       currentDriver: "",
-      theme: "kuroir"
+      theme: localStorage.editorTheme || "kuroir"
     };
     this.onChange = this.onChange.bind(this);
     this.switchRole = this.switchRole.bind(this);
@@ -212,12 +212,23 @@ class PairingEditor extends React.Component {
 
   sendChat() {
     //socket stuff
-    this.props.socket.emit("sendChatFromApp", {message: this.state.chat, id: this.props.socket.id, user: this.props.user.username, role: this.state.driver ? "Driver" : "Navigator", roomName: this.state.roomName});
+    this.props.socket.emit("sendChatFromApp", {
+      message: this.state.chat, 
+      id: this.props.socket.id, 
+      user: this.props.user.username, 
+      role: this.state.driver ? "Driver" : "Navigator", 
+      roomName: this.state.roomName
+    });
     this.setState({chat: ""});
   }
 
   inviteUser(id, to) {
-    this.props.socket.emit("sendChatMessage", { message: window.location.href, meantFor: id, from: this.props.user.username, to: to });
+    this.props.socket.emit("sendChatMessage", { 
+      message: window.location.href, 
+      meantFor: id, 
+      from: this.props.user.username, 
+      to: to 
+    });
   }
   
   switchBack() {
@@ -226,6 +237,7 @@ class PairingEditor extends React.Component {
 
   dropDownChange(e, data) {
     console.log("dropDownChange", e, data);
+    localStorage.editorTheme = data.value;
     this.setState({theme: data.value});
   }
 
@@ -253,12 +265,12 @@ class PairingEditor extends React.Component {
         <br />
         {/* The current socket id is {this.props.socketId || this.props.socket.id}. <br /> */}
         {/* Your partner's socket id is {this.state.partnerId}. <br /> */}
-        {/* <Menu compact>
+        <Menu compact>
           <Dropdown text='Editor Theme' options={options} simple item onChange={this.dropDownChange}/>
-        </Menu>  */}
+        </Menu> 
         <AceEditor
           mode='javascript'
-          theme={"chaos"}
+          theme={this.state.theme}
           onChange={this.onChange}
           value={this.state.masterUserSolutionCode || this.props.starterCode}
           editorProps={{ $blockScrolling: true }}

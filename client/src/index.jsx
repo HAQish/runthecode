@@ -138,7 +138,6 @@ class App extends React.Component {
     (<Route exact path="/" component={() => <Dashboard user={this.state.masterUser} socket={this.state.socket} onlineUpdate={this.onlineUpdate}/>} />) 
     : 
     (<Route exact path="/" component={() => <Home handleLogin={this.handleLogin} />} />);
-
     return <BrowserRouter>
         <Wrapper>
           <Content>
