@@ -30,7 +30,10 @@ const chatStyle = {
   border:'1px solid black',
   width:'100%',
   height:'200px',
-  position:'relative'
+  position:'relative',
+  backgroundColor: 'white',
+  padding: "10px",
+  marginTop: "10px"
 };
 class PairingEditor extends React.Component {
   constructor(props) {
@@ -257,16 +260,16 @@ class PairingEditor extends React.Component {
       { key: 9, text: 'eclipse', value: "eclipse"}, 
       { key: 10, text: 'gob', value: "gob"}
     ];
-    const currentDriver = (this.state.navigator ? "The current driver is " + this.state.currentDriver  : "");
+    const currentDriver = (this.state.navigator && this.state.currentDriver ? "The current driver is " + this.state.currentDriver  : "");
     // const users = this.state.users;
-    return <div>
-        You are currently {this.state.driver ? "Driver" : "Navigator"}.  {currentDriver}<br /> 
+    return <div style={{ color: "white" }} className="fontSansSerif">
+        You are currently {this.state.driver ? "Driver" : "Navigator"}.{'  '}{currentDriver}<br /> 
         {/* var usersInSession={JSON.stringify(this.state.usernamesArr).replace("\",\"", "\", \"")} */}
         <br />
         {/* The current socket id is {this.props.socketId || this.props.socket.id}. <br /> */}
         {/* Your partner's socket id is {this.state.partnerId}. <br /> */}
-        <Menu compact>
-          <Dropdown text='Editor Theme' options={options} simple item onChange={this.dropDownChange}/>
+        <Menu compact style={{ marginBottom: "13px", backgroundColor: "#404040" }}>
+          <Dropdown text='Editor Theme' options={options} simple item onChange={this.dropDownChange} style={{ padding: "10px 7px", color: "white" }} />
         </Menu> 
         <AceEditor
           mode='javascript'
@@ -289,20 +292,20 @@ class PairingEditor extends React.Component {
         Invite other online users: <br />
         {this.state.users.map(user => {
           return <div>
-              {user[0]} <button
+              {user[0]} <Button size="tiny"
                 onClick={() => this.inviteUser(user[1], user[0])}
               >
                 Invite this user to this session
-              </button>
+              </Button>
             </div>;
         })}
         <br />
-        <input value={this.state.chat} placeholder="chat here" onChange={this.chatOnChange} />
-        <Button onClick={this.sendChat} content="Send" />
+        <input value={this.state.chat} placeholder="Chat here" onChange={this.chatOnChange} style={{color: "black"}}/>
+        <Button onClick={this.sendChat} content="Send" style={{padding: "4px", marginLeft: "8px"}}/>
         <div style={chatStyle}>
-          {this.state.chatMessages.map((el, i) => <div key={i}>
+          {this.state.chatMessages.map((el, i) => <div key={i} style={{color: "black"}}>
               <img src={el.role === "Driver" ? driverImg : navigatorImg} width="13px" height="13px" />
-              {el.user}: {el.message}
+              {' '} {el.user}: {el.message}
             </div>)}
         </div>
       </div>;

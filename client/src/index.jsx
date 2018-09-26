@@ -17,7 +17,7 @@ import NewChallengeForm from './components/NewChallengeForm.jsx';
 import Footer from './components/Footer.jsx';
 import SolutionList from './components/SolutionList.jsx';
 
-import { Sidebar, Button, Menu, Image, Icon, Header, Grid, Segment, Dropdown } from 'semantic-ui-react';
+import { Sidebar, Button, Menu, Image, Icon, Header, Grid, Segment, Dropdown, Loader, Dimmer } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -63,6 +63,7 @@ class App extends React.Component {
           masterUser: undefined
         });
       }
+      this.setState({showLoader: false});
     });
     console.log("In index.jsx, socket is", this.state.socket);
     this.state.socket.on("sendChatMessage", (obj) => {
@@ -77,6 +78,7 @@ class App extends React.Component {
   
   componentWillMount() {
     this.socketInitialize();
+    this.setState({showLoader: true});
   }
 
   setMessagesFalse() {
@@ -138,6 +140,17 @@ class App extends React.Component {
     (<Route exact path="/" component={() => <Dashboard user={this.state.masterUser} socket={this.state.socket} onlineUpdate={this.onlineUpdate}/>} />) 
     : 
     (<Route exact path="/" component={() => <Home handleLogin={this.handleLogin} />} />);
+    const loader = this.state.showLoader;
+    if (loader) {
+      // setTimeout(function() {debugger}, 0)
+      return (
+        <Segment>
+          <Dimmer active>
+            <Loader content="Loading" className="homeLoader"/>
+          </Dimmer>
+        </Segment>
+      )
+    }
     return <BrowserRouter>
         <Wrapper>
           <Content>
@@ -159,49 +172,9 @@ class App extends React.Component {
               {/* <Route path="/challenges" component={() => <UserChallenges initialComplete={this.handleInitialComplete} user={this.state.masterUser} />} /> */}
             </Side>
           </Content>
-          <Footer />
         </Wrapper>
       </BrowserRouter>;
   }
 }
 
 ReactDOM.render(<App />, document.getElementById('app'));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

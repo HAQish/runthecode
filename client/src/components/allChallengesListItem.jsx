@@ -20,16 +20,16 @@ const AllChallengesListItem = (props) => {
     showSolutions = <Icon name='remove' color='red' size='big' />;
   }
   return <Grid.Row className="list-view">
-      <Grid.Column width={8}>
+      <Grid.Column width={6}>
         <Link to={`/allchallenges/${challenge.challengeName}`}>
-          <h3>{challenge.challengeName}</h3>
+          <h3 className="challengeName">{challenge.challengeName}</h3>
         </Link>
       </Grid.Column>
       <Grid.Column width={2}>
         <Label color={labelColor}>{challenge.challengeLevel}</Label>
       </Grid.Column>
       <Grid.Column width={2}>{showSolutions}</Grid.Column>
-      <Grid.Column width={2}>
+      <Grid.Column width={6}>
         <Label color="blue" tag>
           {/* {challenge.ranking} */}
           {challenge.createdBy}

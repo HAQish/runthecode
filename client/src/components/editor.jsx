@@ -72,6 +72,7 @@ class Editor extends React.Component {
   dropDownChange(e, data) {
     console.log("dropDownChange", e, data);
     this.setState({ theme: data.value });
+    localStorage.setItem("theme", data.value);
   }
 
   render() {
@@ -90,12 +91,12 @@ class Editor extends React.Component {
     let pair = (window.location.href.split("/")[3] === "course") ? <br /> : <Button as={Link} to={`/pairing/${this.props.challengeName}/${this.props.socket.id}`} content="Try Pair Programming" />;
     return (
       <div style={{height: "80vh", marginTop: "30px"}}>
-        {/* <Menu compact>
-          <Dropdown text='Editor Theme' options={options} simple item onChange={this.dropDownChange} />
-        </Menu>  */}
+        <Menu compact style={{marginBottom: "13px", backgroundColor: "#404040"}}>
+          <Dropdown text='Editor Theme' options={options} simple item onChange={this.dropDownChange} style={{padding: "10px 7px", color: "white"}}/>
+        </Menu> 
         <AceEditor 
         mode="javascript" 
-        theme={"chaos"}
+        theme={localStorage.getItem("theme") || "chaos"}
         onChange={this.onChange} 
         value={this.state.masterUserSolutionCode || this.props.starterCode} 
         editorProps={{ $blockScrolling: true }} 

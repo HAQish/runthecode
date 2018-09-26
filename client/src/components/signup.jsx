@@ -13,6 +13,7 @@ class Signup extends React.Component {
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.demoLogin = this.demoLogin.bind(this);
   }
 
   handleSubmit(e) {
@@ -35,6 +36,18 @@ class Signup extends React.Component {
     });
   }
 
+  demoLogin() {
+    let user = {
+      username: "demoUser@LevelUpCode.io",
+      password: "demopassword",
+      nickname: "Demo User"
+    }
+    $.post('/login', user, (data) => {
+      console.log(data);
+      this.props.handleLogin(data)
+    });
+  }
+
   render() {
     const { email, password, username } = this.state;
     return (
@@ -45,7 +58,10 @@ class Signup extends React.Component {
             <Form.Input fluid type='password' name='password' label='Password' placeholder='Password' value={password} onChange={this.handleChange} />
           </Form.Group> 
           <Form.Input fluid label='Pick a Username' name='username' placeholder='Username' value={username} onChange={this.handleChange.bind(this)} />
-          <Form.Button onClick={this.handleSubmit} type='submit'>Submit</Form.Button>
+          <Form.Group widths="equal">
+            <Form.Button onClick={this.handleSubmit} type='submit'>Submit</Form.Button>
+            <Button color="red" onClick={this.demoLogin} className="demoLogin">Demo Login</Button>
+          </Form.Group>
         </Form>
       </Segment>
     )

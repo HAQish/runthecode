@@ -106,15 +106,13 @@ class Navbar extends Component {
         </Menu.Menu>;
     }
 
-    return <div style={{ marginBottom: "0px" }}>
+    return <div style={{ marginBottom: "0px"}} className="navbarheaderthing">
         <Segment inverted>
           <Menu inverted pointing secondary>
-            <Menu.Item name="home" active={activeItem === "home"} onClick={this.openSidebar}>
-              <Icon name="puzzle" size="big" inverted />
-            </Menu.Item>
             <Menu.Item as={Link} to="/">
               <Header style={{ textAlign: "center", color: "white" }}>
-                {this.props.isLoggedIn === undefined || this.props.isLoggedIn === '' ? 'LevelUP Code' : `Welcome ${this.props.isLoggedIn.username}`}
+              <Icon name="code" size="tiny" className="LUCIcon"/>
+                LevelUP Code
               </Header>
             </Menu.Item>
             {options}

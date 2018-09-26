@@ -34,6 +34,7 @@ class Users extends React.Component {
     this.sendMessageToUser = this.sendMessageToUser.bind(this);
     this.chatMessageChange = this.chatMessageChange.bind(this);
     this.getAllUsers = this.getAllUsers.bind(this);
+    this.clearMessage = this.clearMessage.bind(this);
   }
 
   //functions here
@@ -59,10 +60,18 @@ class Users extends React.Component {
 
   sendMessageToUser(id, to) {
     this.props.socket.emit("sendChatMessage", {message: this.state.chatMessage, meantFor: id, from:this.props.user.username, to: to});
+    this.setState({chatMessage: ""});
   }
 
   chatMessageChange(e) {
     this.setState({chatMessage: e.target.value});
+  }
+
+  clearMessage() {
+    console.log("clearMessage, this.message.value is", this.message.value, "this.state.chasMessage is", this.state.chatMessage);
+    this.setState({chatMessage: ""});
+    this.message.value = "";
+    console.log("after clearMessage reset, this.message.value is", this.message.value, "this.state.chasMessage is", this.state.chatMessage);
   }
 
 
@@ -93,10 +102,10 @@ class Users extends React.Component {
           </Grid.Row>
           <Grid.Row>
             <Grid.Column width={6}>
-              <h3>Username</h3>
+              <h3 className="contentWhite">Username</h3>
             </Grid.Column>
             <Grid.Column width={10}>
-              <h3>Message this User</h3>
+              <h3 className="contentWhite">Message this User</h3>
             </Grid.Column>
           </Grid.Row>
           {users.map(el => <Grid.Row className="list-view">
@@ -104,11 +113,12 @@ class Users extends React.Component {
                 <h3>{el[0]}</h3>
               </Grid.Column>
               <Grid.Column width={8}>
-                <Input onChange={this.chatMessageChange} fluid placeholder="Message this User" />
+                <Input onChange={this.chatMessageChange} fluid placeholder="Message this User" ref={el => this.message = el}/>
                 {/* <input onChange={this.chatMessageChange} placeholder="Message this user" /> */}
               </Grid.Column>
               <Grid.Column width={2}>
-                <Button primary onClick={() => this.sendMessageToUser(el[1], el[0])}>
+                <Button primary onClick={() => {this.sendMessageToUser(el[1], el[0]);
+                  this.clearMessage();}}>
                   Send
                 </Button>
               </Grid.Column>

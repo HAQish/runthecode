@@ -61,6 +61,7 @@
     "react-ace": "^5.9.0",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^16.2.0",
+    "react-dom-confetti": "0.0.10",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-test-renderer": "^16.2.0",

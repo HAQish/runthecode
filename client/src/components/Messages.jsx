@@ -2,14 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import { BrowserRouter, Route } from 'react-router-dom';
+import { Grid, Button } from 'semantic-ui-react';
 import socketIOClient from "socket.io-client";
 
 class Messages extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: []
-    }
+      messages: [],
+      interval: null
+    };
 
     //bindings go here
 
@@ -24,10 +26,14 @@ class Messages extends React.Component {
   }
   
   componentDidMount() {
-      setTimeout(function(){this.props.socket.emit("receiveAllChatMessages", this.props.user.username)}.bind(this), 2000);
+    let interval = setInterval(function() {  
+      if (this.props.user) this.props.socket.emit("receiveAllChatMessages", this.props.user.username);
+    }.bind(this), 1000);
+    this.setState({ interval: interval });
   }
 
   componentWillUnmount() {
+    clearInterval(this.state.interval);
     // console.log("Messages.jsx is unmounting");
   }
 
@@ -37,9 +43,12 @@ class Messages extends React.Component {
 
   render() {
     return (
-      <div>
-      {this.props.messages.map(el => <div>{el.from}: {el.message}</div>)}
-      </div>
+      <Grid className="messagesGrid">
+        {this.props.messages.map((el, i) => <Grid.Row className="messages" key={i}>
+        <Grid.Column width={2} className="messageFrom">{el.from}:</Grid.Column> 
+          <Grid.Column width={14} className="messageContent">{el.message}</Grid.Column>
+        </Grid.Row>)}
+      </Grid>
     )
   }
 }

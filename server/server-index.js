@@ -16,7 +16,9 @@ const io = require('socket.io')(http);
 const PORT = process.env.PORT || 3030;
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
 app.use(express.static(path.join(__dirname, '../client/dist')));
 
@@ -64,7 +66,9 @@ io.on('connection', (socket) => {
     if (roomsObj.hasOwnProperty(obj.roomName)) {
       roomsObj[obj.roomName].push([obj.username, obj.role]);
     } else {
-      roomsObj[obj.roomName] = [[obj.username, obj.role]];
+      roomsObj[obj.roomName] = [
+        [obj.username, obj.role]
+      ];
     }
     socket.join(obj.roomName);
   });

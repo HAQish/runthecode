@@ -37,9 +37,9 @@ const testDescriptionArray1 = "['helloWorld should be a function', 'return value
 */
 // solution
 function oldEnough(age, activity) {
-  const no = `Sorry, you're not old enough to ${activity}.`;
-  const yes = `Yes! You're old enough to ${activity}!`;
-  const other = `You're always old enough to ${activity}!`;
+  const no = `Sorry, you are not old enough to ${activity}.`;
+  const yes = `Yes! You are old enough to ${activity}!`;
+  const other = `You are always old enough to ${activity}!`;
   if (activity === 'drink') {
     if (age < 21) {
       return no;

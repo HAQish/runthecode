@@ -30,8 +30,8 @@ class HomeResultsPopup extends React.Component {
   render() {
     return (
       <Popup
-        trigger={<Button content='Test your code' />}
-        content={`${this.props.msg}!`}
+        trigger={<Button className="small homebutton" content='Test your code' />}
+        content={this.props.loading ? "Running..." : `${this.props.msg}!` }
         on='click'
         open={this.state.isOpen}
         onClose={this.handleClose}
