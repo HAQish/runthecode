@@ -120,10 +120,10 @@ class Home extends React.Component {
               <HomeResultsPopup submit={this.onSubmitToServer.bind(this)} open={this.state.openResults} msg={this.state.msg} loading={this.state.isLoadingHomeResults} />
               <Button className="small homebutton" onClick={this.onBegin} primary content="Begin your journey" style={{ float: "right", marginBottom: "10px" }} />
             </div>
-            <Modal style={{ height: "65%" }} basic dimmer style={{ height: "80%" }} closeOnDimmerClick open={this.state.openModal} onClose={this.closeModal}>
+            <Modal style={{ height: "65%" }} basic dimmer style={{ height: "80%" }} open={this.state.openModal} onClose={this.closeModal}>
               <Header icon="signup" content="Signup" className="nav-item" >
               </Header>
-              <Button color="gray" onClick={this.closeModal} className="signupClose" style={{position: "absolute", top: "16px"}}>
+              <Button color="grey" onClick={this.closeModal} className="signupClose" style={{position: "absolute", top: "16px"}}>
                 X
               </Button>
               <Modal.Content style={{marginTop: "50px"}}>
@@ -135,8 +135,6 @@ class Home extends React.Component {
                   <Signup handleLogin={this.handleLoginSubmit} />
                 </Modal.Description>
               </Modal.Content>
-              <Modal.Actions>
-              </Modal.Actions>
             </Modal>
           </div>
         </div>

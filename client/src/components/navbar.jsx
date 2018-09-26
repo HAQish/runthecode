@@ -84,14 +84,13 @@ class Navbar extends Component {
             <Modal.Content>
               <Modal.Description>
                 <Header inverted>Get Ready for a coding experience like no other</Header>
+                  <Button color="grey" onClick={this.closeSignupModal} className="signupClose" style={{ position: "absolute", top: "16px" }}>
+                    X
+                  </Button>
                 <Signup handleLogin={this.handleLoginSubmit} />
               </Modal.Description>
             </Modal.Content>
-            <Modal.Actions >
-              <Button color='red' onClick={this.closeSignupModal}>
-                <Icon name='remove' /> Close
-                </Button>
-            </Modal.Actions>
+            
           </Modal>
         </Menu.Menu>
       );
