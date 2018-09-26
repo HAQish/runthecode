@@ -7,7 +7,7 @@ module.exports = {
     path: path.resolve(__dirname, 'client/dist'),
     filename: 'bundle.js',
   },
-  devtool: 'cheap-eval-source-map',
+  devtool: 'source-map',
   stats: {
     colors: true,
     reasons: true,
@@ -29,9 +29,11 @@ module.exports = {
       }],
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production')
+    new webpack.optimize.UglifyJsPlugin({
+      sourceMap: true,
+      output: {
+        comments: false,
+      },
     }),
-    new webpack.optimize.UglifyJsPlugin()
   ]
 };
