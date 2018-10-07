@@ -109,6 +109,10 @@
   font-weight: 700;
 }
 
+.ui.celled.grid>.row>.column {
+  box-shadow: none;
+}
+
 .homeLoader {
   position: relative !important;
   top: 50vh !important;

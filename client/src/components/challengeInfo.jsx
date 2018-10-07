@@ -37,7 +37,7 @@ const ChallengeInfo = (props) => {
           <DataWrap className="challengeTopHalf">
             <Heading style={{color: "white", paddingBottom: "45px", position: "absolute", top:"-8.7vh"}}>{props.challengeName}</Heading>
             <Segment raised>
-              <Header as="h3"  style={{color: "white", lineHeight: "25px", whiteSpace:"pre-line", overflowY: "auto", maxHeight:"43vh"}}>
+              <Header as="h3"  style={{color: "white", lineHeight: "25px", whiteSpace:"pre-line", overflowY: "auto", maxHeight:"51vh", marginTop: "100px"}}>
                 {description}
               </Header>
             </Segment>
@@ -48,7 +48,7 @@ const ChallengeInfo = (props) => {
           <DataWrap className="challengeBottomHalf">
             <Heading style={{ color: "white", paddingBottom: "50px", left: "24vw", top:"4vh", position:"absolute"}}>Tests</Heading>
             <Segment raised style={{width: "42.7vw"}}>
-              <Header as="h3" style={{ color: "white", lineHeight: "25px", whiteSpace: "pre-line", overflowY: "auto", maxHeight:"33vh", marginTop: "11vh"}}>
+              <Header as="h3" style={{ color: "white", lineHeight: "25px", whiteSpace: "pre-line", overflowY: "auto", maxHeight:"30vh", marginTop: "60px", paddingTop: "62px"}}>
                 {tests}
               </Header>
             </Segment>
